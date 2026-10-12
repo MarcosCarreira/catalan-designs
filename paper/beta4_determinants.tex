@@ -1,0 +1,645 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{xurl}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\Dl}{\mathcal{D}}
+\newcommand{\Rl}{\mathcal{R}}
+\newcommand{\Sl}{\mathcal{S}}
+\newcommand{\repo}{\url{https://github.com/MarcosCarreira/catalan-designs}}
+
+\title{Determinant constructions for the Dirichlet beta value at four}
+\author{Marcos Costa Santos Carreira}
+\date{9 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The determinant proof that Catalan's constant is irrational compares, for a sequence of determinants with entries in the rationals and that constant, a lower bound from denominators with an upper bound from an integral representation. We record attempts to carry the method to the Dirichlet beta value at four. Several of them fail within the families tested. For determinants of half-integer arrays we measure both bounds up to size forty: the gap between them is four to six times the gap of the same construction for Catalan's constant, and the excess comes from the larger denominators of weight four. A weighted arcsine measure gives determinants with entries in the rationals and the beta value at four, with proofs, but they exceed the Catalan determinants with the same rows. We also measure determinants with poles at the negative squares, the construction of Fauzan's proof that the zeta value at five is irrational; their analogue for the beta value stays positive. Together the attempts point to a trade-off: the constructions with small denominators tie the beta value to a polylogarithmic constant, and the constructions that separate it have much larger denominators.
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+
+Let $\beta(s)=\sum_{k\ge0}(-1)^k(2k+1)^{-s}$, so that $G=\beta(2)$. Rivoal and Zudilin \cite{RZ} proved, with very-well-poised hypergeometric series, that infinitely many of the values $\beta(2),\beta(4),\beta(6),\dots$ are linearly independent over $\mathbb Q$ and that at least one of $\beta(2),\dots,\beta(14)$ is irrational; no single even value beyond $\beta(2)$ is known to be irrational. We record some attempts to carry the determinant method of \cite{OAI} to $\beta(4)$. Some fail for structural reasons and others are measured; the outcomes point to one trade-off. Unless a proof is given, the statements below are numerical observations (identifications by the PSLQ algorithm at $70$ to $130$ digits; exact rational arithmetic and determinants at up to $6460$ digits where stated). They concern only the families tested. The method and its extension to general parameters are described in \cite{OAI} and \cite{MCSC2}; we use the notation of \cite{OAI} and refer to its numbered equations as, for example, \cite[Eq.~(6)]{OAI}.
+
+The attempts are the following: logarithmic kernels with the measure of \cite{OAI} (Section~\ref{sec:logker}), a second measure with rational moments (Section~\ref{sec:second}), the very-well-poised linear forms of Rivoal and Zudilin \cite{RZ} (Section~\ref{sec:vwp}), determinants of half-integer arrays (Section~\ref{sec:halfint}), a weighted arcsine measure whose determinants have entries in $\mathbb Q+\mathbb Q\beta(4)$ (Section~\ref{sec:weighted}, Proposition~\ref{prop:nudet}), Hankel determinants of very-well-poised forms (Section~\ref{sec:hankel}), a scan of hypergeometric recurrences (Section~\ref{sec:cmf}), and determinants with poles at the negative squares, as in Fauzan's proof that $\zeta(5)$ is irrational \cite{Fauzan} (Section~\ref{sec:fauzan}). The first three fail within the families tested. For the half-integer determinants the gap between the two bounds levels off at four to six times the gap of the same construction for $G$ (Observation~\ref{obs:balance}), and the excess comes from the denominators of weight four (Observation~\ref{obs:denoms}); Sections~\ref{sec:primes} and~\ref{sec:weights} show that the denominators follow the weight. The determinants with poles at the negative squares stay near $+2$ per $n^2$ for $\beta(4)$, because the character modulo $4$ halves the density of the poles relative to the decay of the weight. Section~\ref{sec:tradeoff} describes the common cause of the outcomes. Appendix~A lists our checks of the proofs of \cite{Fauzan} and \cite{Lai}, and Appendix~B the scripts and runs. This note has not been refereed.
+
+\section{Logarithmic kernels with the arcsine measure}\label{sec:logker}
+
+Replace the kernel $1/(1-ts)$ of \cite[Eq.~(6)]{OAI} by $(-\log s)^r/(r!\,(1-ts))$ and keep the measure $|t|\,dt/\sqrt{1-t^2}$, whose moments are $m_{2k}=2\cdot4^k/((2k+1)\binom{2k}{k})$. The diagonal recurrences of \cite[Sec.~2.1]{OAI} carry over, and the boundary values $S_r(d)=\sum_u m_{d+u}/(u+1)^{r+1}$ satisfy
+\[
+dS_r(d)=(d-1)S_r(d-2)+S_{r-1}(d-2)-S_{r-1}(d),
+\]
+so every entry is a rational combination of $1$ and of the starting values $S_r(0)$, $S_r(1)$ and their analogues on the other boundary, for orders up to $r$. With $t=\sin\theta$,
+\[
+S_r(0)=\frac{2}{r!}\int_0^{\pi/2}\frac{\theta\,(-\log\sin\theta)^r}{\sin\theta}\,d\theta .
+\]
+
+\begin{observation}\label{obs:arcsine}
+$S_0(0)=4G$, $S_1(0)=8\operatorname{Im}\mathrm{Li}_3\big(\tfrac{1+i}{2}\big)-\tfrac{\pi^3}{16}-\tfrac{\pi}{4}\log^22$, and
+\[
+S_2(0)=-8\beta(4)+16\operatorname{Im}\mathrm{Li}_4\Big(\frac{1+i}{2}\Big)+\frac{\pi^3\log2}{16}+\frac{\pi\log^32}{12};
+\]
+the other starting values contain only $\pi^2$, $\zeta(3)$, $\pi^2\log2$, $\pi^4$, $\mathrm{Li}_4(\tfrac12)$ and powers of $\log 2$. More generally, every sum $\sum_ka_kR(k)$ with $a_k=4^k/\binom{2k}{k}$ and $R$ rational reduces, by partial fractions and $a_{k+1}=a_k(2k+2)/(2k+1)$, to the sums $A_n=\sum_ka_k/(2k+1)^n$ and $C_n=\sum_{k\ge1}a_k/(2k)^n$; at weight four $A_4=\frac12S_2(0)$, while $C_2,C_3,C_4$ contain no $\beta$-type constant.
+\end{observation}
+
+In this family $\beta(4)$ appears only in the fixed combination $A_4$, together with $\operatorname{Im}\mathrm{Li}_4((1+i)/2)$, and Taylor contact, which removes whole starting values, cannot separate them.
+
+\section{A second measure with rational moments}\label{sec:second}
+
+The measure $\arcsin(t)\,dt/\sqrt{1-t^2}$ also has rational moments, $p_n=\int_0^{\pi/2}\theta\sin^n\theta\,d\theta$ for odd $n$, with $n^2p_n=n(n-1)p_{n-2}+1$ and $p_1=1$. (The weight $\arcsin^2t$ does not: its moments lie in $\mathbb Q+\mathbb Q\pi$, with $\pi$-part equal to $p_n$, so the $\pi$-part of every entry is a whole moment array, which no condition on the rows removes.)
+
+\begin{observation}\label{obs:second}
+For the measure $\arcsin(t)\,dt/\sqrt{1-t^2}$ the starting values carrying $\beta$-type constants are, for the kernel $1/(1-ts)$,
+\[
+\tfrac{5\pi^3}{16}+\tfrac{\pi}{4}\log^22-4G\log2-8\operatorname{Im}\mathrm{Li}_3\big(\tfrac{1+i}{2}\big),
+\]
+and for the kernel $(-\log s)/(1-ts)$,
+\[
+-28\beta(4)+32\operatorname{Im}\mathrm{Li}_4\big(\tfrac{1+i}{2}\big)+8\log2\,\operatorname{Im}\mathrm{Li}_3\big(\tfrac{1+i}{2}\big)+\tfrac{\pi^2}{6}G+\tfrac{5\pi^3\log2}{16}-\tfrac{\pi\log^32}{12};
+\]
+the others are of $\zeta$-type.
+\end{observation}
+
+In the coordinates $(\beta(4),\operatorname{Im}\mathrm{Li}_4,\log2\operatorname{Im}\mathrm{Li}_3,\pi^2G,\pi^3\log2,\pi\log^32)$ the two weight-four starting values are $(-8,16,0,0,\tfrac1{16},\tfrac1{12})$ and $(-28,32,8,\tfrac16,\tfrac5{16},-\tfrac1{12})$. The vector $(1,0,0,0,0,0)$ is not in their span, and starting values of lower weight cannot supply the weight-four products. Combining the two measures does not isolate $\beta(4)$ either.
+
+\section{Very-well-poised linear forms}\label{sec:vwp}
+
+The series $S_n(z)$ of \cite[Eqs.~(5)--(7)]{RZ} with $q=6$ give, at $z=-1$, linear forms $c_0+c_2\beta(2)+c_4\beta(4)$ with rational coefficients \cite[Lemma~2]{RZ}. We computed them by exact partial fractions; the exact forms agree with the directly summed series to all digits.
+
+\begin{observation}\label{obs:rz}
+Write the forms with coprime integer coefficients. Their size grows: $\log|\cdot|/n$ equals $2.0$, $2.9$, $4.0$, $4.7$ at $n=4,8,12,16$ for the parameters $(3;1,\dots,1)$ of \cite[Eq.~(3)]{RZ}, and $2.8$, $5.0$, $5.2$, $5.8$ for $(5;2,\dots,2)$; the forms decay like $e^{-5.3n}$ and $e^{-7n}$, their denominators grow like $e^{10n}$ and $e^{12.7n}$. Eliminating $\beta(2)$ between the two families gives forms that grow like $e^{14n}$.
+\end{observation}
+
+A single form would need size tending to $0$; these forms miss by a factor $e^{5n}$ before $\beta(2)$ is removed.
+
+\section{Determinants of half-integer arrays}\label{sec:halfint}
+
+The constants can be separated with half-integer shifts and an alternating sign. For $m\ge1$ let
+\[
+Z'_m(i,j)=\sum_{u\ge0}\frac{(-1)^u}{(i+u+\frac12)^m\,(j+u+\frac12)}=\int_0^1\!\!\int_0^1\frac{t^{i-\frac12}s^{j-\frac12}}{1+ts}\,\frac{(-\log t)^{m-1}}{(m-1)!}\,ds\,dt,
+\]
+and $T_m(j)=\sum_{u\ge0}(-1)^u(j+u+\frac12)^{-m}=(-1)^j\big(2^m\beta(m)-\sum_{v<j}(-1)^v(v+\frac12)^{-m}\big)$, with $\beta(1)=\pi/4$ and $\beta(3)=\pi^3/32$.
+
+\begin{lemma}\label{lem:halfint}
+Let $m\in\{1,2,3\}$. For $i\ne j$ put $d=i-j$. Then $Z'_m(j,j)=T_{m+1}(j)$ and
+\[
+Z'_m(i,j)=\frac{T_1(j)-T_1(i)}{d^m}-\sum_{l=2}^{m}\frac{T_l(i)}{d^{\,m-l+1}}\qquad(i\ne j).
+\]
+For $m=3$ this reads $Z'_3(i,j)=\frac{T_1(j)-T_1(i)}{d^3}-\frac{T_2(i)}{d^2}-\frac{T_3(i)}{d}$.
+\end{lemma}
+
+\begin{proof}
+With $x=j+u+\frac12$ and $y=i+u+\frac12=x+d$, the partial-fraction identity
+\[
+\frac1{y^mx}=\frac1{d^mx}-\frac1{d^my}-\sum_{l=2}^{m}\frac1{d^{\,m-l+1}y^l}
+\]
+holds for $m\ge1$ (for $m=1$ it is $\frac1{yx}=\frac1d(\frac1x-\frac1y)$, and the step from $m$ to $m+1$ follows by dividing by $y$ and applying the case $m=1$ to $\frac1{d^m yx}$). Multiply by $(-1)^u$ and sum over $u\ge0$. The case $i=j$ is the definition of $T_{m+1}$.
+\end{proof}
+
+Thus $\beta(4)$ occurs only on the diagonal, as $\zeta(2)$ does in the array $Z$ of \cite[Eq.~(17)]{OAI}, and the other constants have explicit kernels: $\pi$ through $((-1)^j-(-1)^i)/d^3$, which vanishes when $i\equiv j\pmod2$, and $G$, $\pi^3$ through $(-1)^i/d^2$, $(-1)^i/d$. Restricting rows and columns to even indices removes $\pi$, and the arrays $Z'_1$, $Z'_2$, whose diagonals carry $G$ and $\pi^3$, absorb those two constants row by row, as $D_r$ absorbs $\zeta(2)$ in \cite{OAI}. Definition~\ref{def:halfint} makes this explicit.
+
+\begin{definition}\label{def:halfint}
+Let $n\ge1$ and $\alpha,h,b,q\ge0$ be integers. For $0\le r,k<n$ define the integers $a^{(3)}_{r,i}$ and $c_{k,j}$ by
+\[
+t^{2(\alpha+r)}(1-t^2)^h=\sum_i a^{(3)}_{r,i}\,t^i,\qquad s^{2(b+k)}(1-s^2)^q=\sum_j c_{k,j}\,s^j,
+\]
+let $I_r$ be the set of $i$ with $a^{(3)}_{r,i}\ne0$, and let $J$ be the set of $j$ with $c_{k,j}\ne0$ for some $k$. All elements of $I_r$ and $J$ are even. For $j\in J$ put
+\[
+a^{(2)}_{r,j}=\sum_{i\in I_r,\,i\ne j}\frac{a^{(3)}_{r,i}}{i-j},\qquad
+a^{(1)}_{r,j}=\sum_{i\in J,\,i\ne j}\frac{a^{(2)}_{r,i}}{i-j}+\sum_{i\in I_r,\,i\ne j}\frac{a^{(3)}_{r,i}}{(i-j)^2}.
+\]
+The \emph{half-integer determinant of weight four} is $\Delta_n=\det(E_{r,k})_{0\le r,k<n}$ with
+\[
+E_{r,k}=\sum_{i\in I_r,\,j\in J}a^{(3)}_{r,i}c_{k,j}Z'_3(i,j)+\sum_{i,j\in J}\big(a^{(2)}_{r,i}c_{k,j}Z'_2(i,j)+a^{(1)}_{r,i}c_{k,j}Z'_1(i,j)\big),
+\]
+and the \emph{half-integer determinant of weight two} is $\Delta^{(2)}_n=\det(E^{(2)}_{r,k})_{0\le r,k<n}$ with
+\[
+E^{(2)}_{r,k}=\sum_{i\in I_r,\,j\in J}a^{(3)}_{r,i}c_{k,j}Z'_1(i,j).
+\]
+\end{definition}
+
+\begin{lemma}\label{lem:entries}
+There are rational numbers $\rho_{r,k}$, $\rho^{(2)}_{r,k}$ such that
+\[
+E_{r,k}=\rho_{r,k}+16\,\beta(4)\sum_{j\in J}a^{(3)}_{r,j}c_{k,j},\qquad E^{(2)}_{r,k}=\rho^{(2)}_{r,k}+4\,G\sum_{j\in J}a^{(3)}_{r,j}c_{k,j}.
+\]
+\end{lemma}
+
+\begin{proof}
+For even $i$, $T_l(i)=2^l\beta(l)-\sum_{v<i}(-1)^v(v+\frac12)^{-l}$, so $T_l(i)$ is $2^l\beta(l)$ plus a rational number, and $T_1(j)-T_1(i)$ is rational for even $i,j$. Insert Lemma~\ref{lem:halfint} into $E_{r,k}$. The constant $\beta(4)$ comes only from the diagonal of $Z'_3$, with coefficient $16\sum_ja^{(3)}_{r,j}c_{k,j}$. The coefficient of $\beta(3)$ is $8\sum_{j\in J}c_{k,j}\big(a^{(2)}_{r,j}-\sum_{i\ne j}a^{(3)}_{r,i}/(i-j)\big)$, from the diagonal of $Z'_2$ and the term $l=3$ of $Z'_3$; it vanishes by the definition of $a^{(2)}$. The coefficient of $\beta(2)=G$ is $4\sum_{j\in J}c_{k,j}\big(a^{(1)}_{r,j}-\sum_{i\ne j}a^{(2)}_{r,i}/(i-j)-\sum_{i\ne j}a^{(3)}_{r,i}/(i-j)^2\big)$, from the diagonal of $Z'_1$ and the terms $l=2$ of $Z'_2$ and $Z'_3$; it vanishes by the definition of $a^{(1)}$. The same computation with $Z'_1$ alone gives the statement for $E^{(2)}_{r,k}$.
+\end{proof}
+
+Hence the entries of $\Delta_n$ lie in $\mathbb Q+\mathbb Q\beta(4)$, those of $\Delta^{(2)}_n$ lie in $\mathbb Q+\mathbb QG$, and each row is a single function of $t$, so the integral representation of \cite[Sec.~5]{OAI} applies.
+
+\begin{observation}\label{obs:halfint}
+The common denominator of the rational parts of $Z'_3(i,j)$, $i,j<H$ even, grows like $e^{cH}$ with $c=6.07$, $7.25$, $7.44$ at $H=20,40,80$, compared with $2\log\operatorname{lcm}(1,\dots,H)/H\approx2$ for the arrays of \cite{OAI}.
+\end{observation}
+
+The reason is that $\beta(4)$ alone needs the odd denominators $(2v+1)^4$ up to $2H$, while the arcsine measure brings $G$ with denominators that are powers of $2$ only (the moments $m_{2k}$).
+
+The balance of the two bounds can be measured directly. By Lemma~\ref{lem:entries}, $\Delta_n=P_n(\beta(4))$ for a polynomial $P_n\in\mathbb Q[x]$ of degree at most $n$. If $\beta(4)=p/w$ with integers $p,w$, $w\ge1$, then $w^n\operatorname{den}(P_n)\,\Delta_n$ is an integer, where $\operatorname{den}(P_n)$ is the least common denominator of the coefficients; the integrality step of \cite{OAI} with this multiplier needs $|\Delta_n|\,w^n\operatorname{den}(P_n)<1$ for some $n$ with $\Delta_n\ne0$. Put
+\[
+\lambda_n=\frac{\log|\Delta_n|}{n^2},\qquad \varpi_n=-\frac{\log\operatorname{den}\big(P_n(\tfrac13)\big)}{n^2},\qquad \text{gap}_n=\lambda_n-\varpi_n,
+\]
+and define $\lambda^{(2)}_n$, $\varpi^{(2)}_n$, $\text{gap}^{(2)}_n$ in the same way from $\Delta^{(2)}_n$, with $G$ replaced by $\frac13$. Since $\operatorname{den}(P_n(\frac13))\le3^n\operatorname{den}(P_n)$, we have $\log\operatorname{den}(P_n)/n^2\ge-\varpi_n-(\log3)/n$, so the integrality step needs $\text{gap}_n<(\log3-\log w)/n\le(\log3)/n$; for $\text{gap}_n\ge(\log3)/n$ it gives no contradiction at that $n$. In the design notation of this section the parameters are $(\alpha,h,b,q)=(\lfloor r_\alpha n\rceil,\lfloor r_hn\rceil,\lfloor r_bn\rceil,\lfloor r_qn\rceil)$ for fixed ratios $(r_\alpha,r_h,r_b,r_q)$, where $\lfloor x\rceil$ is the nearest integer, ties to the even one.
+
+\begin{observation}[Measured; $6\le n\le40$]\label{obs:balance}
+For the five ratio vectors in Table~\ref{tab:balance} and for $n\in\{6,8,10,12,14,16,\allowbreak20,24,28,32,40\}$, the determinants $\Delta_n$, $\Delta^{(2)}_n$, $P_n(\frac13)$ and its weight-two analogue are nonzero, and both gaps are positive; $\text{gap}_n\ge2.96>(\log3)/6$ in every case. Both gaps increase slowly with $n$ and level off. At $n=40$ the ratio $\text{gap}_n/\text{gap}^{(2)}_n$ lies between $3.7$ and $6.0$, and $\text{gap}_n-\text{gap}^{(2)}_n\ge4.09$, the minimum being attained at $(0,0,0,0)$; across the five designs $\text{gap}^{(2)}_{40}$ varies by $1.9$. A least-squares fit $c_0+c_1/n+c_2/n^2$ over $n\ge12$ gives limits $c_0$ between $5.4$ and $10.8$ for weight four and between $0.95$ and $2.8$ for weight two. Every design with $h>0$ or $q>0$ has larger gaps, at both weights, than $(0,0,0,0)$.
+\end{observation}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Measured balance of the half-integer determinants (Observation~\ref{obs:balance}). Values per $n^2$.}\label{tab:balance}
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{3}{c}{weight four, $\beta(4)$} & \multicolumn{3}{c}{weight two, $G$}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+$(r_\alpha,r_h,r_b,r_q)$ & $\text{gap}_{20}$ & $\text{gap}_{40}$ & $\lambda_{40}$ & $\text{gap}^{(2)}_{20}$ & $\text{gap}^{(2)}_{40}$ & $\lambda^{(2)}_{40}$\\
+\midrule
+$(0,0,0,0)$ & $4.48$ & $4.91$ & $-2.86$ & $0.66$ & $0.82$ & $-2.99$\\
+$(0,\frac18,0,\frac18)$ & $5.68$ & $6.40$ & $-3.07$ & $1.16$ & $1.44$ & $-3.23$\\
+$(0,\frac14,0,\frac14)$ & $7.50$ & $8.05$ & $-3.24$ & $1.96$ & $2.17$ & $-3.43$\\
+$(0,0,0,\frac14)$ & $6.77$ & $7.29$ & $-3.12$ & $1.37$ & $1.53$ & $-3.21$\\
+$(\frac14,\frac14,0,\frac14)$ & $10.23$ & $10.77$ & $-3.37$ & $2.47$ & $2.73$ & $-3.87$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The weight-two determinants of this family do not prove that $G$ is irrational either: their gap is positive and increases with $n$. The proof in \cite{OAI} uses a different construction (the arrays $D_r$ and the arcsine measure). Observation~\ref{obs:balance} therefore compares the two weights within one family. The sizes $\lambda_n$ and $\lambda^{(2)}_n$ are close; the difference lies in the denominators.
+
+\begin{observation}[Measured; exact arithmetic]\label{obs:denoms}
+Replace every constant $\beta(1),\beta(2),\beta(3),\beta(4)$ by $\frac13$ in the entries, and let $\varpi$ denote $-\log\operatorname{den}(\det)/n^2$ of the resulting rational determinant. For the matrix of weight two, for the matrix of weight four built from the rows $a^{(3)}$ alone (so that $G$ and $\pi^3$ remain in the entries), and for the matrix $E$ of Definition~\ref{def:halfint}, the values are:
+\begin{center}
+\small
+\begin{tabular}{lccc}
+\toprule
+$(r_\alpha,r_h,r_b,r_q)$, $n$ & weight two & weight four, $a^{(3)}$ only & weight four, $E$\\
+\midrule
+$(0,0,0,0)$, $10$ & $-2.98$ & $-6.32$ & $-6.08$\\
+$(0,0,0,0)$, $20$ & $-3.53$ & $-7.28$ & $-7.19$\\
+$(0,0,0,0)$, $28$ & $-3.68$ & $-7.52$ & $-7.50$\\
+$(0,0,0,0)$, $40$ & $-3.81$ & $-7.76$ & $-7.77$\\
+$(0,\frac14,0,\frac14)$, $10$ & $-4.19$ & $-9.09$ & $-8.70$\\
+$(0,\frac14,0,\frac14)$, $20$ & $-5.25$ & $-10.78$ & $-10.59$\\
+$(0,\frac14,0,\frac14)$, $28$ & $-5.46$ & $-11.12$ & $-10.99$\\
+$(0,\frac14,0,\frac14)$, $40$ & $-5.60$ & $-11.39$ & $-11.29$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The cancellation of $G$ and $\pi^3$ changes the exponent by less than $0.4$ in every case and by less than $0.13$ for $n\ge28$, in either direction. The exponent at weight four is between $2.00$ and $2.09$ times the exponent at weight two (the values for $n=14$ are in the log).
+\end{observation}
+
+This is consistent with the source of the denominators: the rational parts of the entries contain the partial sums $\sum_{v<j}(-1)^v(v+\frac12)^{-4}$, whose denominators carry fourth powers of the odd numbers below $2j$, where weight two has squares.
+
+\section{A weighted arcsine measure}\label{sec:weighted}
+
+Sections~\ref{sec:logker} and~\ref{sec:second} found $\beta(4)$ only together with $\operatorname{Im}\mathrm{Li}_4((1+i)/2)$. A measure of weight two whose boundary values contain $\beta(4)$ alone exists.
+
+\begin{definition}\label{def:nu}
+Let $q(\theta)=\theta^2-\pi\theta$ and let $\nu$ be the signed measure on $[-1,1]$ given by
+\[
+d\nu(t)=|t|\,q(|\arcsin t|)\,\frac{dt}{\sqrt{1-t^2}} .
+\]
+For integers $i,j\ge0$ put $M_\nu(i,j)=\int_{-1}^{1}\int_0^1 t^is^j(1-ts)^{-1}\,ds\,d\nu(t)$, and define $M_\mu(i,j)$ and $L_\mu(i,j)$ in the same way with $\mu$ in place of $\nu$, the latter with the kernel $(-\log s)(1-ts)^{-1}$. Put $O_2(k)=\sum_{l=0}^{k}(2l+1)^{-2}$, $X_3=S_1(0)=\sum_{k\ge0}m_{2k}(2k+1)^{-2}$, and $W_n=\int_0^{\pi/2}\sin^n\theta\,d\theta$.
+\end{definition}
+
+By Observation~\ref{obs:arcsine}, $X_3=8\operatorname{Im}\mathrm{Li}_3(\frac{1+i}2)-\frac{\pi^3}{16}-\frac\pi4\log^22$; this value is not used in the proofs below.
+
+\begin{lemma}\label{lem:numoments}
+The odd moments of $\nu$ vanish, and $\nu_{2k}=\int t^{2k}\,d\nu=-2\,m_{2k}\,O_2(k)$ for $k\ge0$. In particular all moments are rational.
+\end{lemma}
+
+\begin{proof}
+The measure is even, so odd moments vanish. With $t=\sin\theta$, $\nu_{2k}=2I_{2k+1}$ where $I_n=\int_0^{\pi/2}q(\theta)\sin^n\theta\,d\theta$, and $m_{2k}=2W_{2k+1}$. For odd $n\ge1$ integrate by parts twice, using $(\sin^n)''=n(n-1)\sin^{n-2}-n^2\sin^n$, $q(0)=0$, $q'(\pi/2)=0$, $\sin^n(0)=0$, $(\sin^n)'(\pi/2)=0$ and $q''=2$:
+\[
+n^2I_n=n(n-1)I_{n-2}-2W_n\qquad(n\ge3),\qquad I_1=-2W_1=-2 .
+\]
+Since $n^2W_n=n(n-1)W_{n-2}$, the quotient $\sigma_k=I_{2k+1}/W_{2k+1}$ satisfies $\sigma_k=\sigma_{k-1}-2(2k+1)^{-2}$ and $\sigma_0=-2$, so $\sigma_k=-2O_2(k)$.
+\end{proof}
+
+The boundary sequences are $K^-_d=M_\nu(d,0)=\sum_{u\ge0}\nu_{d+u}/(u+1)$ and $K^+_j=M_\nu(0,j)=\sum_{u\ge0}\nu_u/(u+j+1)$; $K^-_0=K^+_0$. For $\mu$ and the plain kernel they are the sequences of \cite[Sec.~2.1]{OAI}: $\kappa^-_d=M_\mu(d,0)\in\mathbb Q+4c(d/2)G$ for even $d$ (and $\in\mathbb Q$ for odd $d$), $\kappa^+_j=M_\mu(0,j)\in\mathbb Q$ for even $j\ge2$, and $\kappa^\pm_0=S_0(0)=4G$.
+
+\begin{lemma}\label{lem:nubase}
+$K^-_0=-8\beta(4)$, $K^+_2=-2X_3$, and $L_\mu(0,2)=4-4G$.
+\end{lemma}
+
+\begin{proof}
+\emph{First value.} With $t=\sin\theta$, $K^-_0=\int(-\log(1-t))t^{-1}d\nu=2\int_0^{\pi/2}q(\theta)\operatorname{artanh}(\sin\theta)\,d\theta$, since $\nu$ is even and $-\log(1-t)+\log(1+t)=2\operatorname{artanh}t$. Put $R(\theta)=\theta^3/3-\pi\theta^2/2+\pi^3/12$, so that $R'=q$ and $R(\pi/2)=0$; integration by parts with $\frac{d}{d\theta}\operatorname{artanh}(\sin\theta)=\sec\theta$ gives $\int_0^{\pi/2}q\operatorname{artanh}(\sin\theta)\,d\theta=-\int_0^{\pi/2}R(\theta)\sec\theta\,d\theta$. With $\varphi=\pi/2-\theta$, $R=\frac{\pi^2}{4}\varphi-\frac13\varphi^3$, hence
+\begin{align*}
+\int_0^{\pi/2}q\operatorname{artanh}(\sin\theta)\,d\theta&=-\frac{\pi^2}4\int_0^{\pi/2}\frac{\varphi}{\sin\varphi}d\varphi+\frac13\int_0^{\pi/2}\frac{\varphi^3}{\sin\varphi}d\varphi\\
+&=-\frac{\pi^2}{4}\,2G+\frac13\Big(\frac{3\pi^2}{2}G-12\beta(4)\Big)=-4\beta(4).
+\end{align*}
+The two integrals are classical: integrate by parts against $\log\tan(\varphi/2)=-2\sum_{k\ge0}\cos((2k+1)\varphi)/(2k+1)$ and integrate the series term by term.
+
+\emph{Second value.} By Lemma~\ref{lem:numoments}, $K^+_2=-2\sum_{k}m_{2k}O_2(k)/(2k+3)=-2\sum_{l}(2l+1)^{-2}\sum_{k\ge l}m_{2k}/(2k+3)$. From $m_{2k+2}=m_{2k}(2k+2)/(2k+3)$ we get $m_{2k}/(2k+3)=m_{2k}-m_{2k+2}$, and $m_{2k}\to0$, so the inner sum is $m_{2l}$ and $K^+_2=-2X_3$.
+
+\emph{Third value.} $L_\mu(0,2)=\sum_k m_{2k}(2k+3)^{-2}=\sum_k(m_{2k}-m_{2k+2})(2k+3)^{-1}=\sum_{k\ge0}m_{2k}/(2k+3)-\sum_{k\ge1}m_{2k}/(2k+1)=m_0-(4G-m_0)=4-4G$, by the telescoping identity again and $S_0(0)=\sum_km_{2k}/(2k+1)=4G$.
+\end{proof}
+
+\begin{lemma}\label{lem:nurec}
+Write $e_n=-2m_n/(n+1)$, $P^1_d=\sum_{n<d}m_n/(n+1)$, $P^2_d=\sum_{n<d}m_n/(n+1)^2$ and $\kappa^{+}_j$ as above. Then for $d\ge2$
+\[
+dK^-_d=(d-1)K^-_{d-2}-\sum_{v<d-2}\frac{\nu_v}{v+3}-\frac2d\big(\kappa^-_d-4G+P^1_d\big)-2P^2_d ,
+\]
+and for $j\ge1$
+\[
+K^+_{j+2}=\frac{jK^+_j+K^+_2-jF_j}{j+1},\qquad F_j=-2\Big(\frac{X_3}{j}-\frac{4G}{j^2}+\frac{\kappa^+_j}{j^2}\Big).
+\]
+For the array $L_\mu$, with $\lambda^-_d=L_\mu(d,0)$ and $\lambda^+_j=L_\mu(0,j)$: $\lambda^-_0=X_3$,
+\begin{gather*}
+\lambda^-_d=\Big(1-\frac1d\Big)\lambda^-_{d-2}+\frac{1}{d^2}\Big(\kappa^-_{d-2}-\kappa^+_2+\sum_{v<d-2}\frac{m_v}{v+3}\Big)\quad(d\ge2),\\
+\lambda^+_{j+2}=\frac{j}{j+1}\Big(\lambda^+_j-\frac{m_0}{(j+1)^2}+\frac{\kappa^+_2-\kappa^+_{j+2}}{j^2}\Big)\quad(j\ge2).
+\end{gather*}
+All arrays satisfy $A(i,j)=A(i-1,j-1)-a_{i-1}/j^{\,r}$, with $a=\nu$, $r=1$ for $M_\nu$; $a=m$, $r=1$ for $M_\mu$; $a=m$, $r=2$ for $L_\mu$.
+\end{lemma}
+
+\begin{proof}
+The last statement follows from $\int_0^1 s^{j-1}(1-ts)^{-1}ds-t\int_0^1s^{j}(1-ts)^{-1}ds=1/j$ and its analogue with $-\log s$. By Lemma~\ref{lem:numoments}, $(n+1)\nu_n=n\nu_{n-2}+e_n$ for even $n\ge0$ (with $\nu_{-2}=0$), and $(n+1)m_n=nm_{n-2}$. For $K^-_d$ substitute $\nu_{d+u}=((d+u)\nu_{d+u-2}+e_{d+u})/(d+u+1)$ and use $\frac{d+u}{(d+u+1)(u+1)}=\frac1{u+1}-\frac1d\big(\frac1{u+1}-\frac1{d+u+1}\big)$; the sum $\sum_u e_{d+u}/((d+u+1)(u+1))$ is split with $\frac1{b^2a}=\frac1{d^2a}-\frac1{d^2b}-\frac1{db^2}$ ($a=u+1$, $b=d+u+1$), which produces $\kappa^-_d$, $S_0(0)-P^1_d$ and $X_3-P^2_d$; the term $K^+_2=-2X_3$ (Lemma~\ref{lem:nubase}) cancels $X_3$. The other three recurrences follow in the same way from the moment recurrences and partial fractions in the summation variable; for $\lambda^+$ the term $n=0$ of the sum is kept apart because the recurrence for $m_n$ starts at $n=2$.
+\end{proof}
+
+\begin{proposition}\label{prop:nuconst}
+For even $i,j\ge0$:
+\begin{enumerate}
+\item if $i\ge j$, then $M_\nu(i,j)\in\mathbb Q-8c\big(\frac{i-j}2\big)\beta(4)+\mathbb QG$ and $L_\mu(i,j)\in\mathbb Q+c\big(\frac{i-j}2\big)X_3+\mathbb QG$, $M_\mu(i,j)\in\mathbb Q+4c\big(\frac{i-j}2\big)G$;
+\item if $i<j$, then $M_\nu(i,j)\in\mathbb Q+\mathbb QG+\mathbb QX_3$, $L_\mu(i,j)\in\mathbb Q+\mathbb QG$, $M_\mu(i,j)\in\mathbb Q$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Unrolling $A(i,j)=A(i-1,j-1)-a_{i-1}/j^r$ expresses $A(i,j)$ as $A(i-j,0)$ minus a rational sum if $i\ge j$, and as $A(0,j-i)$ minus a rational sum if $i<j$. By Lemma~\ref{lem:nurec} and induction on $d$ from $K^-_0=-8\beta(4)$ (Lemma~\ref{lem:nubase}), the $K^-_d$ for even $d$ lie in $\mathbb Q+\mathbb Q\beta(4)+\mathbb QG$, the coefficient of $\beta(4)$ being multiplied by $(d-1)/d$ at each step, which gives $-8c(d/2)$. The sequence $K^+_j$ for even $j\ge2$ starts from $K^+_2=-2X_3$ and the recurrence adds only $X_3$, $G$ and rationals; $K^+_0=-8\beta(4)$ enters only the diagonal $i=j$, which belongs to case~1. The statements for $L_\mu$ follow in the same way from $\lambda^-_0=X_3$, $\lambda^+_2=4-4G$, and those for $M_\mu$ from the facts on $\kappa^\pm$ recalled above.
+\end{proof}
+
+Hence, for even indices, the three constants that the odd terms of $K^\pm$ carry ($\pi^2$, $G$ and $G^2-\pi^4/64$, observed numerically) never enter, and two auxiliary arrays suffice to remove $X_3$ and $G$.
+
+\begin{definition}\label{def:nudet}
+Let $n\ge1$ and $h,q\ge0$. For $0\le r,k<n$ let $a_{r,i}$ and $c_{k,j}$ be the coefficients of $t^{2r}(1-t^2)^h=\sum_ia_{r,i}t^i$ and $s^{2k}(1-s^2)^q=\sum_jc_{k,j}s^j$, and let $J$ be the set of $j$ with $c_{k,j}\neq0$ for some $k$. Define rational numbers $a^{L}_{r,i'}$ and $a^{\mu}_{r,i'}$, $i'\in J$, by the triangular systems (solved from the largest $j$ downwards)
+\begin{gather*}
+\sum_{i'\in J,\,i'\ge j}a^{L}_{r,i'}\,c\big(\tfrac{i'-j}2\big)=-\big[X_3\big]\sum_ia_{r,i}M_\nu(i,j),\\
+\sum_{i'\in J,\,i'\ge j}4a^{\mu}_{r,i'}\,c\big(\tfrac{i'-j}2\big)=-\big[G\big]\Big(\sum_ia_{r,i}M_\nu(i,j)+\sum_{i'}a^L_{r,i'}L_\mu(i',j)\Big)
+\end{gather*}
+for all $j\in J$, where $[C]x$ denotes the coefficient of $C$ in $x$. The entries are
+\[
+E_{r,k}=\sum_{j}c_{k,j}\Big(\sum_ia_{r,i}M_\nu(i,j)+\sum_{i'\in J}a^L_{r,i'}L_\mu(i',j)+\sum_{i'\in J}a^\mu_{r,i'}M_\mu(i',j)\Big),
+\]
+and $\Delta^{\nu}_n=\det(E_{r,k})_{0\le r,k<n}$.
+\end{definition}
+
+\begin{proposition}\label{prop:nudet}
+Every entry $E_{r,k}$ lies in $\mathbb Q+\mathbb Q\beta(4)$.
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:nuconst}, $X_3$ occurs in $L_\mu(i',j)$ only for $i'\ge j$, with coefficient $c((i'-j)/2)$, and not in $M_\mu$; the first system therefore removes $X_3$ column by column. After that, $G$ occurs in $M_\mu(i',j)$ only for $i'\ge j$ with coefficient $4c((i'-j)/2)$, and the second system removes $G$; $M_\mu$ adds no other constant. Both systems are triangular with diagonal entries $c(0)=1$ and $4$, hence uniquely solvable.
+\end{proof}
+
+\begin{observation}[Measured; $4\le n\le32$]\label{obs:nubalance}
+With the quantities of Section~\ref{sec:halfint} ($\beta(4)$, respectively $G$, replaced by $\frac13$ in the denominator), the gap of $\Delta^\nu_n$ for $h=q=0$, the gap of the Catalan determinant $\det(M_\mu(2r,2k))$ with the same rows and columns, and the gap of the determinant of \cite{OAI} at the ratios $48:7:4:4:2$ are:
+\begin{center}
+\small
+\begin{tabular}{lccccccc}
+\toprule
+$n$ & $8$ & $12$ & $16$ & $20$ & $24$ & $28$ & $32$\\
+\midrule
+$\Delta^\nu_n$, $\beta(4)$ & $2.47$ & $2.94$ & $3.19$ & $3.41$ & $3.47$ & $3.63$ & $3.68$\\
+$\det M_\mu$, $G$, same rows & $0.01$ & $0.10$ & $0.14$ & $0.21$ & $0.26$ & $0.32$ & $0.34$\\
+\cite{OAI}, $G$ & -- & $-0.30$ & -- & $-0.22$ & -- & $-0.15$ & --\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $n=48$ the determinant of \cite{OAI} has gap $-0.12$. For $h=q=n/4$ the gap of $\Delta^\nu_n$ is $3.89$, $4.38$, $4.71$ at $n=8,12,16$. In every case the entries contain no constant other than $\beta(4)$ (exact check), and the determinants are nonzero.
+\end{observation}
+
+The gap of $\Delta^\nu_n$ is about $1.1$ below that of the half-integer determinants of Observation~\ref{obs:balance} at the same $n$ ($4.26$, $4.48$, $4.64$ at $n=16,20,24$) and levels off near $3.7$. At $n=32$ the size is $\lambda=-1.74$ and the denominator exponent $\varpi=-5.42$; for the Catalan determinant with the same rows they are $-2.05$ and $-2.39$. The difference lies in the denominators.
+
+\section{Denominators prime by prime}\label{sec:primes}
+
+For a determinant $\Delta$ with entries in $\mathbb Q+\mathbb QC$ let $D$ be the denominator of $\Delta$ with $C$ replaced by $\frac13$, as in Section~\ref{sec:halfint}. For a prime $p$ write $v_p(D)$, the \emph{row bound} $\sum_r\max_kv_p(\operatorname{den}E_{r,k})$, and the largest $v_p$ of a single entry.
+
+\begin{observation}[Measured; exact arithmetic; $n=16$]\label{obs:weightlaw}
+For $\Delta^\nu_{16}$ (weight four), for the Catalan determinant with the same rows and columns, and for the determinant of \cite{OAI} at the ratios $48:7:4:4:2$ (both weight two), the triples $(v_p(D),\ \text{row bound},\ \text{largest entry})$ are:
+\begin{center}
+\small
+\begin{tabular}{lccccc}
+\toprule
+& $p=3$ & $p=5$ & $p=7$ & $p=11$ & $p=13$\\
+\midrule
+$\Delta^\nu_{16}$, $\beta(4)$ & $(142,174,12)$ & $(86,118,8)$ & $(62,64,4)$ & $(63,64,4)$ & $(60,64,4)$\\
+same rows, $G$ & $(70,78,6)$ & $(37,54,4)$ & $(30,32,2)$ & $(31,32,2)$ & $(28,32,2)$\\
+\cite{OAI}, $G$ & $(61,64,4)$ & $(31,32,2)$ & $(27,32,2)$ & $(28,32,2)$ & $(20,32,2)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Split by the size of the prime, $\log D/n^2$ is
+\begin{center}
+\small
+\begin{tabular}{lccccccc}
+\toprule
+$p/n$ in & $[0,\frac14)$ & $[\frac14,\frac12)$ & $[\frac12,\frac34)$ & $[\frac34,1)$ & $[1,\frac54)$ & $\ge\frac54$ & total\\
+\midrule
+$\Delta^\nu_{16}$, $\beta(4)$ & $0.98$ & $1.01$ & $0.59$ & $0.60$ & $1.07$ & $0.50$ & $4.75$\\
+same rows, $G$ & $0.41$ & $0.46$ & $0.29$ & $0.28$ & $0.43$ & $0.19$ & $2.06$\\
+\cite{OAI}, $G$ & $0.48$ & $0.40$ & $0.26$ & $0.20$ & $0.11$ & $0$ & $1.45$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{observation}
+
+At every odd prime the largest power in one entry doubles from weight two to weight four, and the valuation of the determinant about doubles. For $7\le p\le13$ both determinants with simple rows stay within four of the row bound, so almost nothing cancels. The rows of \cite{OAI} reduce the valuation mainly at the large primes: their indices stop near $1.35n$, so primes above $1.3n$ do not occur. At the small primes ($p<n/2$) the two weight-two determinants are equal ($0.88$ and $0.87$). The cancellations of the determinant method reduce the number of rows that carry a prime; the power per row is set by the weight.
+
+\section{Hankel determinants of Rivoal--Zudilin moments}\label{sec:hankel}
+
+The forms of Section~\ref{sec:vwp} are small because their rational function vanishes at many integers. A determinant built from them might gain on the scale $n^2$, as in \cite{OAI}.
+
+\begin{definition}\label{def:rzhankel}
+For a parameter vector $\eta$ and $N\ge1$ let $R_N$ be the rational function of Section~\ref{sec:vwp}, $h_0=\eta_0N+1$ and $u=t+h_0/2$. For $j\ge0$ put $\mu_j(N)=\sum_{t\ge0}(-1)^tR_N(t)\,u^{2j}$ whenever the degree of $R_Nu^{2j}$ is negative, and $H_m=\det(\mu_{r+k}(N))_{0\le r,k<m}$.
+\end{definition}
+
+The factor $u^{2j}$ is invariant under $t\mapsto-h_0-t$, and in every case computed the coefficients of $\beta(1)$, $\beta(3)$ and $\beta(5)$ in $\mu_j(N)$ vanish (exact partial fractions), so $\mu_j(N)\in\mathbb Q+\mathbb Q\beta(2)+\mathbb Q\beta(4)$. For the test below both constants are replaced by $\frac13$, which asks less than a proof for $\beta(4)$ would.
+
+\begin{observation}[Measured; exact arithmetic]\label{obs:rzhankel}
+Let $B=\log|H_m|+\log\operatorname{den}(H_m)$ with $\beta(2),\beta(4)\to\frac13$ in the denominator; a contradiction needs $B<0$. For $\eta=(3;1,1,1,1,1;1)$ and $N=12$,
+\begin{center}
+\small
+\begin{tabular}{lccccccc}
+\toprule
+$m$ & $1$ & $2$ & $3$ & $4$ & $6$ & $8$ & $10$\\
+\midrule
+$B$ & $+47.5$ & $+66.6$ & $+79.4$ & $+85.0$ & $+78.3$ & $+70.6$ & $+89.5$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $\eta=(5;2,2,2,2,2;2)$ and $N=6$: $B=+25.0$ ($m=1$), $+39.2$ ($m=2$). With the largest admissible $m$, $B/m^2$ equals $-1.61$, $-1.26$, $-0.39$, $-0.11$, $+0.67$, $+0.90$, $+0.92$ for $N=3,4,6,8,10,12,14$.
+\end{observation}
+
+The single form ($m=1$) gives the smallest $B$; the determinant adds to it. The negative values at small $N$ do not persist. The factors $u^{2j}$ remove the smallness of the forms: at $N=8$, $\log|\mu_0|=-43.3$ and $\log|\mu_{12}|=+15.8$. Section~\ref{sec:fauzan} measures a Hankel construction of a different kind, which proves the irrationality of $\zeta(5)$ \cite{Fauzan}.
+
+\section{Weights and denominators of the moments}\label{sec:weights}
+
+The weighted measure of Section~\ref{sec:weighted} is one member of a family, and the family shows where the extra denominators come from.
+
+\begin{lemma}\label{lem:weightrec}
+Let $w$ be a real polynomial with $w(0)=0$ and $w'(\pi/2)=0$, and put $I_n(w)=\int_0^{\pi/2}w(\theta)\sin^n\theta\,d\theta$. Then $I_1(w)=-I_1(w'')$ and, for odd $n\ge3$,
+\[
+n^2I_n(w)=n(n-1)I_{n-2}(w)-I_n(w'').
+\]
+\end{lemma}
+
+\begin{proof}
+Integrate by parts twice with $f=\sin^n$: $\int_0^{\pi/2}wf''=[wf'-w'f]_0^{\pi/2}+\int_0^{\pi/2}w''f$. The boundary term is $-w'(\pi/2)-w(0)f'(0)$, which vanishes, and $f''=n(n-1)\sin^{n-2}-n^2\sin^n$ for $n\ge2$, $f''=-\sin$ for $n=1$.
+\end{proof}
+
+If $w''$ satisfies the hypotheses again, and so on down to a constant, then all $I_n(w)$ with $n$ odd are rational, and the $\theta$-degree of $w$ is the weight that the measure adds. In degree two the conditions leave exactly $w_2=\theta^2-\pi\theta$. In degree four the conditions $w(0)=0$, $w'(\pi/2)=0$, $w''(0)=0$ and $w'''(\pi/2)=0$ on a monic quartic leave exactly $w_4=\theta^4-2\pi\theta^3+\pi^3\theta$. Each application of the recurrence divides the inhomogeneous term by $n^2$ with $n$ odd.
+
+\begin{observation}[Measured; $60$ digits]\label{obs:weights}
+For the measures $|t|\,w(|\arcsin t|)\,dt/\sqrt{1-t^2}$ with $w=1$, $w_2$, $w_4$, the starting value $2\int_0^{\pi/2}w(\theta)\operatorname{artanh}(\sin\theta)\,d\theta$ equals $4G$, $-8\beta(4)$ and $96\beta(6)$ respectively, and the powers of $5$ and of $7$ in the denominators of $I_7(w)$ and $I_9(w)$ are $1$, $3$ and $5$ (the power of $3$ in $I_9(w)$ is $2$, $6$ and $9$).
+\end{observation}
+
+The value for $w_2$ is Lemma~\ref{lem:nubase}. The conditions at $\theta=\pi/2$ remove the boundary terms that otherwise bring lower $\beta$-values multiplied by powers of $\pi$, as in $\int_0^{\pi/2}\theta^3/\sin\theta\,d\theta=\frac32\pi^2G-12\beta(4)$; the same integration by parts leaves the inhomogeneous term $I_n(w'')/n^2$, which raises the power of the odd primes in the moments by two for every two units of weight (for $5$ and $7$ at $n\le9$). Two other parametrisations give the same picture:
+\begin{enumerate}
+\item The uniform measure on the segment $i[-1,1]$ has moments $(-1)^k/(2k+1)$, and with the kernel $(-\log s)^2(1-ts)^{-1}$ its starting value is $\beta(4)$ itself. This is the half-integer family of Section~\ref{sec:halfint}: the weight comes from the kernel, and an entry of weight four carries $p^4$ (Observation~\ref{obs:denoms}).
+\item The moments $c(k)^2$, the moments of a product of two independent arcsine variables, have denominators that are powers of $2$; the starting value of weight two is $\sum_kc(k)^2/(2k+1)=4G/\pi$, and the next two starting values gave no relation with $\beta$-, $\zeta$- and logarithmic constants divided by $\pi$ (PSLQ at $60$ and $45$ digits).
+\end{enumerate}
+
+\section{Hypergeometric recurrences}\label{sec:cmf}
+
+A recurrence with small coefficients whose solutions approximate $\beta(4)$ with positive irrationality exponent, as Ap\'ery's recurrence does for $\zeta(3)$, would prove the irrationality of $\beta(4)$ directly. Since $\beta(4)={}_5F_4(\frac12,\frac12,\frac12,\frac12,1;\frac32,\frac32,\frac32,\frac32;-1)$, the contiguity relations of ${}_5F_4$ in its nine parameters give a field of $5\times5$ matrices (a conservative matrix field in the sense of the Ramanujan Machine project; we use the construction of its \texttt{ramanujantools} package, reimplemented without external packages and checked against it), and every lattice direction gives a recurrence. For a direction we walk $n$ steps from the point above, take the quotient $p_n/q_n$ of two entries of the product matrix in lowest terms, and define the exponent $\delta$ by $|p_n/q_n-L|=q_n^{-1-\delta}$, $L$ the limit; $\delta>0$ for all large $n$ proves $L$ irrational.
+
+\begin{observation}[Measured]\label{obs:cmf}
+Ap\'ery's recurrence gives $\delta=0.135$ at $n=100$. For the $674$ directions with steps $0$, $1$, $2$ (the four equal parameters taken as a multiset), and for the $30$ best of them from two shifted starting points, no direction has $\delta\ge0$ at $n=100$; the median is $-0.96$ and the best is $-0.33$. Every limit that could be identified as a quotient of two linear forms (PSLQ, stable at two precisions with at least $120$ digits) is an expression in $\pi$ alone, for example $(\pi-2)/(8\pi-12)$ for the best direction; none involves $\beta(4)$ ($119$ directions with limits in $\pi$, $10$ unidentified with $\delta\le-0.70$, $472$ with fewer than $120$ reliable digits). The analogous scan of ${}_3F_2$ for $G$ gives $13$ limits in $\pi$ and none involving $G$.
+\end{observation}
+
+With the projection used here the measurable directions converge to expressions in $\pi$, so the scan gives no exponent for $\beta(4)$ itself; a projection that targets $\beta(4)$ was not tried. The very-well-poised forms of Section~\ref{sec:vwp} come from the same hypergeometric family. For $151$ parameter vectors $\eta$ with $3\le\eta_0\le8$ and all $11325$ pairs, the combination free of $\beta(2)$ has $\log|L_n|+\log\operatorname{den}(L_n)$ increasing with $n$, by at least $18.6$ per unit of $n$ between $n=8$ and $n=12$; a proof needs a decrease.
+
+
+\section{Determinants with poles at the negative squares}\label{sec:fauzan}
+
+Fauzan \cite{Fauzan} has proved that $\zeta(5)$ is irrational with Hankel determinants of a functional that differs from the measures above in two respects: its moments are rational numbers whose denominators do not grow with the weight, and the constant enters only through the values of the functional at simple poles. Lai \cite{Lai} used the same method to prove that $1$, $\zeta(3)$ and $\zeta(4)$ are linearly independent over $\mathbb Q$. Hankel determinants of zeta values are also studied in \cite{HZ,Zdet}. The same Hankel-determinant method proves the irrationality of the $p$-adic zeta values $\zeta_2(7)$ and $\zeta_3(5)$ \cite{Kilani}; there the gain is the $p$-adic decay of the determinants and their archimedean size enters only as a cost, so the sign of the archimedean size measured in this section does not decide those proofs. We checked the proofs of \cite{Fauzan} and \cite{Lai} and found no error. For \cite{Fauzan} the check does not cover its Appendix~C, which bounds the irrationality exponent and is not used for the irrationality. Appendix~A lists what was checked in each case. In this subsection we measure the construction of \cite{Fauzan}, a variant of it, and its analogue for $\beta(s)$, with one normalisation for all of them.
+
+\begin{definition}\label{def:fz}
+Let $s\ge2$, $K>N\ge0$, $r\ge1$ and $1\le h\le K-N$ be integers, let $a_0<a_1<\dots<a_{K-1}$ be positive rational numbers, and put $D_N(t)=\prod_{j<N}(t+a_j^2)$ and $D_K(t)=\prod_{j<K}(t+a_j^2)$. Let $\mu_X$ be a $\mathbb Q$-linear map from $\mathbb Q[t]+\sum_{j<K}\mathbb Q\,(t+a_j^2)^{-1}$ to $\mathbb Q[X]$. Define
+\[
+\Delta(X)=\det\Bigl(\mu_X\bigl(D_N(t)^r\,t^{i+k}/D_K(t)\bigr)\Bigr)_{0\le i,k<h},
+\]
+(the argument is reduced to a polynomial plus simple fractions by polynomial division) and let $Q=\Delta/c$, where $c>0$ is the rational number for which $Q$ is a primitive polynomial in $\mathbb Z[X]$. We use two functionals.
+\begin{enumerate}
+\item[(Z)] For an integer $q\ge1$, $a_j=1+qj$,
+\begin{gather*}
+\mu_X(t^e)=\frac{(2e+s)!\,|B_{2e+2}|}{(s-1)!\,(2e+2)!},\\
+\mu_X\Bigl(\frac1{t+m^2}\Bigr)=m^{s-1}\bigl(X-H^{(s)}_m\bigr)+\frac1{2m}-\frac1{s-1},
+\end{gather*}
+with $B_k$ the Bernoulli numbers and $H^{(s)}_m=\sum_{v\le m}v^{-s}$. The constant is $C=\zeta(s)$. For $s=5$ and $q=1$ this is the functional of \cite[(2.2), (2.3)]{Fauzan}.
+\item[(B)] For $s$ even, $a_j=j+\frac12$,
+\begin{gather*}
+\mu_X(t^e)=\frac{(2e+s)!\,(2^{2e+2}-1)\,|B_{2e+2}|}{(s-1)!\,(2e+1)!\,(2e+2)},\\
+\mu_X\Bigl(\frac1{t+a_j^2}\Bigr)=2(2j+1)^{s-1}(-1)^j\Bigl(X-\sum_{l<j}\frac{(-1)^l}{(2l+1)^s}\Bigr)-\frac1{2j+1}.
+\end{gather*}
+The constant is $C=\beta(s)$.
+\end{enumerate}
+\end{definition}
+
+The moments in (B) equal $\binom{2e+s}{2e+1}T_{2e+1}/2^{2e+2}$, where $T_{2e+1}=2^{2e+2}(2^{2e+2}-1)|B_{2e+2}|/(2e+2)$ is a tangent number, an integer; so their denominators are powers of $2$. For $s=2,4,6$ and $e<250$ they divide $2$; for $s=4$ the first moments are $1,\frac52,14,\frac{255}2,1705$. For $s=5$, the moments in (Z) have no prime $p\ge7$ in their denominators to a power higher than one \cite[Section~4.2]{Fauzan}.
+
+\begin{lemma}\label{lem:fzpos}
+For the functional (B) with $s$ even, let $g(y)=1/\sinh(\pi y)$ and
+\[
+w_s(y)=\frac{(-1)^{s-1}y^s g^{(s-1)}(y)}{(s-1)!}\qquad(y>0).
+\]
+Then $w_s>0$, and
+\[
+\mu_{\beta(s)}(R)=\int_0^\infty R(y^2)\,w_s(y)\,dy
+\]
+for every $R$ in the domain of $\mu_X$. Consequently the matrix in Definition~\ref{def:fz} at $X=\beta(s)$ is positive definite and $\Delta(\beta(s))>0$.
+\end{lemma}
+
+\begin{proof}
+For $y>0$, $g(y)=2\sum_{m\ge0}e^{-(2m+1)\pi y}$, so
+\[
+(-1)^{s-1}g^{(s-1)}(y)=2\sum_{m\ge0}\bigl((2m+1)\pi\bigr)^{s-1}e^{-(2m+1)\pi y}>0.
+\] Near $0$, $g^{(k)}(y)=O(y^{-1-k})$; at infinity every derivative of $g$ decays like $e^{-\pi y}$.
+
+\emph{Moments.} Integrating by parts $s-1$ times, with boundary terms $O(y^{2e+1})$ at $0$ and exponentially small at infinity,
+\[
+\int_0^\infty y^{2e}w_s(y)\,dy=\frac{(2e+s)!}{(s-1)!\,(2e+1)!}\int_0^\infty y^{2e+1}g(y)\,dy .
+\]
+Termwise integration gives $\int_0^\infty y^{2e+1}g(y)\,dy=2(2e+1)!\,\pi^{-2e-2}(1-2^{-2e-2})\zeta(2e+2)$, and Euler's formula $\zeta(2e+2)=|B_{2e+2}|(2\pi)^{2e+2}/(2(2e+2)!)$ turns this into $(2^{2e+2}-1)|B_{2e+2}|/(2e+2)$.
+
+\emph{Poles.} Let $a>0$. For $s$ even, $y^s/(y^2+a^2)$ is a polynomial of degree $s-2$ plus $(-1)^{s/2}a^s/(y^2+a^2)$, and $1/(y^2+a^2)=a^{-1}\operatorname{Re}(a-iy)^{-1}$. Since $(d/dy)^{s-1}(a-iy)^{-1}=(s-1)!\,i^{s-1}(a-iy)^{-s}$ and $i^{s-1}=-i(-1)^{s/2}$,
+\[
+\Bigl(\frac{d}{dy}\Bigr)^{s-1}\frac{y^s}{y^2+a^2}=(s-1)!\,a^{s-1}\operatorname{Im}(a-iy)^{-s}.
+\]
+Integrating by parts $s-1$ times (boundary terms $O(y)$ at $0$, exponentially small at infinity),
+\[
+\int_0^\infty\frac{w_s(y)}{y^2+a^2}\,dy=a^{s-1}\int_0^\infty\operatorname{Im}(a-iy)^{-s}\,g(y)\,dy .
+\]
+Write $\operatorname{Im}(a-iy)^{-s}=\Gamma(s)^{-1}\int_0^\infty x^{s-1}e^{-ax}\sin(xy)\,dx$. For $x>0$, $\int_0^\infty\sin(xy)g(y)\,dy=\sum_{m\ge0}2x/(x^2+(2m+1)^2\pi^2)=\frac12\tanh(x/2)$, by termwise integration and the partial fraction expansion of $\tanh$; and $\tanh(x/2)=1+2\sum_{k\ge1}(-1)^ke^{-kx}$. The double integral converges absolutely, so
+\[
+\int_0^\infty\operatorname{Im}(a-iy)^{-s}\,g(y)\,dy=\frac1{2\Gamma(s)}\int_0^\infty x^{s-1}e^{-ax}\tanh(x/2)\,dx=\sum_{k\ge0}\frac{(-1)^k}{(k+a)^s}-\frac1{2a^s}.
+\]
+At $a=j+\frac12$ the sum equals $2^s(-1)^j\bigl(\beta(s)-\sum_{l<j}(-1)^l(2l+1)^{-s}\bigr)$, and $a^{s-1}2^s=2(2j+1)^{s-1}$, $a^{s-1}/(2a^s)=1/(2j+1)$. This is the pole value in (B) at $X=\beta(s)$.
+
+\emph{Positivity.} Both sides are linear in $R$, so the representation holds on the whole domain. For a real polynomial $p\ne0$ of degree less than $h$ the quadratic form of the matrix at $p$ is $\int_0^\infty D_N(y^2)^r\,p(y^2)^2\,D_K(y^2)^{-1}w_s(y)\,dy>0$.
+\end{proof}
+
+For (Z) the same argument with $f(y)=1/(e^{2\pi y}-1)$, the weight $2(-1)^{s-1}y^sf^{(s-1)}(y)/(s-1)!$ and Hermite's formula for the Hurwitz zeta function \cite[25.11.29]{DLMF} gives the integral representation; for $s=5$ this is \cite[Proposition~2.2]{Fauzan}.
+
+If $C=a/b$ and $Q(a/b)\ne0$, then $b^{\deg Q}Q(a/b)$ is a nonzero integer. A construction of this kind proves irrationality when $\log|Q(C)|$ is negative of order $h^2$ along a sequence of designs and $Q(a/b)\ne0$ is ensured, as in \cite{Fauzan}. We measure
+\[
+\Lambda=\frac{\log|Q(C)|}{h^2}.
+\]
+For the determinants of Section~\ref{sec:weighted} and of \cite{OAI} we use the same quantity: $Q$ is the primitive integer polynomial proportional to the determinant as a polynomial in the constant, and $h$ is the size of the matrix. For those determinants $\Lambda$ agrees to the printed digits with the gaps of Observation~\ref{obs:nubalance} at the sizes printed there.
+
+\begin{observation}[Measured; exact arithmetic]\label{obs:fzcontrol}
+For the functional (Z) with $s=5$, $q=1$ and the parameters of \cite{Fauzan}, $K=40n$, $N=3n$, $h=37n$, $r=6$:
+\begin{center}
+\small
+\begin{tabular}{lccc}
+\toprule
+$n$ & $1$ & $2$ & $3$\\
+\midrule
+$\log Q(\zeta(5))$ & $-265.1$ & $-833.3$ & $-1804.0$\\
+$\log Q(\zeta(5))/K^2$ & $-0.166$ & $-0.130$ & $-0.125$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The values are positive, as \cite[Proposition~2.2]{Fauzan} implies, and these polynomials exclude $\zeta(5)=a/b$ for $b<1.3\cdot10^3$, $7.8\cdot10^4$, $1.1\cdot10^7$. The bound proved in \cite[(7.1), (7.2)]{Fauzan}, with the cutoff $M=200$ used there, is $\log Q(\zeta(5))/K^2\le-0.0174$ asymptotically.
+\end{observation}
+
+\begin{observation}[Measured; exact arithmetic]\label{obs:fzweights}
+With $N=0$, $r=1$ and $h=K$, the values of $\Lambda$ are:
+\begin{center}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+& $\zeta(3)$ & $\zeta(5)$ & $\zeta(7)$ & $\beta(2)$ & $\beta(4)$ & $\beta(6)$\\
+\midrule
+$K=12$ & $-1.05$ & $-0.25$ & $+0.52$ & $+0.10$ & $+1.53$ & $+2.97$\\
+$K=24$ & $-0.96$ & $-0.09$ & $+0.85$ & $+0.27$ & $+2.03$ & $+3.66$\\
+\bottomrule
+\end{tabular}
+\end{center}
+With the parameters of \cite{Fauzan} at $n=1$ ($K=40$, $N=3$, $h=37$, $r=5$) the functional (B) for $\beta(4)$ gives $\Lambda=+2.88$. Over $33$ further choices of $(N,r,h)$ at $K=24$ with $0\le N\le9$, $1\le r\le8$, $6\le h\le18$, $\log Q(\beta(4))/K^2$ is at least $+1.1$.
+\end{observation}
+
+The values grow with the weight in both families, by $0.8$ to $0.9$ for each step of two in $s$ for $\zeta$ and by $1.4$ to $1.8$ for $\beta$, and the family of $\beta$ starts higher: $\beta(2)$ is positive where $\zeta(3)$ is at $-1$. The next observation isolates one cause.
+
+\begin{observation}[Measured; exact arithmetic]\label{obs:fzstep}
+For the functional (Z) with only every $q$-th pole, $N=0$, $r=1$, $h=K=24$:
+\begin{center}
+\small
+\begin{tabular}{lccc}
+\toprule
+& $q=1$ & $q=2$ & $q=3$\\
+\midrule
+$\zeta(3)$ & $-0.96$ & $-0.14$ & $+0.25$\\
+$\zeta(5)$ & $-0.09$ & $+1.68$ & $+2.99$\\
+\bottomrule
+\end{tabular}
+\end{center}
+With the parameters of \cite{Fauzan} at $n=1$, $\log Q(\zeta(5))/K^2$ is $-0.166$ for $q=1$ and $+1.35$ for $q=2$.
+\end{observation}
+
+In (Z) the poles have spacing $1$ in the variable $y=\sqrt t$ and the weight decays like $e^{-2\pi y}$; in (B) the spacing is again $1$ and the weight decays like $e^{-\pi y}$. Scaling $y$ by $2$ shows that (B) has the geometry of (Z) with $q=2$, and at $K=24$ the values of $\beta(2)$ and $\beta(4)$ ($+0.27$, $+2.03$) are within $0.41$ of those of $\zeta(3)$ and $\zeta(5)$ with $q=2$ ($-0.14$, $+1.68$), compared with $1.23$ and $2.12$ for $q=1$. The period of the weight in (B) comes from the character modulo $4$, and we do not know a representation of $\beta(s)$ of this kind with denser poles. Hermite's formula at $a=j+\frac14$ and $a=j+\frac34$ has poles at spacing $\frac12$ and the weight $e^{-2\pi y}$, which is the same ratio after scaling, and its values contain $\zeta(s,\frac14)+\zeta(s,\frac34)=(4^s-2^s)\zeta(s)$ besides $\beta(s)$.
+
+\begin{observation}[Measured; exact arithmetic]\label{obs:fzscale}
+On the common scale $\Lambda$:
+\begin{center}
+\small
+\begin{tabular}{lp{5.4cm}p{6.2cm}}
+\toprule
+weight & construction & $\Lambda$ (size $h$ in brackets)\\
+\midrule
+two & \cite{OAI}, ratios $48:7:4:4:2$ & $-0.30$ ($12$), $-0.22$ ($20$), $-0.15$ ($28$), $-0.12$ ($40$)\\
+two & arcsine measure, rows and columns of $\Delta^\nu_n$ (Observation~\ref{obs:nubalance}) & $-0.16$ ($6$), $+0.04$ ($10$), $+0.10$ ($12$)\\
+two & (B), $s=2$ & $+0.10$ ($12$), $+0.27$ ($24$)\\
+four & $\Delta^\nu_n$ (Observation~\ref{obs:nubalance}) & $+2.09$ ($6$), $+2.75$ ($10$), $+2.94$ ($12$)\\
+four & (B), $s=4$ & $+1.53$ ($12$), $+2.03$ ($24$), $+2.88$ ($37$)\\
+\bottomrule
+\end{tabular}
+\end{center}
+For (B) with $s=2$, $K=24$, over $27$ choices with $0\le N\le6$, $1\le r\le5$, $12\le h\le24$, every value is positive and the smallest is $+0.27$.
+\end{observation}
+
+At weight two both families with plain rows lie between $-0.2$ and $+0.3$, and the rows of \cite{OAI} lower the value by about $0.4$ (Observation~\ref{obs:weightlaw} locates this at primes above $n$). At weight four both families start at $+2$ or above.
+
+\section{The trade-off}\label{sec:tradeoff}
+
+Across the tests one pattern holds. The arcsine measure keeps denominators small and ties $\beta(4)$ to $\operatorname{Im}\mathrm{Li}_4((1+i)/2)$ (Sections~\ref{sec:logker}--\ref{sec:second}). The weighted arcsine measure of Section~\ref{sec:weighted} separates $\beta(4)$, with entries in $\mathbb Q+\mathbb Q\beta(4)$ (Proposition~\ref{prop:nudet}), but its moments carry the squares of the odd numbers (Lemma~\ref{lem:numoments}) and its determinants exceed the Catalan determinants with the same rows by about $3.3$ per $n^2$ at $n=32$ (Observation~\ref{obs:nubalance}). The half-integer determinants exceed theirs by more. In each case the size of the determinants is of the same order at both weights, while the denominators follow the weight: at every odd prime the power per entry doubles (Observation~\ref{obs:weightlaw}), and Section~\ref{sec:weights} locates the extra denominators in the moment recurrence (Lemma~\ref{lem:weightrec}). The recurrence scan of Section~\ref{sec:cmf} found no direction with positive exponent. A determinant proof for $\beta(4)$ along the lines of \cite{OAI} would need a construction in which the size decreases with the weight as fast as the denominators grow, as in the integrals of Ap\'ery and Beukers for $\zeta(3)$, where each further integration variable contributes to both. The determinants of \cite{Fauzan} are a construction of this kind at weight five: the denominators of weight five stay in the values at the poles, and the measured value stays negative (Observation~\ref{obs:fzcontrol}). Their analogue for $\beta(4)$ stays near $+2$ (Observation~\ref{obs:fzweights}); the character modulo $4$ halves the density of the poles relative to the decay of the weight (Observation~\ref{obs:fzstep}). We do not know a construction for $\beta(4)$ that has the denominators of \cite{Fauzan} and the density of poles of $\zeta$.
+
+\section*{Code and data}
+The scripts, their logs and the source of this note are in the folder \texttt{beta4/} of the repository \repo. The subfolder \texttt{beta4/scouts/} holds the exploration scripts that preceded the measurements; they have no pass criteria and no logs.
+
+\section*{Acknowledgement}
+This note was prepared with the assistance of Claude (Anthropic). All computations were run by the author on his own computer; the logs are listed in Appendix~B.
+
+\begin{thebibliography}{9}
+\bibitem{OAI} OpenAI, \emph{Catalan's constant is irrational}, preprint, 24 September 2026, \url{https://github.com/openai/math/blob/main/preprints/Catalans-constant-is-irrational-September-24-2026/paper.pdf}.
+\bibitem{RZ} T.~Rivoal and W.~Zudilin, Diophantine properties of numbers related to Catalan's constant, \emph{Math. Ann.} \textbf{326} (2003), 705--721.
+\bibitem{DLMF} NIST Digital Library of Mathematical Functions, \url{https://dlmf.nist.gov}, Release 1.2.
+\bibitem{Fauzan} A.~Fauzan, \emph{$\zeta(5)$ is irrational}, preprint, Zenodo 22826419, 17 September 2026.
+\bibitem{HZ} A.~Haynes and W.~Zudilin, Hankel determinants of zeta values, \emph{SIGMA} \textbf{11} (2015), 101, 5 pp.
+\bibitem{Lai} L.~Lai, \emph{The linear independence of $1$, $\zeta(3)$, and $\zeta(4)$}, preprint, arXiv:2610.06838, 5 October 2026.
+\bibitem{Zdet} W.~Zudilin, A determinantal approach to irrationality, \emph{Constr. Approx.} \textbf{45} (2017), 301--310.
+\bibitem{Kilani} I.~Kilani, \emph{On the irrationality of $\zeta_3(5)$}, preprint, October 2026, doi:10.5281/zenodo.23203596; Lean sources at \url{https://github.com/Ijtihed/zeta3-5-lean}. The proof for $\zeta_2(7)$ is cited there.
+\bibitem{MCSC2} M.~Costa Santos Carreira, \emph{General designs and an irrationality exponent for Catalan's constant}, preprint, 9 October 2026, \url{https://github.com/MarcosCarreira/catalan-designs}.
+\end{thebibliography}
+
+\clearpage
+\section*{Appendices}
+
+\subsection*{Appendix A. Checks of two proofs}
+
+This appendix lists the checks summarised in Section~\ref{sec:fauzan}. The scripts and runs are listed in Appendix~B.
+
+\subsubsection*{A.1. The proof of Fauzan}
+
+For the proof that $\zeta(5)$ is irrational \cite{Fauzan}: Sections 2 to 7 were read in full, Proposition~4.1 line by line. The distribution formula of \cite[Lemma~3.2]{Fauzan} was checked $p$-adically for $p=7,11,13$. The constants of \cite[Appendices~A and~B]{Fauzan} were recomputed: the two integrals of Appendix~B and the constant $A^*$ agree exactly in rational arithmetic, and the two inequalities of \cite[Lemma~6.1]{Fauzan} hold with margins $0.005$ and $6\cdot10^{-8}$. On the exact determinants for $n=1,2,3$ the bounds \cite[(3.12)]{Fauzan} and \cite[Proposition~4.3]{Fauzan} hold at every prime, and the bound of Proposition~4.3 is attained at some prime for each $n$. We found no error. Appendix~C of \cite{Fauzan}, which bounds the irrationality exponent and is not used for the irrationality, was not checked.
+
+\subsubsection*{A.2. The proof of Lai}
+
+For the proof that $1$, $\zeta(3)$ and $\zeta(4)$ are linearly independent over $\mathbb Q$ \cite{Lai}: we checked Lemma~2.2, Lemmas~4.1 and~4.4 on the exact determinants for $8\le n\le24$, the integrals and finite checks of Section~5, and the constants, Lemmas~6.1 and~6.2 and the identity~(6.9) of Section~6, and found no error.
+
+
+\subsection*{Appendix B. Scripts and runs}
+
+All scripts are written in Python and take no arguments; their settings are constants at the top of each file. Each script states its pass criteria before running and ends by printing the number of failed criteria, and each of the runs listed here ended with zero failures. All runs were made by the author on his own computer on 7 and 8 October 2026.
+
+\begin{center}
+\small
+\begin{tabular}{p{4.2cm}p{7.2cm}p{3.6cm}}
+\toprule
+script & content & log\\
+\midrule
+\texttt{b4\_balance.py} & half-integer determinants, both weights (Observation~\ref{obs:balance}) & \texttt{\_20261007\_202313}\\
+\texttt{b4\_denominators.py} & denominators with and without the cancellation (Observation~\ref{obs:denoms}) & \texttt{\_20261007\_203834}\\
+\texttt{b4\_route3.py} & weighted arcsine measure: gaps of $\Delta^\nu_n$, of the Catalan and \cite{OAI} determinants, denominators by prime, Hankel determinants & \texttt{\_20261008\_110012}\\
+\texttt{b4\_cmf\_scan.py} & hypergeometric recurrences and very-well-poised pairs (Section~\ref{sec:cmf}) & \texttt{\_20261008\_111915}\\
+\texttt{b4\_cmf\_filter.py} & limits of the recurrences (Observation~\ref{obs:cmf}) & \texttt{\_20261008\_115501}\\
+\texttt{fz5\_check.py} & positive control: the determinants of \cite{Fauzan} for $n=1,2,3$ (Observation~\ref{obs:fzcontrol}) & \texttt{\_20261008\_150759}\\
+\texttt{b4\_fauzan.py} & Observations~\ref{obs:fzweights}--\ref{obs:fzscale} & \texttt{\_20261008\_153547}\\
+\texttt{fz5\_padic\_check.py} & checks of \cite[(3.12), Proposition~4.3]{Fauzan} on the exact determinants, $n=1,2,3$ (Section~\ref{sec:fauzan}) & \texttt{\_20261008\_160037}\\
+\texttt{audit\_fauzan\_lai.py} & checks of the constants and lemmas of \cite{Fauzan} and \cite{Lai} listed in Appendix~A (scripts in \texttt{fauzan\_audit/}, \texttt{lai\_audit/}) & \texttt{\_20261008\_163817}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

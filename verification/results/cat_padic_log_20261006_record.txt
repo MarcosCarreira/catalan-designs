@@ -1,0 +1,30 @@
+# cat_padic.py record run on Marcos's Mac, 2026-10-06 (screen output pasted into chat; saved here verbatim)
+[    0.0s] Part A: Lemma 3.1 brute force
+[    0.0s]   p= 7: H= 12, 144 pairs (i,j) + 12 values u, failures 0
+[    0.0s]   p=11: H= 30, 900 pairs (i,j) + 30 values u, failures 0
+[    0.0s]   p=13: H= 42, 1764 pairs (i,j) + 42 values u, failures 0
+[    0.1s]   p=17: H= 72, 5184 pairs (i,j) + 72 values u, failures 0
+[    0.1s]   p=19: H= 90, 8100 pairs (i,j) + 90 values u, failures 0
+[    0.3s]   p=23: H=132, 17424 pairs (i,j) + 132 values u, failures 0
+[    0.3s] Part B: Lemma 3.3 counting identity
+[    0.3s]   7871 (N,p) cases checked
+[    0.3s] Part C: building Delta_1 exactly (n = 48)
+[    0.6s]   built; primes 2*sqrt(H) < p <= H with H = 65
+[    7.9s]   G=  0: 12 primes in range, all v_p >= bound: True; slack min 0, max 3; primes > H: v_p >= 0 for all: True
+[    7.9s]     p : v_p (bound)  17:-96(-96)  19:-93(-96)  23:-96(-96)  29:-87(-88)  31:-87(-88)  37:-73(-74)  41:-59(-59)  43:-53(-53)  47:-41(-41)  53:-23(-23)  59:-6(-6)  61:-4(-4)
+[   15.1s]   G=1/3: 12 primes in range, all v_p >= bound: True; slack min 0, max 3; primes > H: v_p >= 0 for all: True
+[   15.1s]     p : v_p (bound)  17:-96(-96)  19:-93(-96)  23:-96(-96)  29:-87(-88)  31:-87(-88)  37:-73(-74)  41:-59(-59)  43:-53(-53)  47:-41(-41)  53:-23(-23)  59:-6(-6)  61:-4(-4)
+[   15.1s] Part C: building Delta_2 exactly (n = 96)
+[   18.8s]   built; primes 2*sqrt(H) < p <= H with H = 130
+[  345.6s]   G=  0: 23 primes in range, all v_p >= bound: True; slack min 0, max 5; primes > H: v_p >= 0 for all: True
+[  345.6s]     p : v_p (bound)  23:-191(-192)  29:-188(-192)  31:-192(-192)  37:-189(-192)  41:-187(-192)  43:-191(-192)  47:-192(-192)  53:-185(-186)  59:-175(-176)  61:-175(-176)  67:-171(-172)  71:-159(-160)  73:-151(-152)  79:-127(-128)  83:-115(-115)  89:-97(-97)  97:-73(-73)  101:-61(-61)  103:-55(-55)  107:-43(-43)  109:-37(-37)  113:-25(-25)  127:-3(-3)
+[  670.7s]   G=1/3: 23 primes in range, all v_p >= bound: True; slack min 0, max 5; primes > H: v_p >= 0 for all: True
+[  670.7s]     p : v_p (bound)  23:-191(-192)  29:-188(-192)  31:-192(-192)  37:-189(-192)  41:-187(-192)  43:-191(-192)  47:-192(-192)  53:-185(-186)  59:-175(-176)  61:-175(-176)  67:-171(-172)  71:-159(-160)  73:-151(-152)  79:-127(-128)  83:-115(-115)  89:-97(-97)  97:-73(-73)  101:-61(-61)  103:-55(-55)  107:-43(-43)  109:-37(-37)  113:-25(-25)  127:-3(-3)
+[  670.8s] Part D: N=1, dps=1000: log10|Delta| = -1890.21934583
+[  671.1s] Part D: N=1, dps=1500: log10|Delta| = -1890.21934583
+[  671.1s] Part D: N=1: log|Delta_N|/n^2 - log2/2 = -2.235632136  (paper: limsup <= -2.290939875; two precisions agree to 1.18e-907)
+[  672.8s] Part D: N=2, dps=1500: log10|Delta| = -7691.20334902
+[  675.4s] Part D: N=2, dps=2500: log10|Delta| = -7691.20334902
+[  675.4s] Part D: N=2: log|Delta_N|/n^2 - log2/2 = -2.268193618  (paper: limsup <= -2.290939875; two precisions agree to 3.69e-1308)
+[  675.4s] gates: {'A': 0, 'B': 0, 'C': 0, 'C+': 0, 'D': 0}
+GATE_FAILS = 0

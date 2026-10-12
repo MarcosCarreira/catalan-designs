@@ -1,0 +1,57 @@
+[    0.0s] b4_route3.py  workers=2
+[    5.4s] C1 exact arrays vs quadrature, 18 cases at 30 digits: worst 3.16e-29
+[    5.5s] C3 Rivoal-Zudilin moments exact vs direct series: worst 2.57e-28
+[   73.8s] PRE n=48 h=0 q=0: lambda -1.8891 varpi -1.7686 gap -0.1205 lambda-log2/2 = -2.23563  prec 0.0e+00  residues 0  (67.9s)
+[   79.7s] C7  n=32 h=0 q=0: lambda -2.0544 varpi -2.3916 gap 0.3372  prec 0.0e+00  residues 0  (5.8s)
+[   97.5s] B7  n=32 h=0 q=0: lambda -1.7402 varpi -5.4167 gap 3.6765  prec 0.0e+00  residues 0  (91.5s)
+[  100.8s] C7  n=28 h=0 q=0: lambda -2.0343 varpi -2.3512 gap 0.3169  prec 0.0e+00  residues 0  (3.3s)
+[  104.1s] PRE n=28 h=0 q=0: lambda -1.7990 varpi -1.6459 gap -0.1530 lambda-log2/2 = -2.14554  prec 0.0e+00  residues 0  (3.3s)
+[  123.9s] B7  n=24 h=0 q=0: lambda -1.6779 varpi -5.1477 gap 3.4698  prec 0.0e+00  residues 0  (19.8s)
+[  125.1s] C7  n=24 h=0 q=0: lambda -2.0075 varpi -2.2635 gap 0.2559  prec 0.0e+00  residues 0  (1.2s)
+[  128.2s] B7  n=28 h=0 q=0: lambda -1.7136 varpi -5.3425 gap 3.6289  prec 0.0e+00  residues 0  (48.6s)
+[  128.7s] C7  n=20 h=0 q=0: lambda -1.9703 varpi -2.1816 gap 0.2114  prec 0.0e+00  residues 0  (0.5s)
+[  129.3s] PRE n=20 h=0 q=0: lambda -1.8757 varpi -1.6519 gap -0.2238 lambda-log2/2 = -2.22224  prec 0.0e+00  residues 0  (0.5s)
+[  130.9s] B7  n=16 h=0 q=0: lambda -1.5606 varpi -4.7516 gap 3.1910  prec 0.0e+00  residues 0  (1.7s)
+[  131.6s] B7  n=20 h=0 q=0: lambda -1.6318 varpi -5.0439 gap 3.4122  prec 0.0e+00  residues 0  (6.5s)
+[  131.7s] C7  n=16 h=0 q=0: lambda -1.9147 varpi -2.0546 gap 0.1399  prec 0.0e+00  residues 0  (0.1s)
+[  132.1s] B7  n=16 h=4 q=4: lambda -2.1490 varpi -6.8551 gap 4.7062  prec 0.0e+00  residues 0  (1.2s)
+[  132.1s] B7  n=12 h=0 q=0: lambda -1.4404 varpi -4.3820 gap 2.9416  prec 0.0e+00  residues 0  (0.4s)
+[  132.2s] C7  n=12 h=0 q=0: lambda -1.8232 varpi -1.9279 gap 0.1047  prec 0.0e+00  residues 0  (0.0s)
+[  132.2s] PRE n=12 h=0 q=0: lambda -1.6526 varpi -1.3564 gap -0.2962 lambda-log2/2 = -1.99914  prec 0.0e+00  residues 0  (0.0s)
+[  132.4s] B7  n=10 h=0 q=0: lambda -1.3612 varpi -4.1079 gap 2.7467  prec 0.0e+00  residues 0  (0.2s)
+[  132.4s] C7  n=10 h=0 q=0: lambda -1.7509 varpi -1.7906 gap 0.0397  prec 0.0e+00  residues 0  (0.0s)
+[  132.5s] B7  n= 8 h=0 q=0: lambda -1.2224 varpi -3.6946 gap 2.4722  prec 0.0e+00  residues 0  (0.1s)
+[  132.5s] B7  n= 8 h=2 q=2: lambda -1.8142 varpi -5.7028 gap 3.8887  prec 0.0e+00  residues 0  (0.1s)
+[  132.6s] B7  n=12 h=3 q=3: lambda -2.0356 varpi -6.4154 gap 4.3798  prec 0.0e+00  residues 0  (0.5s)
+[  132.6s] C7  n= 8 h=0 q=0: lambda -1.6438 varpi -1.6584 gap 0.0146  prec 0.0e+00  residues 0  (0.0s)
+[  132.6s] C7  n= 6 h=0 q=0: lambda -1.4689 varpi -1.3062 gap -0.1627  prec 6.6e-268  residues 0  (0.0s)
+[  132.6s] B7  n= 4 h=0 q=0: lambda -0.6205 varpi -1.9074 gap 1.2869  prec 1.6e-153  residues 0  (0.0s)
+[  132.6s] C7  n= 4 h=0 q=0: lambda -1.1316 varpi -0.6451 gap -0.4865  prec 2.2e-152  residues 0  (0.0s)
+[  132.6s] B7  n= 6 h=0 q=0: lambda -1.0324 varpi -3.1255 gap 2.0931  prec 4.6e-269  residues 0  (0.0s)
+[  132.6s] C2 preprint design (48,7,4,4,2): lambda - log2/2 = -2.23563 (record -2.2356), diff 3.2e-05
+[  132.8s] R4 B7 n=16: total 4.752; bins p/n: [0.00):0.98 [0.25):1.01 [0.50):0.59 [0.75):0.60 [1.00):1.07 [1.25):0.39 [1.75):0.11
+[  132.8s] R4 B7 n=16: (det, row bound, largest entry) p=3:(142, 174, 12) p=5:(86, 118, 8) p=7:(62, 64, 4) p=11:(63, 64, 4) p=13:(60, 64, 4)
+[  132.8s] R4 C7 n=16: total 2.055; bins p/n: [0.00):0.41 [0.25):0.46 [0.50):0.29 [0.75):0.28 [1.00):0.43 [1.25):0.15 [1.75):0.04
+[  132.8s] R4 C7 n=16: (det, row bound, largest entry) p=3:(70, 78, 6) p=5:(37, 54, 4) p=7:(30, 32, 2) p=11:(31, 32, 2) p=13:(28, 32, 2)
+[  132.8s] R4 PRE n=16: total 1.453; bins p/n: [0.00):0.48 [0.25):0.40 [0.50):0.26 [0.75):0.20 [1.00):0.11
+[  132.8s] R4 PRE n=16: (det, row bound, largest entry) p=3:(61, 64, 4) p=5:(31, 32, 2) p=7:(27, 32, 2) p=11:(28, 32, 2) p=13:(20, 32, 2)
+[  133.0s] R5 eta=(3, 1, 1, 1, 1, 1, 1) N=12 m=1: log|H| -64.3  log den 111.8  B +47.5
+[  133.4s] R5 eta=(3, 1, 1, 1, 1, 1, 1) N=12 m=2: log|H| -122.3  log den 188.9  B +66.6
+[  133.9s] R5 eta=(3, 1, 1, 1, 1, 1, 1) N=12 m=3: log|H| -172.8  log den 252.3  B +79.4
+[  134.8s] R5 eta=(3, 1, 1, 1, 1, 1, 1) N=12 m=4: log|H| -215.3  log den 300.3  B +85.0
+[  136.1s] R5 eta=(3, 1, 1, 1, 1, 1, 1) N=12 m=6: log|H| -274.2  log den 352.5  B +78.3
+[  137.9s] R5 eta=(3, 1, 1, 1, 1, 1, 1) N=12 m=8: log|H| -295.5  log den 366.1  B +70.6
+[  140.3s] R5 eta=(3, 1, 1, 1, 1, 1, 1) N=12 m=10: log|H| -276.8  log den 366.3  B +89.5
+[  140.4s] R5 eta=(5, 2, 2, 2, 2, 2, 2) N=6 m=1: log|H| -43.0  log den 68.0  B +25.0
+[  140.4s] R5 eta=(5, 2, 2, 2, 2, 2, 2) N=6 m=2: log|H| -79.2  log den 118.4  B +39.2
+[  140.4s] R5 eta=(3,1^5,1) N=3 maximal m=3: B -14.5, per m^2 -1.611
+[  140.5s] R5 eta=(3,1^5,1) N=4 maximal m=4: B -20.2, per m^2 -1.263
+[  140.7s] R5 eta=(3,1^5,1) N=6 maximal m=6: B -14.2, per m^2 -0.394
+[  141.2s] R5 eta=(3,1^5,1) N=8 maximal m=7: B -5.6, per m^2 -0.114
+[  142.5s] R5 eta=(3,1^5,1) N=10 maximal m=9: B +53.9, per m^2 +0.666
+[  144.9s] R5 eta=(3,1^5,1) N=12 maximal m=10: B +89.5, per m^2 +0.895
+[  149.4s] R5 eta=(3,1^5,1) N=14 maximal m=12: B +132.5, per m^2 +0.920
+[  149.4s] gates: {'C1': 0, 'C3': 0, 'C5': 0, 'C6': 0, 'C4': 0, 'C2': 0, 'C7': 0}
+[  149.4s] GATE_FAILS = 0
+[  149.4s] log saved to /Users/marcoscscarreira/Ramanujan/catalan_check/b4_route3_log_20261008_110012.txt
+[  149.4s] json saved to /Users/marcoscscarreira/Ramanujan/catalan_check/b4_route3_out_20261008_110012.json

@@ -1,0 +1,11 @@
+[    0.0s] sun_catalan_check.py  B in [20, 40, 60, 80, 100]
+[    0.1s] S1 Proposition 3.1 of Sun at B = 20 (all four A, X = 0 and 1): exact
+[    0.1s] B =  20, S = 1: 4 sets A;  (log D_B + log|qhat_B(G)|)/B^2: best +1.6125, worst +1.6371;  Theorem 9.1 of Sun: <= -0.00966 + o(1)  [0.0s]
+[    0.2s] B =  40, S = 2: 10 sets A;  (log D_B + log|qhat_B(G)|)/B^2: best +1.7121, worst +1.7248;  Theorem 9.1 of Sun: <= -0.00966 + o(1)  [0.1s]
+[    0.7s] B =  60, S = 3: 20 sets A;  (log D_B + log|qhat_B(G)|)/B^2: best +1.7522, worst +1.7582;  Theorem 9.1 of Sun: <= -0.00966 + o(1)  [0.5s]
+[    3.5s] B =  80, S = 4: 35 sets A;  (log D_B + log|qhat_B(G)|)/B^2: best +1.7762, worst +1.7804;  Theorem 9.1 of Sun: <= -0.00966 + o(1)  [2.8s]
+[   17.7s] B = 100, S = 5: 56 sets A;  (log D_B + log|qhat_B(G)|)/B^2: best +1.7890, worst +1.7931;  Theorem 9.1 of Sun: <= -0.00966 + o(1)  [14.2s]
+[   17.7s] gates: {'S1': 0, 'S2': 0}
+[   17.7s] GATE_FAILS = 0
+[   17.7s] log saved to /Users/marcoscscarreira/Ramanujan/catalan_check/sun_catalan_check_log_20261008_165354.txt
+[   17.7s] json saved to /Users/marcoscscarreira/Ramanujan/catalan_check/sun_catalan_check_out_20261008_165354.json

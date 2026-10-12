@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{a4paper,margin=2.5cm}
+\usepackage{array}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\labelitemi}{$\bullet$}
+
+\begin{document}
+
+\title{Verification of the preprint ``Catalan's constant is irrational''\\
+(OpenAI, 24 September 2026)}
+\author{Marcos Costa Santos Carreira\\ \texttt{marcoscscarreira@gmail.com}}
+\date{7 October 2026}
+\maketitle
+
+\begin{abstract}
+We report an independent check of the preprint ``Catalan's constant is irrational'' (OpenAI, 24 September 2026). We read the proof line by line and rederived its identities and inequalities. We rebuilt from the printed data, and re-ran, both finite certificates in the paper: the modular certificate for nonvanishing and the rational certificate for the real-place bound. We tested the central lemma on reduction modulo primes by exhaustive computation for every odd prime up to 47. We compared the paper's prime-by-prime denominator bounds with the exact valuations of the determinants at the two smallest sizes, and computed the true size of the determinants at the five smallest sizes. We found no error and no gap. Every certificate reproduces exactly, the prime-by-prime bounds hold and are often attained, and the computed sizes of the determinants approach a limit below the paper's proved upper bound. We also record what this check does not cover.
+\end{abstract}
+
+\section{Scope}
+
+The preprint under review \cite{OAI} proves that Catalan's constant $G=\sum_{j\ge 0}(-1)^j/(2j+1)^2$ is irrational. This note records the checks we made on it. They are of two kinds.
+
+\begin{enumerate}
+\item A reading audit. Every section was read line by line, and each identity and inequality was rederived by hand.
+\item Computational checks. Four Python scripts, run on the author's computer, rebuild the paper's finite certificates from the printed data and test its lemmas and bounds by direct computation. Each script states its expected results and its pass criteria before it runs, and reports the number of failed criteria; every reported run ended with zero failures.
+\end{enumerate}
+
+Section~\ref{sec:limits} lists what this check does not cover. It is one reader's audit and does not replace refereeing.
+
+\section{The argument under review}
+
+For each positive integer $N$ the paper defines a determinant $\Delta_N$ of size $n=48N$. Its entries are double integrals of the kernels $|t|/\sqrt{1-t^2}$ and $1/(1-ts)$ against integer Chebyshev polynomials and a fixed polynomial filter. With
+\[
+\mathcal{L}_N=\frac{\log|\Delta_N|}{n^2}-\frac{1}{2}\log 2,
+\]
+the proof has five steps.
+
+\begin{enumerate}
+\item Each entry is a rational combination of $1$, $G$ and $\zeta(2)$. Because of a prescribed Taylor contact between the rows, the coefficient of $\zeta(2)$ vanishes. Hence $\Delta_N\in\mathbb{Q}$ whenever $G\in\mathbb{Q}$ (Proposition~2.1).
+\item Under that hypothesis, prime-by-prime bounds on the denominators give $\liminf\mathcal{L}_N>-2.29084$ along every sequence of nonzero determinants (Propositions~2.2 and~3.4).
+\item For $N=p$ a large prime, Frobenius and two palindromic polynomial bases reduce $\Delta_p$ modulo $p$ to three fixed rational $48\times48$ matrices. A finite certificate shows that they are invertible, so $\Delta_p\neq0$ (Proposition~4.1).
+\item Without any hypothesis, an interpolation estimate, a Hadamard estimate and a uniform energy bound give $\limsup\mathcal{L}_N\le-2.290939875$ (Sections~5--7, Proposition~7.1).
+\item Along the primes the two bounds are incompatible, so $G$ is irrational (Section~8).
+\end{enumerate}
+
+The method extends Zudilin's determinantal criterion \cite{Zud17}. Three features appear original to us: the sign-indefinite determinant in which $\zeta(2)$ cancels exactly; the arithmetic proof of nonvanishing at prime sizes through Frobenius; and a real-place estimate that remains uniform when integration nodes cluster, obtained without an inverse-Vandermonde bound.
+
+\section{Reading audit}
+
+Table~\ref{tab:reading} lists the outcome by section.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{>{\raggedright}p{2.2cm}>{\raggedright}p{6.3cm}>{\raggedright\arraybackslash}p{5.8cm}}
+\hline
+Section & Content & Outcome\\
+\hline
+2, 2.1 & moment formulas, boundary recurrences, cancellation of $\zeta(2)$ & verified\\
+2.2 & bound at the prime 2, constant $505/4608$ & verified\\
+3.1 & digit reductions (Lemma 3.1) & parity cases and even-index Lucas step verified by reading; full statement verified by computation (Section~\ref{sec:comp})\\
+3.2 & pairing of raw columns, eq.~(38) & verified\\
+3.3 & central layer (Lemma 3.2), elimination over $\mathbb{Z}_p$ (Lemma 3.3) & verified; counting identity also by computation\\
+3.4 & loss function, integral $8609/2$, constant $-2.29081$ & verified (all eight pieces recomputed)\\
+4.1--4.3 & palindromic bases, Frobenius step, block factorisation (60) & verified\\
+5 & Andr\'eief identity, Cauchy alternant, Lemma 5.1, Propositions 5.2--5.3 & verified, including the constant $K_0=10e^{12}$\\
+6 & exact identity (80), damping, completion of squares, limits & verified; every coefficient rederived\\
+7.4 & derivative bound, passage from brackets to suprema & verified\\
+8 & assembly of the contradiction & verified\\
+\hline
+\end{tabular}
+\caption{Reading audit.}
+\label{tab:reading}
+\end{table}
+
+Two remarks on details we checked closely. In Section~4.2 the separation of each row identity into invariant and anti-invariant parts is legitimate because $f^p=f\,(1-t^2)^{(p-1)/2}$ does not lie in $\mathbb{F}_p(t)$. In Section~6 the bookkeeping of identity (80) requires $C=n+a+g$, which follows from the relations $L=n+a=n+b+q$ and $C=L+g$ stated in (2).
+
+\section{Computational checks}
+\label{sec:comp}
+
+\subsection{Certificate of Section 4.4}
+
+The script \texttt{cat\_cert4.py} rebuilds the $49\times48$ rational matrix $\mathcal{B}$ of eq.~(47) from the recipes on pp.~23--24 of \cite{OAI}. Its results:
+\begin{itemize}
+\item All 144 Gaussian pivots modulo 101, for $\sigma=0,+1,-1$, agree with Table~1 of \cite{OAI}, and so do the row swaps.
+\item The exact rational determinants of $\mathcal{B}_0$ and $\mathcal{B}_0\pm\mathcal{B}_1$ are nonzero; their numerators have 1994, 2008 and 2013 digits.
+\item The largest prime in any denominator of $\mathcal{B}$ is 61, within the bound 65 stated in the paper.
+\item The coefficient of $\zeta(2)$ vanishes exactly in all $49\times52$ raw entries.
+\item The closed forms for the moments agree with direct numerical integration to 30 digits at six index pairs.
+\end{itemize}
+
+\subsection{Certificate of Section 7}
+
+The script \texttt{cat\_cert7.py} rebuilds the derivative numerators of Section~7.2 in exact arithmetic from the coefficient tables. Its results:
+\begin{itemize}
+\item All polynomial divisions are exact, imaginary parts cancel, and the degrees are 36, 24, 13 and 9 as stated.
+\item The counts of sign variations agree with the paper on every interval.
+\item All 43 root brackets show a sign change, and each interval contains as many brackets as its variation count.
+\item At all 50 points of Table~2, the value computed with ordinary 40-digit logarithms lies below the listed bound, by less than $10^{-12}$.
+\item Both norm bounds hold, and the final constants $-2.290939875$ and $-2.296789875$ come out exactly.
+\item The maxima of the two functions on a 40\,000-point grid agree with the tabulated maxima to $10^{-9}$.
+\end{itemize}
+
+\subsection{Lemma 3.1 and the per-prime bounds}
+
+The scripts \texttt{cat\_padic.py} and \texttt{cat\_extend.py} make three tests.
+
+\emph{Lemma 3.1.} Both congruences of (31), together with (34) and (35), were tested for every pair of indices below $H=(p^2-1)/4$, the largest range the lemma allows, for every odd prime $7\le p\le47$. That is about 947\,000 pairs, with no failure.
+
+\emph{Counting identity.} The identity $R_0=R$ used in the proof of Lemma~3.3 holds in all 7871 cases with $1\le N\le60$ and $H/2<p\le H$.
+
+\emph{Per-prime bounds.} We computed $\Delta_1$ and $\Delta_2$ exactly as functions of a hypothetical rational value of $G$, for $G=0$ and $G=1/3$. For every prime $2\sqrt{H}<p\le H$ we found the exact $p$-adic valuation by elimination over $\mathbb{Z}/p^K$ and compared it with the bound of eq.~(38) or eq.~(40). All 35 cases pass. The bound is attained exactly at 8 of 12 primes for $N=1$ and at 9 of 23 primes for $N=2$, and the largest difference is 5. Primes $p>H$ show no denominator, as claimed.
+
+\subsection{Size of the determinants}
+
+Using the true value of $G$, we computed $\Delta_N$ for $N=1,\dots,5$, each at two working precisions that agree to more than 750 digits. Table~\ref{tab:size} gives the results.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccc}
+\hline
+$N$ & $n$ & $\mathcal{L}_N$ & sign of $\Delta_N$\\
+\hline
+1 & 48 & $-2.235632136$ & $-$\\
+2 & 96 & $-2.268193618$ & $+$\\
+3 & 144 & $-2.278467851$ & $+$\\
+4 & 192 & $-2.283816498$ & $+$\\
+5 & 240 & $-2.287032884$ & $+$\\
+\hline
+\end{tabular}
+\caption{Normalized size of $\Delta_N$ with the true value of $G$.}
+\label{tab:size}
+\end{table}
+
+Fits of the form $\mathcal{L}_N\approx\mathcal{L}_\infty+a/n$ to consecutive pairs give $\mathcal{L}_\infty=-2.29986$ from $N=3,4$ and $-2.29990$ from $N=4,5$. A fit of the form $\mathcal{L}_\infty+a\log n/n+b/n$ to $N=3,4,5$ gives $-2.30002$.
+
+\subsection{The prime 2}
+
+With $G=1/3$ we found $v_2(\Delta_1)=-471$ and $v_2(\Delta_2)=-1518$, against the main terms $-(505/4608)n^2=-252.5$ and $-1010$ of Proposition~2.2. The differences are $0.815\,n\log_2 n$ and $0.804\,n\log_2 n$, consistent with the term of order $n\log n$ allowed in that proposition. This part is reported without a pass criterion, since the paper does not state the constant of that term.
+
+\section{Observations}
+
+\paragraph{Observation 1.} The values in Table~\ref{tab:size} decrease steadily, and the extrapolations agree on a limit near $-2.300$. If so, the paper's upper bound $-2.290939875$ holds with about $0.009$ to spare. The distance between the true size and the lower bound $-2.29081$ that rationality would impose is then also about $0.009$, roughly seventy times the margin $1.3\times10^{-4}$ certified in the paper. The narrow certified margin therefore comes from the estimates of Sections~5--7. This observation rests on five sizes and is not proved.
+
+\paragraph{Observation 2.} Repeating the final step of Section~7.4 with the computed values in place of the rounded cutoffs, and with the true value of $\log 2$, gives the upper constant $-2.29105$ in place of $-2.290939875$. This roughly doubles the certified margin, to about $2.4\times10^{-4}$.
+
+\paragraph{Observation 3.} The prime-by-prime denominator bounds of Section~3 are attained exactly at many primes for $N=1,2$. On the finite-place side the argument has little slack.
+
+\section{Comparison with the preprint of Sun}
+
+Sun \cite{Sun} claims the same theorem, also by a determinant method. His determinant is built from the weighted tails $T_m/(2m+1)$ of $G$ and completed by Newton columns; its nonvanishing follows for every size from a rank theorem. His final margin is about $5\%$ of the term it is compared with; we recomputed $0.0096624$. His two decisive constants come from decompositions into 178 and 235 cells. The method is described, but the cell data and the code are not printed. The acknowledgement states that the numerical data were produced by AI and that the proof passed the verification of an AI system. The preprint \cite{OAI} cites Sun's work as an announced proof and uses none of it.
+
+We did not audit Sun's preprint. The difference relevant to verification is that every number in \cite{OAI} can be recomputed from the printed page, and we did so; the decisive constants in \cite{Sun} cannot be checked without first rebuilding the cell decompositions.
+
+\section{Limits of this check}
+\label{sec:limits}
+
+\begin{itemize}
+\item The reading was done by one reader with AI assistance. An independent second reading would strengthen the conclusion.
+\item The general proof of Lemma~3.1 was confirmed partly by reading and completely by computation up to $p=47$, while the lemma is used for all primes up to $H=65N$.
+\item The per-prime bounds were tested at $N=1,2$ and the sizes at $N=1,\dots,5$; the theorem is asymptotic.
+\item We did not rework the prime number theorem step (45), the estimate for primes below $2\sqrt{H}$, or the results of Agol \cite{Agol} and Voight \cite{Voight} used for the corollary on hyperbolic volumes.
+\end{itemize}
+
+\section*{Acknowledgement}
+This verification was carried out with the assistance of Claude (Anthropic), an AI system, which read the preprint with the author, rederived its identities and inequalities, and wrote the verification scripts. Every script was run by the author on his own computer, and every result reported here comes from those runs. The author directed and reviewed all of the work.
+
+\begin{thebibliography}{9}
+\bibitem{OAI} OpenAI, \emph{Catalan's constant is irrational}, preprint, 24 September 2026.\\
+\url{https://github.com/openai/math/blob/main/preprints/Catalans-constant-is-irrational-September-24-2026/paper.pdf}
+\bibitem{Sun} Z.-W. Sun, \emph{Catalan's constant is irrational}, arXiv:2609.04176v1, 3 September 2026.
+\bibitem{Zud17} W. Zudilin, A determinantal approach to irrationality, \emph{Constr. Approx.} 45 (2017), 301--310.
+\bibitem{Agol} I. Agol, The minimal volume orientable hyperbolic 2-cusped 3-manifolds, \emph{Proc. Amer. Math. Soc.} 138 (2010), 3723--3732.
+\bibitem{Voight} J. Voight, \emph{Quaternion Algebras}, Graduate Texts in Mathematics 288, Springer, 2021.
+\end{thebibliography}
+
+\clearpage
+\section*{Appendices}
+\addcontentsline{toc}{section}{Appendices}
+
+\section*{Appendix A. Reproduction}
+
+The scripts need Python~3 and \texttt{mpmath}. They take no arguments and run in a single process. Each writes its screen output to a time-stamped log file and its results to a JSON file next to the script. Each ends by printing the number of failed pass criteria.
+
+\begin{center}
+\begin{tabular}{>{\raggedright}p{3.2cm}>{\raggedright}p{7.6cm}>{\raggedright\arraybackslash}p{3cm}}
+\hline
+Script & Content & Time on author's computer\\
+\hline
+\texttt{cat\_cert4.py} & Section 4.4 certificate & 5 s\\
+\texttt{cat\_cert7.py} & Section 7 certificate & 1 s\\
+\texttt{cat\_padic.py} & Lemma 3.1 for $7\le p\le23$; counting identity; per-prime bounds at $N=1,2$; sizes at $N=1,2$ & 11 min\\
+\texttt{cat\_extend.py} & Lemma 3.1 for $29\le p\le47$; sizes at $N=1,\dots,5$; prime 2 & 9 min\\
+\hline
+\end{tabular}
+\end{center}
+
+The input data of the two certificate scripts were transcribed by hand from the tables of \cite{OAI}; the exact agreement of the rebuilt pivots and bounds with those tables also confirms the transcription. The package manifest lists the SHA-256 hash of every file.
+
+\end{document}

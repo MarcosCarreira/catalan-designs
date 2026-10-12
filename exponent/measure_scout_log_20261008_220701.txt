@@ -1,0 +1,3 @@
+measure_scout.py  ratio (96, 15, 6, 8, 5)  sizes [192]
+n= 192 design=(192, 30, 12, 16, 10): deg P=176, log10 max coeff=33454, Lambda=log|P(G)|/n^2=-0.05489; radius d* with |P| <= 2|P(G)| on |x-G| <= d*: log d* = -873.84, -log d*/n = 4.5512, -log d*/n^2 = 0.02370 (prec diff 0.0e+00); Hadamard constant 0.4152  [5433.3s, total 5433s]
+log saved to measure_scout_log_20261008_220701.txt

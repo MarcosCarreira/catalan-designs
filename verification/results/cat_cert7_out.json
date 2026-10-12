@@ -1,0 +1,69 @@
+{
+ "script": "cat_cert7.py",
+ "gates": {
+  "G1": 0,
+  "G2": 0,
+  "G3": 0,
+  "G4": 0,
+  "G5": 0,
+  "G6": 0,
+  "G7": 0,
+  "G8": 0,
+  "G9": 0
+ },
+ "soft_notes": [],
+ "variations": {
+  "k2X_variations": [
+   9,
+   9
+  ],
+  "k2Y_variations": [
+   5,
+   2,
+   2,
+   6
+  ],
+  "k1X_variations": [
+   1,
+   1,
+   2,
+   1
+  ],
+  "k1Y_variations": [
+   5
+  ]
+ },
+ "norms": {
+  "2": "0.7784159762835929",
+  "1": "0.9319852039004793"
+ },
+ "table2_gap_min": 7.806056709447545e-15,
+ "table2_gap_max": 9.995204036348263e-13,
+ "finals": {
+  "2": {
+   "paper": "-2.290939875",
+   "recomputed_with_true_log2": "-2.29105450731"
+  },
+  "1": {
+   "paper": "-2.296789875",
+   "recomputed_with_true_log2": "-2.29744744103"
+  }
+ },
+ "grid": {
+  "2": {
+   "gridmaxX": -0.9840333859463244,
+   "tablemaxX": -0.984033385315,
+   "gridmaxY": -1.608946411901915,
+   "tablemaxY": -1.608946411646
+  },
+  "1": {
+   "gridmaxX": -1.3246558071493244,
+   "tablemaxX": -1.324655807046,
+   "gridmaxY": -1.428286151643475,
+   "tablemaxY": -1.42828615125
+  }
+ },
+ "max_abs_derivative_at_brackets": 3.223919444524354e-07,
+ "GATE_FAILS": 0,
+ "seconds": 0.9
+}

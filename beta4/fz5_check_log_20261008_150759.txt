@@ -1,0 +1,38 @@
+[    0.0s] fz5_check.py  workers=2  n in [1, 2, 3]
+[    0.7s] G1 moments e = 0..3 and pole values j = 1, 2, 3, 5 against quadrature: worst difference 1.08e-28
+[    0.7s] n = 1: K = 40, N = 3, h = 37; entries built
+[    1.4s]    9/38 determinants
+[    1.5s]    18/38 determinants
+[    1.6s]    27/38 determinants
+[    1.7s]    36/38 determinants
+[    1.8s]    value at 3282 and 4282 digits: relative difference 2.66e-883
+[    2.1s]    G4 numerical determinant: relative difference 1.46e-1882
+[    2.1s]    Q(zeta(5)) = exp(-265.1291) > 0;  per n^2: -265.1291 (paper's asymptotic bound -27.8); per K^2: -0.16571
+[    2.1s]    log content(F_K) = -1776.07, log S_K = -204.32, log max|coefficient of Q| = 5265.8
+[    2.1s]    Q excludes zeta(5) = a/b for all b < exp(7.1657) = 1294.2
+[    2.3s] n = 2: K = 80, N = 6, h = 74; entries built
+[    8.6s]    18/75 determinants
+[   14.4s]    36/75 determinants
+[   20.2s]    54/75 determinants
+[   26.0s]    72/75 determinants
+[   27.8s]    value at 12401 and 13401 digits: relative difference 7.1e-2762
+[   27.8s]    Q(zeta(5)) = exp(-833.3315) > 0;  per n^2: -208.3329 (paper's asymptotic bound -27.8); per K^2: -0.13021
+[   27.8s]    log content(F_K) = -7674.96, log S_K = -3378.30, log max|coefficient of Q| = 21366.3
+[   27.8s]    Q excludes zeta(5) = a/b for all b < exp(11.2612) = 77748.7
+[   28.5s] n = 3: K = 120, N = 9, h = 111; entries built
+[   98.5s]    28/112 determinants
+[  166.9s]    56/112 determinants
+[  235.5s]    84/112 determinants
+[  302.4s]    112/112 determinants
+[  305.3s]    value at 27603 and 28603 digits: relative difference 1.42e-5885
+[  305.4s]    Q(zeta(5)) = exp(-1804.0071) > 0;  per n^2: -200.4452 (paper's asymptotic bound -27.8); per K^2: -0.12528
+[  305.4s]    log content(F_K) = -17604.86, log S_K = -11149.31, log max|coefficient of Q| = 48205.6
+[  305.4s]    Q excludes zeta(5) = a/b for all b < exp(16.2523) = 1.14365e+07
+[  305.4s] summary  n   K    h   log Q(zeta5)   per n^2    per K^2    log b-bound
+[  305.4s]          1   40   37      -265.129   -265.129   -0.16571     7.1657
+[  305.4s]          2   80   74      -833.332   -208.333   -0.13021    11.2612
+[  305.4s]          3  120  111     -1804.007   -200.445   -0.12528    16.2523
+[  305.4s] gates: {'G1': 0, 'G2': 0, 'G3': 0, 'G4': 0}
+[  305.4s] GATE_FAILS = 0
+[  305.4s] log saved to /Users/marcoscscarreira/Ramanujan/catalan_check/fz5_check_log_20261008_150759.txt
+[  305.4s] json saved to /Users/marcoscscarreira/Ramanujan/catalan_check/fz5_check_out_20261008_150759.json

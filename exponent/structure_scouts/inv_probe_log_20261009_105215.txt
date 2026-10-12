@@ -1,0 +1,4 @@
+(96, 14, 8, 8, 4)  log max|Ainv|/n=4.3526  log||Ainv||_F/n=4.3727 (bounds on -log sigma_min/n within log(n)/n=0.048)  [32.3s]
+(120, 18, 10, 10, 5)  log max|Ainv|/n=4.3363  log||Ainv||_F/n=4.3532 (bounds on -log sigma_min/n within log(n)/n=0.040)  [103.6s]
+(144, 21, 12, 12, 6)  log max|Ainv|/n=4.3377  log||Ainv||_F/n=4.3522 (bounds on -log sigma_min/n within log(n)/n=0.035)  [261.2s]
+log saved to /Users/marcoscscarreira/Ramanujan/catalan_check/structure_scouts/inv_probe_log_20261009_105215.txt

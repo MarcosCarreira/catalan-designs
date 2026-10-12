@@ -1,0 +1,165 @@
+[    0.0s] fz5_padic_check.py  workers=2  n in [1, 2, 3]
+[    1.3s] n = 1: K = 40, N = 3, h = 37; exact Delta_K of degree 37
+[    1.4s]    p=   2  vG(F_K)=    280 >=   -1665
+[    1.4s]    p=   3  vG(F_K)=   -219 >=    -925
+[    1.4s]    p=   5  vG(F_K)=     59 >=    -666
+[    1.4s]    p=   7  vG(F_K)=     -6 >=    -444
+[    1.4s]    p=  11  vG(F_K)=    -71 >=    -444
+[    1.4s]    p=  13  vG(F_K)=    -43 >=    -444
+[    1.4s]    p=  17  vG(F_K)=    -99 >=    -222  | (4.9): vG(Delta_K)=-123 >= gamma_out=-124 (excess 1)
+[    1.4s]    p=  19  vG(F_K)=    -71 >=    -222  | (4.9): vG(Delta_K)=-113 >= gamma_out=-114 (excess 1)
+[    1.4s]    p=  23  vG(F_K)=   -118 >=    -222  | (4.9): vG(Delta_K)=-110 >= gamma_out=-110 (excess 0)
+[    1.4s]    p=  29  vG(F_K)=    -46 >=    -222  | (4.9): vG(Delta_K)=-60 >= gamma_out=-60 (excess 0)
+[    1.5s]    p=  31  vG(F_K)=    -26 >=    -222  | (4.9): vG(Delta_K)=-46 >= gamma_out=-46 (excess 0)
+[    1.5s]    p=  37  vG(F_K)=     34 >=    -222  | (4.9): vG(Delta_K)=-4 >= gamma_out=-4 (excess 0)
+[    1.5s]    p=  41  vG(F_K)=    -32 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  43  vG(F_K)=    -30 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  47  vG(F_K)=    -26 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  53  vG(F_K)=    -20 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  59  vG(F_K)=    -14 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  61  vG(F_K)=    -12 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  67  vG(F_K)=     -6 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  71  vG(F_K)=     -2 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  73  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  79  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  83  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  89  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p=  97  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p= 101  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p= 103  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p= 107  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p= 109  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[    1.5s]    p= 113  vG(F_K)=      0 >=    -222  | p > K: vG(Delta_K)=0 >= 0
+[   26.6s] n = 2: K = 80, N = 6, h = 74; exact Delta_K of degree 74
+[   29.1s]    p=   2  vG(F_K)=    281 >=   -3774
+[   30.2s]    p=   3  vG(F_K)=   -412 >=   -2294
+[   30.7s]    p=   5  vG(F_K)=   -175 >=   -1332
+[   31.3s]    p=   7  vG(F_K)=    261 >=   -1332
+[   31.6s]    p=  11  vG(F_K)=    147 >=    -888
+[   31.9s]    p=  13  vG(F_K)=    118 >=    -888
+[   32.1s]    p=  17  vG(F_K)=    -82 >=    -888
+[   32.2s]    p=  19  vG(F_K)=    -36 >=    -888
+[   32.3s]    p=  23  vG(F_K)=   -146 >=    -444
+[   32.4s]    p=  29  vG(F_K)=   -248 >=    -444  | (4.9): vG(Delta_K)=-242 >= gamma_out=-281 (excess 39)
+[   32.5s]    p=  31  vG(F_K)=   -238 >=    -444  | (4.9): vG(Delta_K)=-254 >= gamma_out=-269 (excess 15)
+[   32.6s]    p=  37  vG(F_K)=   -151 >=    -444  | (4.9): vG(Delta_K)=-227 >= gamma_out=-228 (excess 1)
+[   32.7s]    p=  41  vG(F_K)=   -280 >=    -444  | (4.9): vG(Delta_K)=-232 >= gamma_out=-232 (excess 0)
+[   32.8s]    p=  43  vG(F_K)=   -274 >=    -444  | (4.9): vG(Delta_K)=-238 >= gamma_out=-238 (excess 0)
+[   32.9s]    p=  47  vG(F_K)=   -220 >=    -444  | (4.9): vG(Delta_K)=-208 >= gamma_out=-208 (excess 0)
+[   32.9s]    p=  53  vG(F_K)=   -142 >=    -444  | (4.9): vG(Delta_K)=-154 >= gamma_out=-154 (excess 0)
+[   33.0s]    p=  59  vG(F_K)=    -82 >=    -444  | (4.9): vG(Delta_K)=-112 >= gamma_out=-112 (excess 0)
+[   33.0s]    p=  61  vG(F_K)=    -62 >=    -444  | (4.9): vG(Delta_K)=-98 >= gamma_out=-98 (excess 0)
+[   33.1s]    p=  67  vG(F_K)=     -2 >=    -444  | (4.9): vG(Delta_K)=-56 >= gamma_out=-56 (excess 0)
+[   33.2s]    p=  71  vG(F_K)=     38 >=    -444  | (4.9): vG(Delta_K)=-28 >= gamma_out=-28 (excess 0)
+[   33.2s]    p=  73  vG(F_K)=     58 >=    -444  | (4.9): vG(Delta_K)=-14 >= gamma_out=-14 (excess 0)
+[   33.3s]    p=  79  vG(F_K)=     78 >=    -444  | (4.9): vG(Delta_K)=-2 >= gamma_out=-2 (excess 0)
+[   33.3s]    p=  83  vG(F_K)=    -64 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.4s]    p=  89  vG(F_K)=    -58 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.4s]    p=  97  vG(F_K)=    -50 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.5s]    p= 101  vG(F_K)=    -46 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.5s]    p= 103  vG(F_K)=    -44 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.5s]    p= 107  vG(F_K)=    -40 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.6s]    p= 109  vG(F_K)=    -38 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.6s]    p= 113  vG(F_K)=    -34 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.7s]    p= 127  vG(F_K)=    -20 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.7s]    p= 131  vG(F_K)=    -16 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.7s]    p= 137  vG(F_K)=    -10 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.7s]    p= 139  vG(F_K)=     -8 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.8s]    p= 149  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.8s]    p= 151  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.8s]    p= 157  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.9s]    p= 163  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.9s]    p= 167  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   33.9s]    p= 173  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.0s]    p= 179  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.0s]    p= 181  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.0s]    p= 191  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.1s]    p= 193  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.1s]    p= 197  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.1s]    p= 199  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.2s]    p= 211  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.2s]    p= 223  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.2s]    p= 227  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.2s]    p= 229  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.3s]    p= 233  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[   34.3s]    p= 239  vG(F_K)=      0 >=    -444  | p > K: vG(Delta_K)=0 >= 0
+[  300.1s] n = 3: K = 120, N = 9, h = 111; exact Delta_K of degree 111
+[  318.4s]    p=   2  vG(F_K)=   -266 >=   -6327
+[  327.7s]    p=   3  vG(F_K)=  -1082 >=   -3441
+[  333.9s]    p=   5  vG(F_K)=    509 >=   -1998
+[  336.9s]    p=   7  vG(F_K)=   -350 >=   -1998
+[  339.8s]    p=  11  vG(F_K)=    389 >=   -1332
+[  342.3s]    p=  13  vG(F_K)=    401 >=   -1332
+[  344.2s]    p=  17  vG(F_K)=    275 >=   -1332
+[  345.7s]    p=  19  vG(F_K)=    144 >=   -1332
+[  346.8s]    p=  23  vG(F_K)=     40 >=   -1332
+[  347.6s]    p=  29  vG(F_K)=    -67 >=    -666
+[  348.2s]    p=  31  vG(F_K)=   -262 >=    -666
+[  348.8s]    p=  37  vG(F_K)=   -177 >=    -666
+[  349.3s]    p=  41  vG(F_K)=   -380 >=    -666  | (4.9): vG(Delta_K)=-332 >= gamma_out=-410 (excess 78)
+[  349.8s]    p=  43  vG(F_K)=   -380 >=    -666  | (4.9): vG(Delta_K)=-362 >= gamma_out=-422 (excess 60)
+[  350.3s]    p=  47  vG(F_K)=   -357 >=    -666  | (4.9): vG(Delta_K)=-385 >= gamma_out=-402 (excess 17)
+[  350.8s]    p=  53  vG(F_K)=   -276 >=    -666  | (4.9): vG(Delta_K)=-364 >= gamma_out=-365 (excess 1)
+[  351.3s]    p=  59  vG(F_K)=   -211 >=    -666  | (4.9): vG(Delta_K)=-345 >= gamma_out=-346 (excess 1)
+[  351.8s]    p=  61  vG(F_K)=   -424 >=    -666  | (4.9): vG(Delta_K)=-348 >= gamma_out=-348 (excess 0)
+[  352.2s]    p=  67  vG(F_K)=   -382 >=    -666  | (4.9): vG(Delta_K)=-342 >= gamma_out=-342 (excess 0)
+[  352.6s]    p=  71  vG(F_K)=   -322 >=    -666  | (4.9): vG(Delta_K)=-306 >= gamma_out=-306 (excess 0)
+[  353.0s]    p=  73  vG(F_K)=   -292 >=    -666  | (4.9): vG(Delta_K)=-288 >= gamma_out=-288 (excess 0)
+[  353.4s]    p=  79  vG(F_K)=   -218 >=    -666  | (4.9): vG(Delta_K)=-234 >= gamma_out=-234 (excess 0)
+[  353.8s]    p=  83  vG(F_K)=   -178 >=    -666  | (4.9): vG(Delta_K)=-206 >= gamma_out=-206 (excess 0)
+[  354.1s]    p=  89  vG(F_K)=   -118 >=    -666  | (4.9): vG(Delta_K)=-164 >= gamma_out=-164 (excess 0)
+[  354.4s]    p=  97  vG(F_K)=    -38 >=    -666  | (4.9): vG(Delta_K)=-108 >= gamma_out=-108 (excess 0)
+[  354.7s]    p= 101  vG(F_K)=      2 >=    -666  | (4.9): vG(Delta_K)=-80 >= gamma_out=-80 (excess 0)
+[  355.0s]    p= 103  vG(F_K)=     22 >=    -666  | (4.9): vG(Delta_K)=-66 >= gamma_out=-66 (excess 0)
+[  355.3s]    p= 107  vG(F_K)=     62 >=    -666  | (4.9): vG(Delta_K)=-38 >= gamma_out=-38 (excess 0)
+[  355.7s]    p= 109  vG(F_K)=     82 >=    -666  | (4.9): vG(Delta_K)=-24 >= gamma_out=-24 (excess 0)
+[  356.1s]    p= 113  vG(F_K)=    106 >=    -666  | (4.9): vG(Delta_K)=-8 >= gamma_out=-8 (excess 0)
+[  356.4s]    p= 127  vG(F_K)=    -94 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  356.6s]    p= 131  vG(F_K)=    -90 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  356.8s]    p= 137  vG(F_K)=    -84 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  357.0s]    p= 139  vG(F_K)=    -82 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  357.2s]    p= 149  vG(F_K)=    -72 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  357.5s]    p= 151  vG(F_K)=    -70 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  357.7s]    p= 157  vG(F_K)=    -64 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  357.9s]    p= 163  vG(F_K)=    -58 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  358.1s]    p= 167  vG(F_K)=    -54 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  358.3s]    p= 173  vG(F_K)=    -48 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  358.5s]    p= 179  vG(F_K)=    -42 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  358.7s]    p= 181  vG(F_K)=    -40 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  358.9s]    p= 191  vG(F_K)=    -30 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  359.1s]    p= 193  vG(F_K)=    -28 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  359.3s]    p= 197  vG(F_K)=    -24 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  359.4s]    p= 199  vG(F_K)=    -22 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  359.6s]    p= 211  vG(F_K)=    -10 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  359.8s]    p= 223  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  360.0s]    p= 227  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  360.2s]    p= 229  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  360.3s]    p= 233  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  360.5s]    p= 239  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  360.7s]    p= 241  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  360.9s]    p= 251  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  361.0s]    p= 257  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  361.2s]    p= 263  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  361.4s]    p= 269  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  361.6s]    p= 271  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  361.8s]    p= 277  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  361.9s]    p= 281  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  362.1s]    p= 283  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  362.3s]    p= 293  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  362.5s]    p= 307  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  362.6s]    p= 311  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  362.8s]    p= 313  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  363.0s]    p= 317  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  363.2s]    p= 331  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  363.3s]    p= 337  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  363.5s]    p= 347  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  363.7s]    p= 349  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  363.9s]    p= 353  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  364.0s]    p= 359  vG(F_K)=      0 >=    -666  | p > K: vG(Delta_K)=0 >= 0
+[  364.0s] n = 1: 6 primes satisfy (4.9); excess of v_p(Delta_K) over gamma_out: min 0, max 1
+[  364.0s] n = 2: 13 primes satisfy (4.9); excess of v_p(Delta_K) over gamma_out: min 0, max 39
+[  364.0s] n = 3: 18 primes satisfy (4.9); excess of v_p(Delta_K) over gamma_out: min 0, max 78
+[  364.0s] gates: {'G1': 0, 'G3': 0, 'G2': 0}
+[  364.0s] GATE_FAILS = 0
+[  364.0s] log saved to /Users/marcoscscarreira/Ramanujan/catalan_check/fz5_padic_check_log_20261008_160037.txt
+[  364.0s] json saved to /Users/marcoscscarreira/Ramanujan/catalan_check/fz5_padic_check_out_20261008_160037.json

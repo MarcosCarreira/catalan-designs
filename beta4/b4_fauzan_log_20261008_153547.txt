@@ -1,0 +1,31 @@
+[    0.0s] b4_fauzan.py  workers=2  items=19 + grids 33, 27 + arcsine 10
+[    1.8s] G1 functional (B), s = 2, 4, 6, against its weight: worst difference 3.77e-27
+[    4.8s] G2 functional (Z), s = 3, 5, 7, against its weight: worst difference 4.03e-29
+[    6.2s]    10/89 items
+[   12.5s]    20/89 items
+[   14.0s]    30/89 items
+[   16.1s]    40/89 items
+[   18.9s]    50/89 items
+[   20.4s]    60/89 items
+[   21.4s]    70/89 items
+[   22.5s]    80/89 items
+[   23.4s] Observation fzweights (N = 0, r = 1, h = K): Lambda
+[   23.4s]    K = 12: zeta(3) -1.052  zeta(5) -0.254  zeta(7) +0.524  beta(2) +0.100  beta(4) +1.530  beta(6) +2.973
+[   23.4s]    K = 24: zeta(3) -0.964  zeta(5) -0.086  zeta(7) +0.854  beta(2) +0.270  beta(4) +2.028  beta(6) +3.658
+[   23.4s]    beta(4), Fauzan's parameters n = 1 (K 40, N 3, h 37, r 5): Lambda +2.882, per K^2 +2.466
+[   23.4s]    beta(4) grid, 33 designs at K = 24: smallest log Q/K^2 +1.108, smallest Lambda +3.169
+[   23.4s] Observation fzstep (N = 0, r = 1, h = K = 24): Lambda for pole step q = 1, 2, 3
+[   23.4s]    zeta(3): q=1 -0.964  q=2 -0.139  q=3 +0.248
+[   23.4s]    zeta(5): q=1 -0.086  q=2 +1.685  q=3 +2.987
+[   23.4s]    zeta(5), Fauzan's parameters n = 1: log Q/K^2 q=1 -0.1657, q=2 +1.3539
+[   23.4s] Observation fzscale: Lambda on the common scale
+[   23.4s]    OAI: 12: -0.2962  20: -0.2238  28: -0.1530  40: -0.1236
+[   23.4s]    C7: 6: -0.1627  10: +0.0397  12: +0.1047
+[   23.4s]    B7: 6: +2.0931  10: +2.7467  12: +2.9416
+[   23.4s]    beta(2) (B): 12: +0.0996  24: +0.2701
+[   23.4s]    beta(4) (B): 12: +1.5300  24: +2.0277  37: +2.8823
+[   23.4s]    beta(2) grid, 27 designs at K = 24: smallest Lambda +0.2701, all positive: True
+[   23.4s] gates: {'G1': 0, 'G2': 0, 'G3': 0, 'G4': 0, 'G5': 0}
+[   23.4s] GATE_FAILS = 0
+[   23.4s] log saved to /Users/marcoscscarreira/Ramanujan/catalan_check/b4_fauzan_log_20261008_153547.txt
+[   23.4s] json saved to /Users/marcoscscarreira/Ramanujan/catalan_check/b4_fauzan_out_20261008_153547.json

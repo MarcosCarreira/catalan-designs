@@ -1,0 +1,117 @@
+[    0.0s] running fauzan_audit/lemma61.py 
+    | sum c = 37/40  nested: True  min len True b16<2 True
+    | max 2U-V on grid (0,4]: -6.64989388062 at t = 0.61955  M0 = -6.645  ok: True
+    | I(rho) = -2.12659344514705  C* = 2.65303599034049  lam*M0 - I + C* = -1.36699556451246  U = -1.3669955  ok: True
+[   22.4s] pass F1 
+[   22.4s] running fauzan_audit/consts2.py 3 20
+    | int_3^20 R/x^3 = 0.04278817690837088
+    | paper: 0.04278817690837088  equal exactly: True  diff 0.0
+[   22.9s] pass F2 
+[   22.9s] running fauzan_audit/iout.py 
+    | Iout = 127751/96000 1.3307395833333333  paper 127751/96000: True
+    | int d = 9/640  paper 9/640: True
+[   23.4s] pass F3 
+[   23.4s] running fauzan_audit/lemma32.py 
+    | kappa_d checks (p 7..47, d<500): violations [] 0
+    | distribution formula on polynomials (exact): True
+    | p=7: distribution formula at poles r=-25..25: min v_p(difference) = 46 (truncation level about 43)
+    | p=11: distribution formula at poles r=-25..25: min v_p(difference) = 45 (truncation level about 43)
+    | p=13: distribution formula at poles r=-25..25: min v_p(difference) = 45 (truncation level about 43)
+    | C_p check p=7: v_p(C_p) = 5
+    | C_p check p=11: v_p(C_p) = 5
+    | C_p check p=13: v_p(C_p) = 5
+    | C_p check p=17: v_p(C_p) = 5
+    | C_p check p=19: v_p(C_p) = 5
+    | C_p check p=23: v_p(C_p) = 5
+    | C_p check p=29: v_p(C_p) = 5
+    | C_p check p=31: v_p(C_p) = 5
+    | C_p check p=37: v_p(C_p) = 6
+    | C_p check p=41: v_p(C_p) = 5
+    | C_p check p=43: v_p(C_p) = 5
+    | C_p check p=47: v_p(C_p) = 5
+[   24.9s] pass F4 pole identity v_p [46, 45, 45], C_p valuations [5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 5]
+[   24.9s] running fauzan_audit/tail_check.py 
+    | Q(x)=R-xF on 3000 random x in [20,400]: min 0.00835319477313  max 1.50581249755392  (paper: -1/2 <= Q <= 13/8)
+    | P' - (F+lam): max 0.0 (away from breakpoints should be ~0)
+    | max |C| sampled 15.837965961493008  (paper bound < 16)
+    | mean of P (midpoint rule, 16000 pts) = 12.179167521102295  paper P-bar = 2923/240 = 12.179166666666667
+    | P(20) = 37/2  C(20) = 0  P(200)= 0  C(200)= 0
+    | C'(x) vs P(x)-Pbar at x=31.41: 4.557279208333335 4.557279208333333
+[   25.9s] pass F5 Q in [0.00835319477313, 1.50581249755392], max|C| 15.837965961493008, mean P 12.179166666666667
+[   25.9s] running fauzan_audit/sec6.py 
+    | sum c = 37/40  nested: True  min len True b16<2 True
+    | (6.8): max of (2U-V) - RHS over t in [2, 2e5]: -1.87112e-6 (must be <= 0)
+    | (6.7)-(6.8): RHS+sqrt(t)/K at t=2, K=2: -7.2763021  M0 = -6.645  derivative sign on [2,50] (K=2) max: -0.38311
+    | (6.11): max ratio w/(8192(1+y)^5 e^{-2pi y}) on (0,60]: 0.0145967
+    | (6.12): violations 0  max ratio to 2logK+2: 0.58979
+    | int t^-1/2 (1+sqrt t)^5 e^-sqrt t = 652.0
+    | n=1: log S_K = -204.3189951, bound (6.15) = 1191.132629, ok=True, (logS - coef K^2 logK)/K^2 = 2.4314607  C* = 2.653036
+    | n=10: log S_K = -247405.8228, bound (6.15) = -225045.755, ok=True, (logS - coef K^2 logK)/K^2 = 2.6102921  C* = 2.653036
+    | n=100: log S_K = -49717730.87, bound (6.15) = -49409047.26, ok=True, (logS - coef K^2 logK)/K^2 = 2.6466388  C* = 2.653036
+    | n=1000: log S_K = -7518771198.0, bound (6.15) = -7514832516.0, ok=True, (logS - coef K^2 logK)/K^2 = 2.6521833  C* = 2.653036
+[   28.5s] pass F6 
+[   28.5s] running fauzan_audit/gamma_in.py 
+    | K=320000 p=8009 x=K/p=39.955: gamma_in=7390051.0  p*Gamma(K/p)=7389902.0  diff=149.0
+    | K=320000 p=9001 x=K/p=35.552: gamma_in=6405216.0  p*Gamma(K/p)=6405086.0  diff=130.0
+    | K=320000 p=12007 x=K/p=26.651: gamma_in=4436545.0  p*Gamma(K/p)=4436444.0  diff=101.0
+    | K=320000 p=20011 x=K/p=15.991: gamma_in=2049783.0  p*Gamma(K/p)=2049723.0  diff=60.0
+    | K=320000 p=30011 x=K/p=10.663: gamma_in=862033.0  p*Gamma(K/p)=861993.5  diff=39.5
+    | K=320000 p=50021 x=K/p=6.397: gamma_in=-64646.0  p*Gamma(K/p)=-64672.0  diff=26.0
+    | K=320000 p=80021 x=K/p=3.999: gamma_in=-672423.0  p*Gamma(K/p)=-672441.0  diff=18.0
+    | K=320000 p=106661 x=K/p=3.000: gamma_in=-927938.0  p*Gamma(K/p)=-927949.0  diff=11.0
+[   30.2s] pass F7 differences [149.0, 130.0, 101.0, 60.0, 39.5, 26.0, 18.0, 11.0]
+[   30.2s] running fauzan_audit/gamma_out.py 
+    | p=106669 y=0.333: -gamma_out=1096007  K(R0-d)=1096014.0  diff=-7.0
+    | p=142231 y=0.444: -gamma_out=967920  K(R0-d)=967921.0  diff=-1.0
+    | p=177787 y=0.556: -gamma_out=911920  K(R0-d)=911917.0  diff=3.0
+    | p=213349 y=0.667: -gamma_out=602558  K(R0-d)=602557.0  diff=1.0
+    | p=248909 y=0.778: -gamma_out=353638  K(R0-d)=353637.0  diff=1.0
+    | p=284467 y=0.889: -gamma_out=104732  K(R0-d)=104731.0  diff=1.0
+[   31.0s] pass F8 differences [-7.0, -1.0, 3.0, 1.0, 1.0, 1.0]
+[   31.0s] running lai_audit/lai_check.py 
+    | Lemma 2.2, n=1, s=0..4: max relative difference series vs formula: 2.03e-52
+    | Prop 3.1 q=19 (n=4), (a,b,c)=(1, 1, 1): J_4 != 0: True, v_19(J_4) = -36
+    | Prop 3.1 q=19 (n=4), (a,b,c)=(2, -3, 5): J_4 != 0: True, v_19(J_4) = -36
+    | Prop 3.1 q=19 (n=4), (a,b,c)=(7, 11, -4): J_4 != 0: True, v_19(J_4) = -36
+    | Prop 3.1 q=19 (n=4), (a,b,c)=(0, 1, 0): J_4 != 0: True, v_19(J_4) = -36
+    | n=1: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -31.762, log|J_n|/n^2 =   46.847  [0.0s]
+    | n=2: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -33.878, log|J_n|/n^2 =   49.088  [0.0s]
+    | n=3: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -32.909, log|J_n|/n^2 =   50.489  [0.0s]
+    | n=4: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -35.015, log|J_n|/n^2 =   51.398  [0.0s]
+    | n=5: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -33.285, log|J_n|/n^2 =   52.037  [0.0s]
+    | n=6: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -32.431, log|J_n|/n^2 =   52.513  [0.0s]
+    | n=7: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -33.524, log|J_n|/n^2 =   52.882  [0.0s]
+    | n=8: integer (a,b,c)=(1,1,1): -log den(J_n)/n^2 =  -33.072, log|J_n|/n^2 =   53.178  [0.1s]
+[   34.1s] pass L1 Lemma 2.2 difference 2.03e-52
+[   34.1s] running lai_audit/lai_padic.py 8,12,16,20,24
+    | n=8: violations []; primes with v_p = bound: 7; sum of bounds*log p/n^2 = -43.697; measured -log den/n^2 = -33.072 [0.0s]
+    | n=12: violations []; primes with v_p = bound: 10; sum of bounds*log p/n^2 = -41.271; measured -log den/n^2 = -32.620 [0.1s]
+    | n=16: violations []; primes with v_p = bound: 10; sum of bounds*log p/n^2 = -42.247; measured -log den/n^2 = -31.015 [0.2s]
+    | n=20: violations []; primes with v_p = bound: 13; sum of bounds*log p/n^2 = -39.916; measured -log den/n^2 = -30.484 [0.6s]
+    | n=24: violations []; primes with v_p = bound: 13; sum of bounds*log p/n^2 = -41.424; measured -log den/n^2 = -31.617 [1.2s]
+[   36.9s] pass L2 
+[   36.9s] running lai_audit/lai_sec5.py 30,60,100
+    | Table 1 integral = -657/70 -9.385714285714286  paper -657/70: True
+    | Lemma 5.4 integrals: [Fraction(-4, 1), Fraction(-19, 4), Fraction(-19, 4), Fraction(-9, 4)]  sum -63/4
+    | total -5.689676 -657/70 -63/4 = -30.825390285714285
+    | n=30: primes where the Section-5 bound exceeds the Lemma 4.4 bound: [] (0); finite-check failures in Lemma 5.4: [] (0)
+    | n=60: primes where the Section-5 bound exceeds the Lemma 4.4 bound: [] (0); finite-check failures in Lemma 5.4: [] (0)
+    | n=100: primes where the Section-5 bound exceeds the Lemma 4.4 bound: [] (0); finite-check failures in Lemma 5.4: [] (0)
+[   38.3s] pass L3 
+[   38.3s] running lai_audit/lai_sec6.py 
+    | lambda0 = G'(4/5) = 3.0091944  paper 3.009194; formula 5atan(5/2)-2atan(10) = 3.0091944
+    | c1 = -8.334864935 (<0)  c2 = 3.273990907 (>0)  c3 = 31.61443777  paper 31.614437
+    | c3 by the paper closed form = 31.61443777
+    | max over y in [0,200] of G(y)-lambda0*y - c1: 0.0 (must be <= 0)
+    | Lemma 6.2: max of log|R_n| - log((10/n)e^{nG}) over n in {1..50}, y in [0,20]: -5.89851 (must be <= 0)
+    | (6.9) N=1: Hankel det of moments = 1.0  prod k!^2/4^k = 1.0
+    | (6.9) N=2: Hankel det of moments = 0.25  prod k!^2/4^k = 0.25
+    | (6.9) N=3: Hankel det of moments = 0.0625  prod k!^2/4^k = 0.0625
+    | (6.9) N=4: Hankel det of moments = 0.03515625  prod k!^2/4^k = 0.03515625
+    | Lemma 6.1 n=1, P=t^0: contour (7.05020043299812e-5 - 6.3364143493748e-43j)  series 7.05020043299812e-5
+    | Lemma 6.1 n=1, P=t^1: contour (0.000155937000442149 - 1.18316690888976e-43j)  series 0.000155937000442149
+    | Lemma 6.1 n=1, P=t^2: contour (0.000320117549135832 + 1.47046021656e-42j)  series 0.000320117549135832
+[   44.2s] pass L4 c3 31.61443777
+[   44.2s] gates: {'F1': 0, 'F2': 0, 'F3': 0, 'F4': 0, 'F5': 0, 'F6': 0, 'F7': 0, 'F8': 0, 'L1': 0, 'L2': 0, 'L3': 0, 'L4': 0}
+[   44.2s] GATE_FAILS = 0
+[   44.2s] log saved to /Users/marcoscscarreira/Ramanujan/catalan_check/audit_fauzan_lai_log_20261008_163817.txt

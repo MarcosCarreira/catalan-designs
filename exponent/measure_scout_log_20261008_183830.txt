@@ -1,0 +1,7 @@
+measure_scout.py  sizes [24, 48, 72, 96, 120]
+n=  24 design=(24, 4, 2, 2, 1): deg P=22, log10 max coeff=485, Lambda=log|P(G)|/n^2=-0.16758; radius d* with |P| <= 2|P(G)| on |x-G| <= d*: log d* = -103.81, -log d*/n = 4.3256, -log d*/n^2 = 0.18023 (prec diff 0.0e+00)  [0.6s, total 1s]
+n=  48 design=(48, 7, 4, 4, 2): deg P=44, log10 max coeff=2007, Lambda=log|P(G)|/n^2=-0.12045; radius d* with |P| <= 2|P(G)| on |x-G| <= d*: log d* = -213.81, -log d*/n = 4.4544, -log d*/n^2 = 0.09280 (prec diff 0.0e+00)  [7.2s, total 8s]
+n=  72 design=(72, 10, 6, 6, 3): deg P=66, log10 max coeff=4586, Lambda=log|P(G)|/n^2=-0.09624; radius d* with |P| <= 2|P(G)| on |x-G| <= d*: log d* = -326.78, -log d*/n = 4.5387, -log d*/n^2 = 0.06304 (prec diff 0.0e+00)  [44.3s, total 52s]
+n=  96 design=(96, 14, 8, 8, 4): deg P=88, log10 max coeff=8286, Lambda=log|P(G)|/n^2=-0.07800; radius d* with |P| <= 2|P(G)| on |x-G| <= d*: log d* = -438.36, -log d*/n = 4.5662, -log d*/n^2 = 0.04756 (prec diff 0.0e+00)  [174.0s, total 226s]
+n= 120 design=(120, 18, 10, 10, 5): deg P=110, log10 max coeff=13054, Lambda=log|P(G)|/n^2=-0.06979; radius d* with |P| <= 2|P(G)| on |x-G| <= d*: log d* = -544.11, -log d*/n = 4.5343, -log d*/n^2 = 0.03779 (prec diff 0.0e+00)  [508.7s, total 735s]
+log saved to measure_scout_log_20261008_183830.txt
