@@ -7,8 +7,10 @@ This repository holds the note *General designs and an irrationality exponent fo
 at four* (`paper/beta4_determinants`), the scripts and run logs behind every computed statement in them, and the
 verification report on the preprint they build on.
 
-Archived on Zenodo: *General designs and an irrationality exponent for Catalan's constant*, doi:10.5281/zenodo.23326324
-(all versions; v1 is doi:10.5281/zenodo.23326325).
+Archived on Zenodo (the first DOI of each line resolves to the latest version):
+
+- *General designs and an irrationality exponent for Catalan's constant*: doi:10.5281/zenodo.23326324 (v1: 10.5281/zenodo.23326325)
+- *Determinant constructions for the Dirichlet beta value at four*: doi:10.5281/zenodo.23326646 (v1: 10.5281/zenodo.23326647)
 
 The preprint is OpenAI, *Catalan's constant is irrational*, 24 September 2026:
 <https://github.com/openai/math/blob/main/preprints/Catalans-constant-is-irrational-September-24-2026/paper.pdf>.
