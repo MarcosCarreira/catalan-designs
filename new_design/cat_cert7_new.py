@@ -1,7 +1,8 @@
 """
 cat_cert7_new.py -- rigorous Section-7-type certificate for the real-place bound (Prop. 6.1, extended
-to a general design) of the design (n, b, q, g, h) = (96, 15, 6, 8, 5), with the exact rational trial
-sequences (finite part + geometric tails) read from the files in INFILES next to this script, each
+to a general design) of the design (n, b, q, g, h) = DES of design_config.py (record run: (96, 15, 6, 8, 5)),
+with the exact rational trial sequences (finite part + geometric tails) read from the files in INFILES
+in design_config.outdir() (next to this script for the record design), each
 certified in turn: cat_tail_opt_out.json (cat_tail_opt.py, 46 coefficients per sequence) and
 cat_tail_edges_out.json (cat_tail_edges.py, bases placed at the support edges of the equilibrium
 measures, 72 coefficients per sequence). A missing file is reported and skipped.
@@ -50,9 +51,22 @@ GATES (pre-registered)
      every mean-value allowance w sup|X'| < 1e-9                                       [0 fails]
   C5 positive control: dense float grid (200,000 points) max of X, Y <= certified sup + 1e-12,
      and certified sup <= grid max + 1e-6                                          [0 fails]
-  C6 f_low: the paper's design gives the integral 8609/2; DES gives f_low = -2.275548 +- 1e-6 [0 fails]
+  C6 f_low: the paper's design gives the integral 8609/2; DES gives f_low = design_config.FLOW_REF
+     +- 1e-6 (-2.275548 for the record design)                                      [0 fails]
   C7 THE CLAIM: max(U_2, U_1) < f_low (upper endpoint < lower endpoint), for each input [0 fails]
-REPORT: U_2, U_1, f_low, margin, number of critical points, numerator degrees.
+  E1 exponent of Theorem 35 (added 2026-10-20), for each input, from the certified values:
+     Sigma_kappa >= (largest lower endpoint of the enclosed values of X) + (same for Y);
+     rho_1 = (2 - alpha - gg) log 2 - Sigma_2 + 2 log 2; second-case coefficient
+     c_2 = (2 - alpha - gg) log 2 - Sigma_1 - lambda^(1)(1 - 2 gg) + (3/2) log 2;
+     U_1 - U_2 < 0 and c_2 <= rho_1 (the first case of Corollary 33 dominates)       [0 fails]
+     rho_2 = rho_1 + (eta + gq) log 2 + (1 - gg) log(1 + sqrt 2); mu = rho_2 ((1 - gg)/gamma + n0/2)
+     (paper v2, nonvanishing for p^2 not dividing b), also with n0 in place of n0/2 (paper v1),
+     gamma = the certified margin; all upper endpoints.
+  E2 positive control (record design only, input cat_tail_edges_out.json): Sigma_2 >= -2.5750034368157,
+     Sigma_1 >= -2.9836915417496, rho_1 < 5.13821, c_2 < 2.93858, U_1 - U_2 < -0.1364,
+     rho_2 < 6.02556, mu < 2715 (paper v1) and mu < 2426 (paper v2)                  [0 fails]
+REPORT: U_2, U_1, f_low, margin, number of critical points, numerator degrees, Sigma_kappa, rho_1, c_2,
+  rho_2, mu.
 
 SCOPE: this certifies the inequality for the stated design and sequences. That the bound of
 Prop. 6.1 and the lower bound of Prop. 3.4 hold for this design in the form used here rests on
@@ -61,7 +75,8 @@ cat_newdesign_check.py) and still needs a written proof.
 
 RUN: python3 cat_cert7_new.py   (no arguments; needs mpmath and numpy; single process)
 TIME: about 10-20 s per input file.
-OUTPUT: screen + cat_cert7_new_log_<YYYYMMDD_HHMMSS>.txt + cat_cert7_new_out.json, next to the script.
+OUTPUT: screen + cat_cert7_new_log_<YYYYMMDD_HHMMSS>.txt + cat_cert7_new_out.json, in
+        design_config.outdir() (next to the script for the record design).
 """
 import os, sys, json, time, math
 from fractions import Fraction as Fr
@@ -74,8 +89,11 @@ import numpy as np
 
 T0 = time.time()
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from design_config import DES as _DES, FLOW_REF as _FLOW_REF, REFERENCE, outdir
+OUT = outdir(HERE)
 STAMP = time.strftime('%Y%m%d_%H%M%S')
-LOGPATH = os.path.join(HERE, 'cat_cert7_new_log_' + STAMP + '.txt')
+LOGPATH = os.path.join(OUT, 'cat_cert7_new_log_' + STAMP + '.txt')
 LOGF = open(LOGPATH, 'w')
 def log(s):
     line = f"[{time.time()-T0:6.1f}s] {s}"
@@ -86,8 +104,8 @@ def gate(name, ok, info=""):
     if not ok: log(f"FAIL {name} {info}")
 
 INFILES = ['cat_tail_opt_out.json', 'cat_tail_edges_out.json']   # certified in turn; a missing file is reported
-DES = (96, 15, 6, 8, 5)
-FLOW_REF = -2.275548
+DES = tuple(_DES)
+FLOW_REF = _FLOW_REF
 BRACKET_BITS = 50
 C2DPS = 150
 IVDPS = 60
@@ -398,7 +416,7 @@ log(f"C6 f_low: paper's integral {Ipap}; design {DES}: integral {Ides}, f_low in
 def certify(infile):
     """certificate for the sequences in the JSON file `name` (output of cat_tail_opt.py or cat_tail_edges.py)."""
     global DATA, DFIN, RB, PB, UP, LAM
-    with open(os.path.join(HERE, infile)) as fh: DATA = json.load(fh)
+    with open(os.path.join(OUT, infile)) as fh: DATA = json.load(fh)
     gate("C6", tuple(DATA["design"]) == DES, f"{infile}: input design {DATA['design']}")
     DFIN = DATA["D"]
     RB = [Fr(z) for z in DATA["real_bases"]]
@@ -407,7 +425,7 @@ def certify(infile):
     LAM = {k: Fr(DATA[f"kappa{k}"]["lambda"]) for k in (2, 1)}
     gate("C1", LAM[1] >= 0 and LAM[2] == 0, f"{infile}: lambda {LAM}")
     log(f"== input {infile}: design {DES}, D = {DFIN}, {len(RB)} real tails, {len(PB)} pairs")
-    RES = {}
+    RES = {}; LOWS = {}
     for kap in (2, 1):
         tk = time.time()
         NUM = build(kap)
@@ -436,12 +454,12 @@ def certify(infile):
         X, Y, dX, dY, NP2 = make_funcs(kap)
         log(f"  C2 A/Q vs numerical derivative: worst rel {mpm.nstr(worst1, 3)}; vs closed-form derivative: {mpm.nstr(worst2, 3)}")
         # C3 critical points
-        sups = {}; ncrit = {}; allow_max = 0; width_max = mpm.mpf(0)
+        sups = {}; ncrit = {}; allow_max = 0; width_max = mpm.mpf(0); lows = {}
         for name, F, dF, ranges in (('X', X, dX, [(-1, 0), (0, 1)]), ('Y', Y, dY, [(0, 1)])):
             P, Q = NUM[name]; Pint = to_int(P)
-            best = None; cnt = 0
+            best = None; cnt = 0; low = None
             if name == 'X':
-                v = F(iv.mpf(-1)); best = v; width_max = max(width_max, ivwidth(v))
+                v = F(iv.mpf(-1)); best = v; width_max = max(width_max, ivwidth(v)); low = lo_(v)
             for a, b in ranges:
                 ivs = isolate(Pint, a, b)
                 for blo, bhi in ivs:
@@ -454,13 +472,16 @@ def certify(infile):
                     allow = ivq(w)*iv.mpf(max(abs(d.a), abs(d.b)))
                     allow_max = max(allow_max, float(hi(allow)))
                     v = F(ivq(blo)); width_max = max(width_max, ivwidth(v))
+                    low = lo_(v) if low is None else max(low, lo_(v))   # a value of F: lower bound for sup F
                     up = v + allow
                     if best is None or hi(up) > hi(best): best = up
-            sups[name] = best; ncrit[name] = cnt
+            sups[name] = best; ncrit[name] = cnt; lows[name] = low
         gate("C4", width_max < mpm.mpf('1e-30'), f"k={kap}: enclosure width {mpm.nstr(width_max, 3)}")
         gate("C4", allow_max < 1e-9, f"k={kap}: mean-value allowance {allow_max:.3e}")
         gate("C4", ivwidth(NP2) < mpm.mpf('1e-30'), f"k={kap}: norm enclosure width {mpm.nstr(ivwidth(NP2), 3)}")
         U = (-1 + ivq(ALPHA + GG))*LOG2 + NP2 + sups['X'] + sups['Y']
+        LOWS[kap] = {"Sigma_lower": lows['X'] + lows['Y'],
+                     "U_lower": lo_((-1 + ivq(ALPHA + GG))*LOG2 + NP2) + lows['X'] + lows['Y']}
         log(f"  C3 critical points: X {ncrit['X']}, Y {ncrit['Y']}; max mean-value allowance {float(allow_max):.2e}; "
             f"max enclosure width {mpm.nstr(width_max, 3)}")
         log(f"  sup X <= {mpm.nstr(hi(sups['X']), 15)}, sup Y <= {mpm.nstr(hi(sups['Y']), 15)}, "
@@ -502,20 +523,48 @@ def certify(infile):
     gate("C7", margin > 0, f"max U {mpm.nstr(hi(Umax), 15)} not below f_low {mpm.nstr(lo_(FLOW), 15)}")
     log(f"C7 CLAIM ({infile}): max(U_2, U_1) <= {mpm.nstr(hi(Umax), 15)} < f_low >= {mpm.nstr(lo_(FLOW), 15)}; margin {mpm.nstr(margin, 8)}")
 
+    EXPO = exponent(infile, RES, LOWS, margin)
     for k in RES: RES[k].pop("_U")
-    return {"input": infile, "kappa2": RES[2], "kappa1": RES[1], "margin_lower": mpm.nstr(margin, 12)}
+    return {"input": infile, "kappa2": RES[2], "kappa1": RES[1], "margin_lower": mpm.nstr(margin, 12),
+            "exponent": EXPO}
+
+def exponent(infile, RES, LOWS, margin):
+    """E1/E2: the arithmetic of Corollary 33, Proposition 34 and Theorem 35 from the certified values."""
+    up = lambda v: hi(v)
+    S2, S1 = iv.mpf(LOWS[2]["Sigma_lower"]), iv.mpf(LOWS[1]["Sigma_lower"])
+    base = (2 - ivq(ALPHA + GG))*LOG2
+    rho1 = base - S2 + 2*LOG2
+    c2 = base - S1 - ivq(LAM[1])*(1 - 2*ivq(GG)) + iv.mpf(3)/2*LOG2
+    dU = hi(RES[1]["_U"]) - LOWS[2]["U_lower"]
+    gate("E1", dU < 0 and up(c2) <= lo_(rho1), f"{infile}: U_1 - U_2 <= {mpm.nstr(dU, 6)}, c_2 <= {mpm.nstr(up(c2), 9)}, rho_1 >= {mpm.nstr(lo_(rho1), 9)}")
+    rho2 = rho1 + ivq(ETA + GQ_)*LOG2 + (1 - ivq(GG))*iv.log(1 + iv.sqrt(iv.mpf(2)))
+    gam = iv.mpf(margin)
+    mu = rho2*((1 - ivq(GG))/gam + iv.mpf(n0)/2)     # paper v2: Lemma 24 for p^2 not dividing b
+    mu1 = rho2*((1 - ivq(GG))/gam + n0)              # paper v1: p not dividing b
+    log(f"E1 exponent ({infile}): Sigma_2 >= {mpm.nstr(lo_(S2), 14)}, Sigma_1 >= {mpm.nstr(lo_(S1), 14)}, "
+        f"lambda^(1) = {mpm.nstr(mpm.mpf(LAM[1].numerator)/LAM[1].denominator, 12)}, U_1 - U_2 <= {mpm.nstr(dU, 6)}")
+    log(f"   rho_1 <= {mpm.nstr(up(rho1), 9)}, c_2 <= {mpm.nstr(up(c2), 9)}, rho_2 <= {mpm.nstr(up(rho2), 9)}, "
+        f"gamma >= {mpm.nstr(margin, 11)}, mu <= {mpm.nstr(up(mu), 9)} (with p not dividing b: {mpm.nstr(up(mu1), 9)})")
+    if DES == tuple(REFERENCE) and infile == 'cat_tail_edges_out.json':
+        ok = (lo_(S2) >= mpm.mpf('-2.5750034368157') and lo_(S1) >= mpm.mpf('-2.9836915417496') and up(rho1) < 5.13821
+              and up(c2) < 2.93858 and dU < -0.1364 and up(rho2) < 6.02556 and up(mu1) < 2715 and up(mu) < 2426)
+        gate("E2", ok, "record design: printed constants of Theorem 35 not reproduced")
+        log(f"E2 positive control (record design): printed constants of Theorem 35 reproduced: {ok}")
+    return {"Sigma2_lower": mpm.nstr(lo_(S2), 16), "Sigma1_lower": mpm.nstr(lo_(S1), 16), "U1_minus_U2_upper": mpm.nstr(dU, 10),
+            "rho1_upper": mpm.nstr(up(rho1), 12), "c2_upper": mpm.nstr(up(c2), 12), "rho2_upper": mpm.nstr(up(rho2), 12),
+            "mu_upper": mpm.nstr(up(mu), 12), "mu_upper_p_not_dividing_b": mpm.nstr(up(mu1), 12)}
 
 OUTS = []
 for name in INFILES:
-    if not os.path.exists(os.path.join(HERE, name)):
-        log(f"== input {name}: not found next to the script, skipped"); continue
+    if not os.path.exists(os.path.join(OUT, name)):
+        log(f"== input {name}: not found in {OUT}, skipped"); continue
     OUTS.append(certify(name))
 gate("C6", len(OUTS) > 0, "no input file found")
 total = sum(FAILS.values())
 out = {"script": "cat_cert7_new.py", "design": DES, "f_low_integral": str(Ides),
        "f_low_lower": mpm.nstr(lo_(FLOW), 20), "certificates": OUTS, "gates": FAILS, "GATE_FAILS": total,
        "seconds": round(time.time() - T0, 1)}
-with open(os.path.join(HERE, "cat_cert7_new_out.json"), "w") as fh: json.dump(out, fh, indent=1)
+with open(os.path.join(OUT, "cat_cert7_new_out.json"), "w") as fh: json.dump(out, fh, indent=1)
 log(f"gates: {FAILS}")
 print(f"GATE_FAILS = {total}")
 LOGF.write(f"GATE_FAILS = {total}\n"); LOGF.close()

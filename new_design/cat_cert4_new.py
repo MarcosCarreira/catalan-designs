@@ -20,7 +20,8 @@ their rational determinants are nonzero, which is eq. (48) for the design.
 DESIGNS
   paper (48, 7, 4, 4, 2) modulo 101  -- positive control: must reproduce the paper's Table 1
                                         (144 pivots) and swaps (30,31), (45,46) for sigma = +1
-  new   (96, 15, 6, 8, 5) modulo 131 -- the certificate for the candidate design
+  new   DES modulo P (design_config.py) -- the certificate for the candidate design
+        (record run: (96, 15, 6, 8, 5) modulo 131)
 
 GATES (pre-registered)
   P1 paper design: rows y_r, z_r equal definition (3) (Chebyshev T_d, U_{d-1}), rows 0..n0  [0 fails]
@@ -28,15 +29,15 @@ GATES (pre-registered)
   P3 paper design: pivots and swaps mod 101 equal Table 1 exactly                            [0 fails]
   N1 new design: rows equal definition (3), rows 0..n0; supports of rows 0..n0-1 in [A0, H0-1] [0 fails]
   N2 new design: zeta(2) coefficient of every raw entry is 0                                [0 fails]
-  N3 new design: every denominator prime of B is <= H0 = 130 < 131                          [0 fails]
-  N4 new design: all 3 x 96 pivots mod 131 nonzero                                          [0 fails]
+  N3 new design: every denominator prime of B is <= H0 < P (record design: H0 = 130, P = 131) [0 fails]
+  N4 new design: all 3 x n0 pivots mod P nonzero                                            [0 fails]
 REPORT: pivots and swaps for the new design (also written to cat_cert4_new_table.tex as a LaTeX
 table in the layout of the paper's Table 1, 16 pivots per line).
 
 RUN: python3 cat_cert4_new.py   (no arguments; single process; standard library only)
 TIME: about 15 s.
 OUTPUT: screen + cat_cert4_new_log_<YYYYMMDD_HHMMSS>.txt + cat_cert4_new_out.json +
-        cat_cert4_new_table.tex, next to the script.
+        cat_cert4_new_table.tex, in design_config.outdir() (next to the script for the record design).
 """
 import sys, json, time, os
 from fractions import Fraction as Fr
@@ -48,8 +49,11 @@ except AttributeError:
 
 T0 = time.time()
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from design_config import DES, P as PNEW, outdir
+OUT = outdir(HERE)
 STAMP = time.strftime('%Y%m%d_%H%M%S')
-LOGPATH = os.path.join(HERE, 'cat_cert4_new_log_' + STAMP + '.txt')
+LOGPATH = os.path.join(OUT, 'cat_cert4_new_log_' + STAMP + '.txt')
 LOGF = open(LOGPATH, 'w')
 def log(s):
     line = f"[{time.time()-T0:6.1f}s] {s}"
@@ -60,7 +64,7 @@ def gate(name, ok, info=""):
     if not ok: log(f"FAIL {name} {info}")
 
 PAPER = ((48, 7, 4, 4, 2), 101)
-NEW = ((96, 15, 6, 8, 5), 131)
+NEW = (tuple(DES), PNEW)
 TABLE1 = {
  0: [60,68,62,79,47,32,69,57,30,72,35,66,43,20,85,48,
      88,4,77,54,60,79,26,68,83,39,40,65,1,68,78,24,
@@ -210,7 +214,7 @@ for sg in (0, 1, -1):
 
 # ---------------------------------------------------------------- LaTeX table
 lines = [r"\begin{table}[ht]", r"\centering", r"\small",
-         r"\begin{tabular}{rl}", r"\hline", r"$\sigma$ & Successive pivots in $\mathbb{F}_{131}$ \\", r"\hline"]
+         r"\begin{tabular}{rl}", r"\hline", r"$\sigma$ & Successive pivots in $\mathbb{F}_{" + str(NEW[1]) + r"}$ \\", r"\hline"]
 for sg in (0, 1, -1):
     piv = out_piv[str(sg)]["pivots"]
     chunks = [", ".join(str(x) for x in piv[k:k+16]) for k in range(0, len(piv), 16)]
@@ -221,17 +225,17 @@ for sg in (0, 1, -1):
 sw_text = "; ".join(f"$\\sigma={sg}$: " + (", ".join(f"$({a},{b})$" for a, b in out_piv[str(sg)]["swaps"]) or "none")
                     for sg in (0, 1, -1))
 lines += [r"\end{tabular}",
-          r"\caption{Gaussian pivots of $B_0+\sigma B_1$ modulo $131$ for the design $(96,15,6,8,5)$, "
+          r"\caption{Gaussian pivots of $B_0+\sigma B_1$ modulo $" + str(NEW[1]) + r"$ for the design $(" + ",".join(str(x) for x in NEW[0]) + r")$, "
           r"computed by the elimination rule of Section~4.4 of the preprint (rows in increasing order, "
           r"indices from zero). Row swaps: " + sw_text + r".}",
-          r"\label{tab:pivots131}", r"\end{table}"]
-with open(os.path.join(HERE, "cat_cert4_new_table.tex"), "w") as fh: fh.write("\n".join(lines) + "\n")
+          r"\label{tab:pivots" + str(NEW[1]) + "}", r"\end{table}"]
+with open(os.path.join(OUT, "cat_cert4_new_table.tex"), "w") as fh: fh.write("\n".join(lines) + "\n")
 log("LaTeX table written to cat_cert4_new_table.tex")
 
 total = sum(FAILS.values())
 out = {"script": "cat_cert4_new.py", "design": NEW[0], "modulus": NEW[1], "largest_denominator_prime": maxp,
        "pivots": out_piv, "gates": FAILS, "GATE_FAILS": total, "seconds": round(time.time() - T0, 1)}
-with open(os.path.join(HERE, "cat_cert4_new_out.json"), "w") as fh: json.dump(out, fh, indent=1)
+with open(os.path.join(OUT, "cat_cert4_new_out.json"), "w") as fh: json.dump(out, fh, indent=1)
 log(f"gates: {FAILS}")
 print(f"GATE_FAILS = {total}")
 LOGF.write(f"GATE_FAILS = {total}\n"); LOGF.close()

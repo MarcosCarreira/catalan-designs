@@ -1,0 +1,68 @@
+[   0.0s] ##### design (36, 6, 2, 3, 2)
+[   0.0s] === (36, 6, 2, 3, 2) 1/5 cat_cert4_new.py
+(36, 6, 2, 3, 2) cat_cert4_new.py: exit 0, GATE_FAILS 0
+[   1.2s] === (36, 6, 2, 3, 2) 2/5 cat_newdesign_check.py
+(36, 6, 2, 3, 2) cat_newdesign_check.py: exit 0, GATE_FAILS 0
+[   3.9s] === (36, 6, 2, 3, 2) 3/5 cat_tail_opt.py
+(36, 6, 2, 3, 2) cat_tail_opt.py: exit 0, GATE_FAILS 0
+[   6.1s] === (36, 6, 2, 3, 2) 4/5 cat_tail_edges.py
+(36, 6, 2, 3, 2) cat_tail_edges.py: exit 0, GATE_FAILS 0
+[   8.9s] === (36, 6, 2, 3, 2) 5/5 cat_cert7_new.py
+(36, 6, 2, 3, 2) cat_cert7_new.py: exit 0, GATE_FAILS 0
+[  31.7s] design (36, 6, 2, 3, 2): chain PASSED
+[  31.7s] ##### design (88, 14, 5, 7, 5)
+[  31.7s] === (88, 14, 5, 7, 5) 1/5 cat_cert4_new.py
+(88, 14, 5, 7, 5) cat_cert4_new.py: exit 0, GATE_FAILS 0
+[  36.7s] === (88, 14, 5, 7, 5) 2/5 cat_newdesign_check.py
+(88, 14, 5, 7, 5) cat_newdesign_check.py: exit 0, GATE_FAILS 0
+[ 227.6s] === (88, 14, 5, 7, 5) 3/5 cat_tail_opt.py
+(88, 14, 5, 7, 5) cat_tail_opt.py: exit 0, GATE_FAILS 0
+[ 229.6s] === (88, 14, 5, 7, 5) 4/5 cat_tail_edges.py
+(88, 14, 5, 7, 5) cat_tail_edges.py: exit 0, GATE_FAILS 0
+[ 232.2s] === (88, 14, 5, 7, 5) 5/5 cat_cert7_new.py
+(88, 14, 5, 7, 5) cat_cert7_new.py: exit 0, GATE_FAILS 0
+[ 253.9s] design (88, 14, 5, 7, 5): chain PASSED
+[ 253.9s] ##### design (52, 8, 3, 4, 3)
+[ 253.9s] === (52, 8, 3, 4, 3) 1/5 cat_cert4_new.py
+(52, 8, 3, 4, 3) cat_cert4_new.py: exit 0, GATE_FAILS 0
+[ 255.6s] === (52, 8, 3, 4, 3) 2/5 cat_newdesign_check.py
+(52, 8, 3, 4, 3) cat_newdesign_check.py: exit 0, GATE_FAILS 0
+[ 267.3s] === (52, 8, 3, 4, 3) 3/5 cat_tail_opt.py
+(52, 8, 3, 4, 3) cat_tail_opt.py: exit 0, GATE_FAILS 0
+[ 269.4s] === (52, 8, 3, 4, 3) 4/5 cat_tail_edges.py
+(52, 8, 3, 4, 3) cat_tail_edges.py: exit 0, GATE_FAILS 0
+[ 272.2s] === (52, 8, 3, 4, 3) 5/5 cat_cert7_new.py
+(52, 8, 3, 4, 3) cat_cert7_new.py: exit 0, GATE_FAILS 0
+[ 294.6s] design (52, 8, 3, 4, 3): chain PASSED
+[ 294.6s] SUMMARY
+[ 294.6s]   (36, 6, 2, 3, 2)     cat_cert4_new.py         exit 0, GATE_FAILS 0,   1.2s ok
+[ 294.6s]   (36, 6, 2, 3, 2)     cat_newdesign_check.py   exit 0, GATE_FAILS 0,   2.7s ok
+[ 294.6s]   (36, 6, 2, 3, 2)     cat_tail_opt.py          exit 0, GATE_FAILS 0,   2.2s ok
+[ 294.6s]   (36, 6, 2, 3, 2)     cat_tail_edges.py        exit 0, GATE_FAILS 0,   2.9s ok
+[ 294.6s]   (36, 6, 2, 3, 2)     cat_cert7_new.py         exit 0, GATE_FAILS 0,  22.8s ok
+[ 294.6s]   (88, 14, 5, 7, 5)    cat_cert4_new.py         exit 0, GATE_FAILS 0,   5.0s ok
+[ 294.6s]   (88, 14, 5, 7, 5)    cat_newdesign_check.py   exit 0, GATE_FAILS 0, 190.9s ok
+[ 294.6s]   (88, 14, 5, 7, 5)    cat_tail_opt.py          exit 0, GATE_FAILS 0,   2.0s ok
+[ 294.6s]   (88, 14, 5, 7, 5)    cat_tail_edges.py        exit 0, GATE_FAILS 0,   2.6s ok
+[ 294.6s]   (88, 14, 5, 7, 5)    cat_cert7_new.py         exit 0, GATE_FAILS 0,  21.7s ok
+[ 294.6s]   (52, 8, 3, 4, 3)     cat_cert4_new.py         exit 0, GATE_FAILS 0,   1.7s ok
+[ 294.6s]   (52, 8, 3, 4, 3)     cat_newdesign_check.py   exit 0, GATE_FAILS 0,  11.8s ok
+[ 294.6s]   (52, 8, 3, 4, 3)     cat_tail_opt.py          exit 0, GATE_FAILS 0,   2.0s ok
+[ 294.6s]   (52, 8, 3, 4, 3)     cat_tail_edges.py        exit 0, GATE_FAILS 0,   2.8s ok
+[ 294.6s]   (52, 8, 3, 4, 3)     cat_cert7_new.py         exit 0, GATE_FAILS 0,  22.4s ok
+[ 294.6s]   (36, 6, 2, 3, 2): E1 exponent (cat_tail_opt_out.json): Sigma_2 >= -2.5807338344034, Sigma_1 >= -2.991822374049, lambda^(1) = 2.72515870735, U_1 - U_2 <= -0.137878
+[ 294.6s]   (36, 6, 2, 3, 2):    rho_1 <= 5.14152758, c_2 <= 2.93507694, rho_2 <= 6.02646973, gamma >= 0.0021847518705, mu <= 2637.03084 (with p not dividing b: 2745.50729)
+[ 294.6s]   (36, 6, 2, 3, 2): E1 exponent (cat_tail_edges_out.json): Sigma_2 >= -2.5819123745066, Sigma_1 >= -2.9926939798727, lambda^(1) = 2.72440173579, U_1 - U_2 <= -0.137969
+[ 294.6s]   (36, 6, 2, 3, 2):    rho_1 <= 5.14270612, c_2 <= 2.93657936, rho_2 <= 6.02764827, gamma >= 0.0025287800498, mu <= 2293.48179 (with p not dividing b: 2401.97945)
+[ 294.6s]   (88, 14, 5, 7, 5): E1 exponent (cat_tail_opt_out.json): Sigma_2 >= -2.565622486677, Sigma_1 >= -3.000504058464, lambda^(1) = 2.8032570329, U_1 - U_2 <= -0.148194
+[ 294.6s]   (88, 14, 5, 7, 5):    rho_1 <= 5.13341772, c_2 <= 2.86444138, rho_2 <= 6.02344877, gamma >= 0.0022593939113, mu <= 2718.9247 (with p not dividing b: 2983.95645)
+[ 294.6s]   (88, 14, 5, 7, 5): E1 exponent (cat_tail_edges_out.json): Sigma_2 >= -2.5668956931362, Sigma_1 >= -3.0016202976269, lambda^(1) = 2.80579060812, U_1 - U_2 <= -0.148297
+[ 294.6s]   (88, 14, 5, 7, 5):    rho_1 <= 5.13469093, c_2 <= 2.86342711, rho_2 <= 6.02472198, gamma >= 0.0026150389484, mu <= 2385.69967 (with p not dividing b: 2650.78744)
+[ 294.6s]   (52, 8, 3, 4, 3): E1 exponent (cat_tail_opt_out.json): Sigma_2 >= -2.555174750595, Sigma_1 >= -3.0070218878654, lambda^(1) = 2.86158914054, U_1 - U_2 <= -0.155512
+[ 294.6s]   (52, 8, 3, 4, 3):    rho_1 <= 5.12781717, c_2 <= 2.81174606, rho_2 <= 6.02137131, gamma >= 0.0021288441818, mu <= 2767.45078 (with p not dividing b: 2924.00644)
+[ 294.6s]   (52, 8, 3, 4, 3): E1 exponent (cat_tail_edges_out.json): Sigma_2 >= -2.5563739281929, Sigma_1 >= -3.0081435615524, lambda^(1) = 2.86571233234, U_1 - U_2 <= -0.155638
+[ 294.6s]   (52, 8, 3, 4, 3):    rho_1 <= 5.12901635, c_2 <= 2.80937888, rho_2 <= 6.02257049, gamma >= 0.0024897577512, mu <= 2389.45299 (with p not dividing b: 2546.03983)
+[ 294.6s] CERTIFIED (edge-tail input): design, gap gamma >=, mu <=
+[ 294.6s]   (36, 6, 2, 3, 2)      0.0025287800498   2293.48179
+[ 294.6s]   (88, 14, 5, 7, 5)     0.0026150389484   2385.69967
+[ 294.6s]   (52, 8, 3, 4, 3)      0.0024897577512   2389.45299

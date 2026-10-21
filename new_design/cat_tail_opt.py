@@ -1,7 +1,7 @@
 """
 cat_tail_opt.py -- trial sequences in the paper's compact form (finite part + geometric tails) for the
-real-place bound (Prop. 6.1) of the design (n, b, q, g, h) = (96, 15, 6, 8, 5), rounded to exact
-rationals, as input for a Section-7-type certificate.
+real-place bound (Prop. 6.1) of the design (n, b, q, g, h) = DES of design_config.py (record run:
+(96, 15, 6, 8, 5)), rounded to exact rationals, as input for a Section-7-type certificate.
 
 FORM (as in Section 7 of the paper): for each of the two sequences u = p, v
     u_k = l_k (1 <= k <= D) + sum_z r_z z^k,
@@ -23,8 +23,10 @@ BASES (from the structure scout: x-charges on about [-1,-0.10] and [0.10,0.99], 
     finite part D = 16; the same bases for p and v.
 
 GATES (pre-registered)
-  T0 f_low: paper's design gives the integral 8609/2; DES gives -2.275548 as in cat_design_lower.py [0 fails]
-  T1 kappa = 2: proof score f_low - (bound) >= +0.0020 with the tail form
+  T0 f_low: paper's design gives the integral 8609/2; DES gives design_config.FLOW_REF
+     (-2.275548 for the record design, as in cat_design_lower.py)                    [0 fails]
+  T1 kappa = 2: proof score f_low - (bound) >= +0.0020 with the tail form (record design; other
+     designs: > 0, design_config.T1_MIN_OPT)
      (the 300-coefficient form gave +0.00244)                                        [0 fails]
   T2 rounding every coefficient (and lambda) to a rational with denominator 10^20 changes each
      kappa value by less than 1e-8                                                   [0 fails]
@@ -35,17 +37,16 @@ Numerical suprema on a 400,000-point grid: the rigorous certificate is the next 
 RUN: python3 cat_tail_opt.py   (no arguments; needs numpy and scipy; BLAS threads limited to 2)
 TIME: about 10 s (sandbox: 5 s).
 OUTPUT: screen + cat_tail_opt_log_<YYYYMMDD_HHMMSS>.txt + cat_tail_opt_out.json (exact rational
-        coefficients as strings), next to the script.
+        coefficients as strings), in design_config.outdir() (next to the script for the record design).
 """
 import os
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ[_v] = "2"
-import json, time, math
+import sys, json, time, math
 from fractions import Fraction as Fr
 import numpy as np
 from scipy.optimize import minimize
 
-DES = (96, 15, 6, 8, 5)
 DFIN = 16
 REAL_BASES = ['0.5', '0.8', '0.9', '0.95', '0.98', '0.99', '0.995', '-0.5', '-0.8', '-0.9', '-0.95', '-0.98']
 PAIR_BASES = [('0', '0.6'), ('0', '0.8'), ('0', '0.9'), ('0', '0.95'), ('0', '0.98'),
@@ -53,14 +54,16 @@ PAIR_BASES = [('0', '0.6'), ('0', '0.8'), ('0', '0.9'), ('0', '0.95'), ('0', '0.
 KTRUNC = 40000
 NX = 6000
 DEN = 10**20
-T1_MIN = 0.0020
 EIG_CUT = 1e-12
-FLOW_REF = -2.275548          # f_low of DES from cat_design_lower.py
 
 T0 = time.time()
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from design_config import DES, FLOW_REF, outdir, T1_MIN_OPT as T1_MIN
+DES = tuple(DES)
+OUT = outdir(HERE)
 STAMP = time.strftime('%Y%m%d_%H%M%S')
-LOGPATH = os.path.join(HERE, 'cat_tail_opt_log_' + STAMP + '.txt')
+LOGPATH = os.path.join(OUT, 'cat_tail_opt_log_' + STAMP + '.txt')
 LOGF = open(LOGPATH, 'w')
 def log(s):
     line = f"[{time.time()-T0:6.1f}s] {s}"
@@ -208,7 +211,7 @@ def evaluate(cp, cv, lam, kap):
 _, Ipap = f_low(48, 7, 4, 4, 2)
 gate("T0", Ipap == Fr(8609, 2), f"paper's design: integral {Ipap}, paper prints 8609/2")
 fl, Ilow = f_low(*DES)
-gate("T0", abs(fl - FLOW_REF) < 1e-6, f"f_low {fl:.7f} vs cat_design_lower.py {FLOW_REF}")
+gate("T0", abs(fl - FLOW_REF) < 1e-6, f"f_low {fl:.7f} vs reference {FLOW_REF}")
 log(f"design {DES}: f_low = {fl:.7f} (integral {Ilow}); {NP} coefficients per sequence "
     f"({DFIN} finite, {len(rb)} real tails, {len(pb)} conjugate pairs)")
 res = {}
@@ -233,14 +236,14 @@ for kap in (2, 1):
 score = fl - max(res[2]["value"], res[1]["value"])
 gate("T1", fl - res[2]["value"] >= T1_MIN, f"kappa=2 score {fl - res[2]['value']:+.6f} < {T1_MIN}")
 gate("T3", res[1]["value"] < res[2]["value"], "kappa=1 not below kappa=2")
-log(f"PROOF SCORE (tail form, rounded coefficients) = {score:+.6f}   (300-coefficient form: +0.00244; paper's design as printed: +0.00013)")
+log(f"PROOF SCORE (tail form, rounded coefficients) = {score:+.6f}   (record design: 300-coefficient form +0.00244; paper's design as printed: +0.00013)")
 
 total = sum(FAILS.values())
 out = {"script": "cat_tail_opt.py", "design": DES, "f_low": fl, "f_low_integral": str(Ilow), "D": DFIN,
        "real_bases": REAL_BASES, "pair_bases": PAIR_BASES, "denominator": DEN,
        "kappa2": res[2], "kappa1": res[1], "proof_score": score, "gates": FAILS, "GATE_FAILS": total,
        "seconds": round(time.time()-T0, 1)}
-with open(os.path.join(HERE, "cat_tail_opt_out.json"), "w") as fh: json.dump(out, fh, indent=1)
+with open(os.path.join(OUT, "cat_tail_opt_out.json"), "w") as fh: json.dump(out, fh, indent=1)
 log(f"gates: {FAILS}")
 log(f'cond(Gram) = {np.linalg.cond(Gram):.3g}')
 print(f"GATE_FAILS = {total}")

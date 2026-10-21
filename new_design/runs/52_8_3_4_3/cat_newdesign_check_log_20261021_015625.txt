@@ -1,0 +1,14 @@
+[    0.0s] design (52, 8, 3, 4, 3): a=11, L=63, C=67, H=70, A=19
+[    0.0s] S: basic conditions checked; R0 = R in 8408 (N,p) cases
+[    0.0s] S: row supports inside [A, H-1] = [19, 69] for rows 0..51; auxiliary row 52: [18, 69]
+[    0.1s] Z: zeta(2) coefficient exactly 0 in all 2915 raw entries (rows 0..52)
+[    0.6s] B: (53 x 52) matrix built
+[    0.6s] B: largest denominator prime 67 (<= H = 70)
+[    0.6s] B: sigma=+0: rank mod 71 = 52/52
+[    0.6s] B: sigma=+1: rank mod 71 = 52/52
+[    0.6s] B: sigma=-1: rank mod 71 = 52/52
+[    1.2s] V: Delta_1 built (n = 52); valuations for primes 2 sqrt(H) < p < H + 60
+[   11.3s] V: p : v_p (bound)  17:-104(-104)  19:-104(-104)  23:-103(-104)  29:-99(-100)  31:-95(-96)  37:-90(-91)  41:-74(-75)  43:-66(-67)  47:-54(-54)  53:-36(-36)  59:-18(-18)  61:-12(-12)  67:-3(-3)
+[   11.3s] V: 13 primes in range; attained exactly at 7; max slack 1; primes above H: all v_p >= 0: True
+[   11.3s] gates: {'S': 0, 'Z': 0, 'B': 0, 'V': 0}
+GATE_FAILS = 0

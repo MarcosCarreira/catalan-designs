@@ -1,7 +1,9 @@
 """
 cat_newdesign_check.py -- checks 1a and 1b for the design with the largest provable margin found by
 cat_design_search.py: (n, b, q, g, h) = (96, 15, 6, 8, 5) per unit N
-(a = b + q = 21, L = 117, C = 125, H = 130, A = a + 2g = 37).
+(a = b + q = 21, L = 117, C = 125, H = 130, A = a + 2g = 37), the record run.
+The design and the prime are read from design_config.py (DES, P); the numbers quoted below are
+those of the record design.
 
 GATES (pre-registered)
   S  structural conditions used in Sections 3-4 of the paper hold for this design:
@@ -20,7 +22,8 @@ REPORT: denominators' largest prime in B; determinant sizes; slack per prime.
 
 RUN: python3 cat_newdesign_check.py   (no arguments; single process; needs mpmath only)
 TIME (estimate): S, Z < 1 s; B ~10 s; V ~6 min (cat_padic.py took 5.5 min per G value at size 96).
-OUTPUT: screen + cat_newdesign_check_log_<YYYYMMDD_HHMMSS>.txt + cat_newdesign_check_out.json, next to the script.
+OUTPUT: screen + cat_newdesign_check_log_<YYYYMMDD_HHMMSS>.txt + cat_newdesign_check_out.json, in
+        design_config.outdir() (next to the script for the record design).
 """
 import sys, json, time, math
 from fractions import Fraction as Fr
@@ -34,15 +37,17 @@ import mpmath as mpm
 
 
 
-DES = (96, 15, 6, 8, 5)
 GV = Fr(1, 3)
-PCERT = 131
 LOG2 = math.log(2)
 T0 = time.time()
 import os as _os
 HERE = _os.path.dirname(_os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from design_config import DES, P as PCERT, outdir
+DES = tuple(DES)
+OUT = outdir(HERE)
 STAMP = time.strftime('%Y%m%d_%H%M%S')
-LOGPATH = _os.path.join(HERE, 'cat_newdesign_check_log_' + STAMP + '.txt')
+LOGPATH = _os.path.join(OUT, 'cat_newdesign_check_log_' + STAMP + '.txt')
 LOGF = open(LOGPATH, 'w')
 def log(s):
     line = f"[{time.time()-T0:7.1f}s] {s}"
@@ -345,7 +350,7 @@ def pf(nn):
     if nn > 1: ps.add(nn)
     return ps
 maxp = max((max(pf(x.denominator)) if x.denominator > 1 else 1) for row in Bm for x in row)
-gate("B", maxp <= H0, f"denominator prime {maxp} > H")
+gate("B", maxp <= H0 < PCERT, f"denominator prime {maxp}, H {H0}, modulus {PCERT}")
 gate("B", PCERT > H0, "certificate prime not above H")
 log(f"B: largest denominator prime {maxp} (<= H = {H0})")
 def det_exact(Mq):
@@ -411,7 +416,7 @@ total = sum(FAILS.values())
 out = {"script": "cat_newdesign_check.py", "design": DES, "gates": FAILS, "B": resB, "B_max_den_prime": maxp,
        "V": [{"p": p, "vp": v, "bound": bd} for p, v, bd in rows], "GATE_FAILS": total,
        "seconds": round(time.time()-T0, 1)}
-with open(_os.path.join(HERE, "cat_newdesign_check_out.json"), "w") as fh: json.dump(out, fh, indent=1)
+with open(_os.path.join(OUT, "cat_newdesign_check_out.json"), "w") as fh: json.dump(out, fh, indent=1)
 log(f"gates: {FAILS}")
 print(f"GATE_FAILS = {total}")
 LOGF.write(f"GATE_FAILS = {total}\n"); LOGF.close()

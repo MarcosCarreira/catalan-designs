@@ -1,0 +1,35 @@
+[   0.0s] C6 f_low: paper's integral 8609/2; design (88, 14, 5, 7, 5): integral 57429/4, f_low in [-2.27074249949, -2.27074249949]
+[   0.0s] == input cat_tail_opt_out.json: design (88, 14, 5, 7, 5), D = 16, 12 real tails, 9 pairs
+[   0.4s] kappa=2: exact numerators built: degrees A_X 79, Q_X 64, A_Y 47, Q_Y 32 (0.4s)
+[   0.7s]   C2 A/Q vs numerical derivative: worst rel 7.17e-43; vs closed-form derivative: 2.24e-44
+[   1.8s]   C3 critical points: X 31, Y 23; max mean-value allowance 5.49e-24; max enclosure width 3.97e-58
+[   1.8s]   sup X <= -0.973655163914863, sup Y <= -1.59196732276212, kappa||p||^2 + ||v||^2/2 <= 0.780974288665787
+[   1.8s]   U_2 <= -2.2730018934057   (cat_tail_opt.py grid value -2.273001893)
+[   2.2s]   C5 grid maxima X -0.973655164008, Y -1.591967322773  (2.2s for kappa=2)
+[   2.5s] kappa=1: exact numerators built: degrees A_X 81, Q_X 66, A_Y 47, Q_Y 32 (0.3s)
+[   2.8s]   C2 A/Q vs numerical derivative: worst rel 2.72e-41; vs closed-form derivative: 1.36e-41
+[   3.5s]   C3 critical points: X 19, Y 23; max mean-value allowance 5.47e-25; max enclosure width 4.37e-58
+[   3.5s]   sup X <= -1.41905539987515, sup Y <= -1.58144865858885, kappa||p||^2 + ||v||^2/2 <= 1.06766235110811
+[   3.5s]   U_1 <= -2.42119540275039   (cat_tail_opt.py grid value -2.421195403)
+[   4.0s]   C5 grid maxima X -1.419055399882, Y -1.581448658640  (1.8s for kappa=1)
+[   4.0s] C7 CLAIM (cat_tail_opt_out.json): max(U_2, U_1) <= -2.2730018934057 < f_low >= -2.27074249949441; margin 0.0022593939
+[   4.0s] E1 exponent (cat_tail_opt_out.json): Sigma_2 >= -2.565622486677, Sigma_1 >= -3.000504058464, lambda^(1) = 2.8032570329, U_1 - U_2 <= -0.148194
+[   4.0s]    rho_1 <= 5.13341772, c_2 <= 2.86444138, rho_2 <= 6.02344877, gamma >= 0.0022593939113, mu <= 2718.9247 (with p not dividing b: 2983.95645)
+[   4.0s] == input cat_tail_edges_out.json: design (88, 14, 5, 7, 5), D = 16, 18 real tails, 19 pairs
+[   5.9s] kappa=2: exact numerators built: degrees A_X 131, Q_X 116, A_Y 73, Q_Y 58 (2.0s)
+[   6.8s]   C2 A/Q vs numerical derivative: worst rel 1.01e-43; vs closed-form derivative: 2.24e-44
+[  11.9s]   C3 critical points: X 34, Y 37; max mean-value allowance 6.86e-23; max enclosure width 3.35e-57
+[  11.9s]   sup X <= -0.973905550560801, sup Y <= -1.59299014257538, kappa||p||^2 + ||v||^2/2 <= 0.78189185008785
+[  11.9s]   U_2 <= -2.27335753844284   (cat_tail_opt.py grid value -2.273357538)
+[  12.6s]   C5 grid maxima X -0.973905550561, Y -1.592990142600  (8.7s for kappa=2)
+[  14.7s] kappa=1: exact numerators built: degrees A_X 133, Q_X 118, A_Y 73, Q_Y 58 (2.1s)
+[  15.5s]   C2 A/Q vs numerical derivative: worst rel 1.36e-41; vs closed-form derivative: 1.36e-41
+[  20.5s]   C3 critical points: X 32, Y 37; max mean-value allowance 6.18e-22; max enclosure width 2.15e-57
+[  20.5s]   sup X <= -1.4190767630615, sup Y <= -1.58254353456543, kappa||p||^2 + ||v||^2/2 <= 1.06831941460768
+[  20.5s]   U_1 <= -2.42165457841375   (cat_tail_opt.py grid value -2.421654579)
+[  21.2s]   C5 grid maxima X -1.419076764702, Y -1.582543534573  (8.6s for kappa=1)
+[  21.2s] C7 CLAIM (cat_tail_edges_out.json): max(U_2, U_1) <= -2.27335753844284 < f_low >= -2.27074249949441; margin 0.0026150389
+[  21.2s] E1 exponent (cat_tail_edges_out.json): Sigma_2 >= -2.5668956931362, Sigma_1 >= -3.0016202976269, lambda^(1) = 2.80579060812, U_1 - U_2 <= -0.148297
+[  21.2s]    rho_1 <= 5.13469093, c_2 <= 2.86342711, rho_2 <= 6.02472198, gamma >= 0.0026150389484, mu <= 2385.69967 (with p not dividing b: 2650.78744)
+[  21.2s] gates: {'C6': 0, 'C1': 0, 'C2': 0, 'C3': 0, 'C4': 0, 'C5': 0, 'C7': 0, 'E1': 0}
+GATE_FAILS = 0

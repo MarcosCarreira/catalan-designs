@@ -1,0 +1,1559 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{xurl}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\Dl}{\mathcal{D}}
+\newcommand{\Rl}{\mathcal{R}}
+\newcommand{\Sl}{\mathcal{S}}
+\newcommand{\repo}{\url{https://github.com/MarcosCarreira/catalan-designs}}
+
+\title{General designs and an irrationality exponent for Catalan's constant}
+\author{Marcos Costa Santos Carreira}
+\date{9 October 2026; revised 21 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The preprint ``Catalan's constant is irrational'' (OpenAI, 24 September 2026) proves the irrationality of Catalan's constant by comparing two bounds for a sequence of determinants built from five integer parameters; the certified gap between the two bounds is about 0.00013. We state four conditions on the parameters under which the argument of the preprint goes through unchanged, verify each step of the preprint for general parameters, and exhibit two further choices of parameters that satisfy the four conditions with certified gaps of 0.0026 and 0.0025, by exact computations of the same kind as in the preprint. We bound all minors of the determinants, by an energy estimate with fewer nodes and by bounds for Schur polynomials, extend the nonvanishing at prime scales to denominators divisible by the prime once, and obtain, for the second choice, an upper bound below two thousand two hundred and ninety-four for the irrationality exponent of Catalan's constant; measurements of the determinants near the constant indicate that the method gives about one thousand eight hundred and fifty, and show which bounds account for the difference. We also show that the best gap the real-place estimate of the preprint can certify for given parameters is the value of an equilibrium problem for a logarithmic energy of two measures, and compute it for the preprint's choice and the first of the two further choices. Attempts to extend the method to the Dirichlet beta value at four are reported in a companion note.
+\end{abstract}
+
+\section{Introduction}
+
+Let $G=\sum_{k\ge0}(-1)^k(2k+1)^{-2}$ be Catalan's constant. The preprint \cite{OAI} constructs, for each positive integer $N$, a determinant $\Delta_N$ of size $48N$ whose entries are rational linear combinations of $1$ and $G$. If $G$ were rational, two estimates would hold along the primes $N=p$: a lower bound from the denominators of $\Delta_p$, which are nonzero by an arithmetic certificate,
+\[
+\liminf_{p\to\infty}\Big(\frac{\log|\Delta_p|}{(48p)^2}-\frac12\log2\Big)\ge-2.2908096,
+\]
+and an upper bound from an integral representation, valid without any hypothesis,
+\[
+\limsup_{N\to\infty}\Big(\frac{\log|\Delta_N|}{(48N)^2}-\frac12\log2\Big)\le-2.2909399 .
+\]
+The two are incompatible, so $G$ is irrational. The difference between the constants is $1.3\times10^{-4}$. With bounds for all complementary minors of $\Delta_N$, Jha \cite{Jha} turns the same comparison into a finite irrationality exponent, $\mu(G)\le10^{8}$; in that argument the exponent decreases as the gap grows. Litsey \cite{Litsey} obtains $\mu(G)\le8\,127$ by a different perturbation estimate and a new certificate that raises the gap of the preprint's design to $1.0\times10^{-3}$; both bounds are formalized in Lean. A different proof of the irrationality of $G$, by weighted tails of the defining series, is proposed in \cite{Sun}; Wachs \cite{Wachs} shows that its final estimate does not follow from its derivation, and Appendix~D confirms this by an independent exact computation.
+
+The construction depends on five positive integers per unit of $N$, which the preprint fixes as $(48,7,4,4,2)$. A line-by-line check of \cite{OAI} for this choice, with both finite certificates reproduced, is in \cite{MCSC}. The argument of \cite{OAI} is also formalised in Lean~4 for this choice \cite{OAILean}; the formalisation fixes the parameters of that design. Here we treat the five integers as free parameters. The contributions are the following.
+
+\begin{enumerate}
+\item Theorem~\ref{thm:main} gives four conditions on a design $(n_0,b_0,q_0,g_0,h_0)$: two inequalities, the invertibility of three fixed rational matrices, and one numerical inequality between the two bounds. Under these conditions the argument of \cite{OAI} proves that $G$ is irrational. The proof goes through the preprint section by section and records every place where the parameters enter (Section~\ref{sec:proof}).
+\item For the design $(96,15,6,8,5)$ we certify all four conditions (Section~\ref{sec:design}). The lower constant is $-2.2755480$, the upper constant is at most $-2.2781336$, and the certified gap is $2.59\times10^{-3}$, about twenty times that of the preprint. The certificate for the upper bound follows the method of \cite[Sec.~7]{OAI}: exact derivative numerators, exhaustive isolation of all stationary points, and interval arithmetic for every value. For the design $(36,6,2,3,2)$, proposed in \cite{Bojnal}, we certify the four conditions in the same way, with gap $2.53\times10^{-3}$ (Section~\ref{sec:design36}).
+\item Section~\ref{sec:exponent} makes the comparison quantitative. We check the ingredients of \cite{Jha} for a general design and bound the minors of size $m<n$ by an energy estimate for $m$ nodes that uses the certificate of (C4), in place of padding to size $n$, and with sharper bounds for the row and column determinants, obtained from Schur polynomials and from a singular-value estimate. With the degree bound of \cite{Litsey} and a nonvanishing lemma that allows one factor $p$ in the denominator (Lemma~\ref{xlem:nonzero}), the gap of the design $(36,6,2,3,2)$ then gives $\mu(G)<2\,294$, and that of $(96,15,6,8,5)$ gives $\mu(G)<2\,426$ (Theorem~\ref{xthm:exponent}); for the design of the preprint, \cite{Jha} obtains $10^8$ and \cite{Litsey} obtains $8\,127$. Measurements of the determinants near $G$ indicate that the method gives about $1.85\times10^3$ (Observation~\ref{xobs:radius}); the remaining difference lies in the treatment of the row and column determinants outside the energy and in the bound for the entries of $\Phi^{(1)}$ (Section~\ref{xsec:structure}).
+\item The upper constant of \cite[Prop.~6.1]{OAI} depends on two freely chosen trial sequences. Proposition~\ref{prop:dual} shows that its infimum over all trial sequences equals the maximum of a logarithmic energy of two probability measures, and that the trial sequences of a good certificate lie close to the moments of the maximising measures (Section~\ref{sec:equilibrium}). Numerically, the best gap the method can certify is between $0.00111$ and $0.00138$ for the design of the preprint and between $0.00259$ and $0.00269$ for $(96,15,6,8,5)$; the tail bases of our certificate are placed at the edges of the supports of the maximising measures.
+\item Attempts to carry the method to $\beta(4)=\sum_{k\ge0}(-1)^k(2k+1)^{-4}$ are reported in a companion note \cite{MCSC3}; within the families tested there, the constructions with small denominators tie $\beta(4)$ to a polylogarithmic constant, and the constructions that separate it have much larger denominators.
+\end{enumerate}
+
+The design $(96,15,6,8,5)$ was found by a local search over designs scored by the numerical value of the gap, and the design $(36,6,2,3,2)$ by searches scored by the exponent \cite{Bojnal}; these searches are not part of any proof and are described only briefly in Section~\ref{sec:design}. All statements labelled Observation are numerical and are not used in the proofs of Theorems~\ref{thm:main}, \ref{thm:second}, \ref{thm:third} and~\ref{xthm:exponent}. This note has not been refereed.
+
+We follow the notation of \cite{OAI} and refer to its numbered equations and statements as, for example, \cite[Eq.~(78)]{OAI} and \cite[Prop.~6.1]{OAI}.
+
+\section{Designs and conditions}\label{sec:conditions}
+
+\begin{definition}[Design]\label{def:design}
+A design is a list $(n_0,b_0,q_0,g_0,h_0)$ of positive integers. Its derived integers are
+\[
+a_0=b_0+q_0,\quad L_0=n_0+a_0,\quad C_0=L_0+g_0,\quad H_0=C_0+h_0,\quad A_0=a_0+2g_0,
+\]
+and its ratios are
+\[
+\alpha=\frac{a_0}{n_0},\quad\beta=\frac{b_0}{n_0},\quad\gamma_q=\frac{q_0}{n_0},\quad\gamma_g=\frac{g_0}{n_0},\quad\eta=\frac{h_0}{n_0},\quad\delta=\frac{q_0+g_0+h_0}{n_0}.
+\]
+For a positive integer $N$ the scaled parameters are $n=n_0N$, $b=b_0N$, $q=q_0N$, $g=g_0N$, $h=h_0N$, and $a,L,C,H,A$ are defined from them by the same formulas. The determinant $\Delta_N$ of the design is defined in Definition~\ref{def:det} below; for the design of \cite{OAI}, these are the parameters of \cite[Eq.~(2)]{OAI}.
+\end{definition}
+
+The preprint uses the design $(48,7,4,4,2)$, for which $q_0=g_0$; it writes $\gamma$ for both $\gamma_q$ and $\gamma_g$.
+
+\begin{definition}[Rows, moments and the determinant]\label{def:det}
+Let $f(t)=\sqrt{1-t^2}$ on $(-1,1)$, with the positive branch, and $w=t/(1+f)$; the involution $w\mapsto w^{-1}$, denoted by a star, fixes $t$ and sends $f$ to $-f$. For a design, a positive integer $N$ and $r\ge0$ put
+\[
+R_r=(1-t)^h\,t^{C-1}w^{r-g},\qquad P_r=\frac{R_r+R_r^*}2,\qquad D_r=\frac{t\,(R_r^*-R_r)}{2f}
+\]
+\cite[Eq.~(3)]{OAI}. With $d=|r-g|$ and the Chebyshev polynomials $T_d$, $U_d$, one has $P_r=(1-t)^ht^{C-1}T_d(1/t)$ and $D_r=\operatorname{sgn}(r-g)(1-t)^ht^{C-1}U_{d-1}(1/t)$, so both are polynomials with integer coefficients. For nonnegative integers $i,j$ let
+\[
+M(i,j)=\int_{-1}^1\!\int_0^1\frac{|t|\,t^is^j}{f(t)\,(1-ts)}\,ds\,dt,\qquad Z(i,j)=\int_0^1\!\int_0^1\frac{t^is^j}{1-ts}\,ds\,dt
+\]
+\cite[Eq.~(6)]{OAI}, extended bilinearly to polynomials in $t$ and in $s$. Put $\psi_k(s)=s^{b+k}(1-s)^q$. The determinant of the design is
+\[
+\Delta_N=\det_{0\le r,k<n}\Big(M(P_r,\psi_k)-\tfrac32\,Z(D_r,\psi_k)\Big)
+\]
+\cite[Eq.~(7)]{OAI}.
+\end{definition}
+
+The moments are $M(i,j)=M^0(i,j)+4G\,c_{(i-j)/2}+\frac32\zeta(2)\,c_{(j-i-1)/2}$ and $Z(i,j)=Z^0(i,j)+[i=j]\,\zeta(2)$, where $c_l=4^{-l}\binom{2l}l$ for integers $l\ge0$ and $c_z=0$ otherwise, and $M^0$, $Z^0$ are explicit rational arrays \cite[Eqs.~(14), (16), (17)]{OAI}. The rows are chosen so that $\zeta(2)$ cancels from every entry (Proposition~\ref{prop:rational}); the entries of $\Delta_N$ therefore lie in $\mathbb Q+\mathbb QG$. With $d\mu(t)=|t|\,dt/f(t)$ on $(-1,1)$ and $A_r(t)=P_r(t)-\mathbf 1_{t>0}\,\frac32\frac{f(t)}t\,D_r(t)$, the entries are also
+\[
+\int_{-1}^1\!\int_0^1A_r(t)\,\frac{\psi_k(s)}{1-ts}\,ds\,d\mu(t)
+\]
+\cite[Sec.~5.1]{OAI}. The proof of irrationality compares a lower bound for $|\Delta_p|$ along primes $p$, which holds if $G$ is rational and comes from the denominators of the entries (Sections~\ref{sec:two}--\ref{sec:nonvan}), with an upper bound from this integral representation (Section~\ref{sec:real}).
+
+
+
+\begin{definition}[Loss function]\label{def:loss}
+For real $y$ put $\pos{y}=\max(y,0)$. For $x\ge0$ let
+\[
+d_0(x)=\pos{\min(x,\,L_0-x,\,A_0)-\max(b_0,\,H_0-2x)},
+\]
+and, with $K=L_0-x$ and $J=H_0-x$,
+\begin{align*}
+\Rl(x)&=\pos{K}+\pos{K-A_0}+\pos{J-\max(b_0,K)},\\
+\Sl(x)&=\pos{\min(A_0,K)-b_0}+\pos{\min(b_0,J)-\max(0,K)}.
+\end{align*}
+The loss function of the design is
+\[
+\Dl(x)=\begin{cases}
+2n_0-\pos{d_0(x)-q_0}, & 0\le x\le H_0/2,\\
+\min\big(2n_0,\,n_0+\Rl(x),\,2\Rl(x)+\Sl(x)\big), & H_0/2<x\le H_0,\\
+0, & x>H_0,
+\end{cases}
+\]
+and its finite-place constant is
+\[
+F_{\mathrm{low}}=-\frac{1}{n_0^2}\int_0^{H_0}\Dl(x)\,dx-\Big(\frac12+\frac{\delta}{2}+\frac{\delta^2}{8}\Big)\log2 .
+\]
+\end{definition}
+
+The function $\Dl$ is piecewise linear with finitely many pieces, so $F_{\mathrm{low}}$ is an explicit number of the form $r_1+r_2\log2$ with $r_1,r_2$ rational. For the design of the preprint, $\int_0^{65}\Dl=8609/2$ and $\Dl$ is the function $d$ of \cite[Table~(43)]{OAI}.
+
+\begin{definition}[Fixed matrices]\label{def:fixed}
+For $0\le r\le n_0$ let $P_r$ and $D_r$ be the row polynomials of Definition~\ref{def:det} with $N=1$, that is with parameters $(n_0,b_0,q_0,g_0,h_0)$; the index $r=n_0$ is the auxiliary row. Let $M^0$ and $Z^0$ be the rational arrays above. The fixed matrix $B$ of the design is the rational $(n_0+1)\times n_0$ matrix
+\[
+B(r,k)=\sum_{j=0}^{q_0}(-1)^j\binom{q_0}{j}\Big(M^0(P_r,\,b_0+k+j)-\frac32Z^0(D_r,\,b_0+k+j)\Big),\qquad 0\le r\le n_0,\ 0\le k<n_0,
+\]
+and $B_0$, $B_1$ are its $n_0\times n_0$ submatrices formed by the rows $0,\dots,n_0-1$ and $1,\dots,n_0$.
+\end{definition}
+
+For the preprint's design this is \cite[Eq.~(47)]{OAI}.
+
+\begin{definition}[Real-place constant]\label{def:upper}
+For $\kappa\in\{1,2\}$, admissible sequences $p,v$ in the sense of \cite[Sec.~6]{OAI} (that is, $|u_k|\le c\,r^k$ for some $c<\infty$ and $0<r<1$) and $\lambda\in\Lambda_\kappa$, where $\Lambda_2=\{0\}$ and $\Lambda_1=[0,\infty)$, let
+\[
+U_\kappa(p,v,\lambda)=(-1+\alpha+\gamma_g)\log2+\kappa\|p\|_*^2+\tfrac12\|v\|_*^2+\sup_{\substack{-1\le x<1\\x\ne0}}X_{p,v,\lambda}(x)+\sup_{0<s<1}Y_v(s),
+\]
+where, as in \cite[Eq.~(77)]{OAI},
+\[
+\|u\|_*^2=\sum_{k\ge1}\frac{u_k^2}k,\qquad T(u,x)=\sum_{k\ge1}\frac{u_kT_k(x)}k,\qquad S(u,x)=\sum_{k\ge1}\frac{u_kx^k}k,
+\]
+and
+\begin{align*}
+X_{p,v,\lambda}(x)&=(\alpha+2\gamma_g)\log|x|+2\eta\log(1-x)-\Big(\frac\kappa2+\alpha+\eta+\gamma_g\Big)\log(1+x^2)\\
+&\quad+\lambda\Big(2\gamma_g-\frac{2x^2}{1+x^2}\Big)-2\kappa T(p,x)-S(v,x),\\
+Y_v(s)&=\beta\log s+\gamma_q\log(1-s)+2T(v,s).
+\end{align*}
+\end{definition}
+
+For the preprint's design this is the right side of \cite[Eq.~(78)]{OAI}.
+
+\begin{theorem}\label{thm:main}
+Let $(n_0,b_0,q_0,g_0,h_0)$ be a design satisfying
+\begin{enumerate}
+\item[(C1)] $2g_0<n_0-1$;
+\item[(C2)] $2b_0<H_0$;
+\item[(C3)] $\det B_0\ne0$, $\det(B_0+B_1)\ne0$ and $\det(B_0-B_1)\ne0$;
+\item[(C4)] there are admissible sequences $p^{(\kappa)},v^{(\kappa)}$ and $\lambda^{(\kappa)}\in\Lambda_\kappa$, for $\kappa=1,2$, with
+\[
+\max_{\kappa\in\{1,2\}}U_\kappa\big(p^{(\kappa)},v^{(\kappa)},\lambda^{(\kappa)}\big)<F_{\mathrm{low}} .
+\]
+\end{enumerate}
+Then Catalan's constant is irrational.
+\end{theorem}
+
+Condition (C2) holds whenever $b_0\le n_0$. For the preprint's design (C1) reads $8<47$, (C2) reads $14<65$, (C3) is \cite[Eq.~(48)]{OAI}, and (C4) is \cite[Props.~3.4 and 7.1]{OAI}.
+
+\section{Proof of Theorem~\ref{thm:main}}\label{sec:proof}
+
+Throughout this section $(n_0,b_0,q_0,g_0,h_0)$ is a fixed design, $N$ is a positive integer, and $n$, $b$, $q$, $g$, $h$, $a$, $L$, $C$, $H$, $A$ are the scaled parameters of Definition~\ref{def:design}. The proof follows \cite{OAI} section by section. For each statement we list the steps of the preprint whose validity depends on the design and show that they hold under the stated conditions; every other step is a formal identity or an estimate that does not involve the five parameters, and is used unchanged.
+
+\subsection{Rows, moments and rationality}
+
+\begin{lemma}[Supports]\label{lem:supports}
+Assume (C1). For $0\le r<n$, the polynomials $P_r$ and $D_r$ of Definition~\ref{def:det} satisfy $\operatorname{supp}P_r\subseteq\{A,\dots,H-1\}$ and $\operatorname{supp}D_r\subseteq\{A+1,\dots,H-1\}$. For every $r\ge0$, $tP_r/f-D_r=O(t^{C+r-g})$.
+\end{lemma}
+
+\begin{proof}
+With $d=|r-g|$, $P_r=(1-t)^ht^{C-1}T_d(1/t)$ and $D_r=\pm(1-t)^ht^{C-1}U_{d-1}(1/t)$ \cite[Sec.~2]{OAI}. Their lowest powers of $t$ are $C-1-d$ and $C-d$, and their highest are at most $C-1+h=H-1$. Since $C-1-A=n-1-g$, the lower bounds require $d\le n-1-g$ for $0\le r<n$, that is $\max(g,n-1-g)\le n-1-g$, which is $2g\le n-1$. By (C1), $2g_0\le n_0-2$, so $2g\le(n_0-2)N\le n-2$. The last assertion is \cite[Eq.~(5)]{OAI}, whose proof uses only the definitions.
+\end{proof}
+
+\begin{proposition}[Rationality; {\cite[Prop.~2.1]{OAI}}]\label{prop:rational}
+For every design and every $N$, each raw entry $F_j(r)$ with $0\le r<n$, $b\le j<L$ lies in $\mathbb Q+\mathbb QG$. If $G\in\mathbb Q$, then $\Delta_N\in\mathbb Q$.
+\end{proposition}
+
+\begin{proof}
+The moment evaluations \cite[Eqs.~(9)--(19)]{OAI} do not involve the design. In the proof of \cite[Prop.~2.1]{OAI} the coefficient of $\zeta(2)$ in $F_j(r)$ is $\tfrac32[t^j](tP_r/f-D_r)$, which vanishes for $j<L$ by Lemma~\ref{lem:supports} and $C+r-g\ge C-g=L$. The filter $s^{b+k}(1-s)^q$, $0\le k<n$, uses the raw columns $b\le j\le b+n-1+q=L-1$, because $a=b+q$.
+\end{proof}
+
+\subsection{The prime two}\label{sec:two}
+
+\begin{proposition}[{\cite[Prop.~2.2]{OAI}}]\label{prop:two}
+Assume (C1) and $G\in\mathbb Q$. Then $v_2(\Delta_N)\ge-\big(\frac\delta2+\frac{\delta^2}8\big)n^2-O_G\big(n\log(n+2)\big)$ for every $N$, and the same bound holds for every full minor of the raw column matrix.
+\end{proposition}
+
+\begin{proof}
+The proof of \cite[Prop.~2.2]{OAI} uses the design only through the following facts: all moment indices lie in $[0,H-1]$ (Lemma~\ref{lem:supports}); $C\ge n$, which holds since $C=n+a+g$; and $H-b=n(1+\delta)$, which is the definition of $\delta$. With these, \cite[Eq.~(30)]{OAI} holds verbatim. In its minimisation the expression decreases in $l$ because $l-C\le n-C\le0$, so the minimum over real $m,l\ge0$ with $m+l\le n$ is at least the unconstrained minimum $-(\delta/2+\delta^2/8)n^2$ of $\tfrac{n^2}{2}-(2+\delta)nm+2m^2$.
+\end{proof}
+
+\subsection{Odd primes and the finite-place bound}
+
+\begin{proposition}[{\cite[Prop.~3.4]{OAI}}]\label{prop:low}
+Assume (C1), (C2) and $G\in\mathbb Q$. Along every sequence $N\to\infty$ with $\Delta_N\ne0$,
+\[
+\liminf_{N\to\infty}\Big(\frac{\log|\Delta_N|}{n^2}-\frac12\log2\Big)\ge F_{\mathrm{low}}.
+\]
+\end{proposition}
+
+\begin{proof}
+We go through \cite[Sec.~3]{OAI}.
+
+\emph{Digit reductions.} \cite[Lemma~3.1]{OAI} concerns $M^0(i,j)$ and $Z^0(i,j)$ for $0\le i,j<H$ and primes $2\sqrt H<p\le H$; it involves the design only through $H$, and its proof uses only $H<p^2/4$.
+
+\emph{Leading layer.} In \cite[Eqs.~(36)--(37)]{OAI} the degree bounds $\deg(tP\,E)\le H+p-1$ and $\deg D<H$ hold by Lemma~\ref{lem:supports}, and $U_\ell=0$ for $\ell\le A$ because $tP_r$ and $D_r$ have no terms below degree $A+1$ (Lemma~\ref{lem:supports}). For $2\sqrt H<p\le H/2$ the pairs $(\ell,p+\ell)$ with $\max(b,H-2p)\le\ell<\min(p,L-p,A)$ consist of raw columns ($b\le\ell$ and $p+\ell<L$), so \cite[Eq.~(38)]{OAI} holds: $v_p(\Delta_N)\ge-2n+\pos{d_0-q}$ with $d_0=\pos{\min(p,L-p,A)-\max(b,H-2p)}$.
+
+\emph{Central layer and elimination.} For $H/2<p\le H$, \cite[Lemma~3.2]{OAI} uses only $H-1-J=p-1$ and $j<p$. In \cite[Lemma~3.3]{OAI}: $p>b$ holds because $p>H/2>b$ by (C2); $J<p$ because $p>H/2$; $K<J$ because $L<H$; the unpaired high columns have leading residue $-V_\ell$ because $\ell<b<A$. The identity $R_0=R$ of \cite[Eq.~(41)]{OAI} is checked in the four cases $K\le0$, $0<K\le b$, $b<K\le A$, $K>A$ using only $K<J$; the values are $\pos{J-b}$, $K+\pos{J-b}$, $J$ and $K+J-A$ in both expressions. The rank argument and the Cauchy--Binet transfer do not involve the design. Hence \cite[Eq.~(40)]{OAI} holds.
+
+\emph{Loss function.} Write $x=p/N$. All quantities in \cite[Eqs.~(38), (40)]{OAI} are linear in $p$ and $N$ with integer coefficients from the design, so for odd primes $2\sqrt H<p\le H$ not dividing the denominator of $G$ we obtain $-v_p(\Delta_N)\le N\,\Dl(p/N)$ exactly, with $\Dl$ of Definition~\ref{def:loss}. Primes $p>H$ give $v_p(\Delta_N)\ge0$ for large $N$, and primes $p\le2\sqrt H$ contribute $o(n^2)$, by the arguments of \cite[Sec.~3.4]{OAI}, which do not involve the design.
+
+\emph{Prime number theorem.} \cite[Eq.~(45)]{OAI} states $N^{-1}\sum_{p\le H_0N}d(p/N)\log p\to\int_0^{H_0}d$ for its continuous $d$. The same argument applies to every bounded function with finitely many discontinuities, in particular to $\Dl$: on a fixed partition the prime number theorem gives $(\theta(Nx_j)-\theta(Nx_{j-1}))/N\to x_j-x_{j-1}$, the weighted sum lies between the lower and upper Darboux sums of the partition up to $o(1)$, and these sums converge to $\int \Dl$ as the mesh tends to zero because $\Dl$ is Riemann integrable. The bound $\Dl\le2n_0$ shows that the prime $2$ and the primes below $2\sqrt H$ change the sum by $o(1)$.
+
+\emph{Conclusion.} Adding Proposition~\ref{prop:two} and using $\log|\Delta_N|=\sum_pv_p(\Delta_N)\log p$, $n^2=n_0^2N^2$,
+\[
+\frac{\log|\Delta_N|}{n^2}\ge-\frac{1}{n_0^2}\int_0^{H_0}\Dl-\Big(\frac\delta2+\frac{\delta^2}8\Big)\log2-o(1).\qedhere
+\]
+\end{proof}
+
+\subsection{Nonvanishing along the primes}\label{sec:nonvan}
+
+\begin{proposition}[{\cite[Prop.~4.1]{OAI}}]\label{prop:nonzero}
+Assume (C1), (C3) and $G\in\mathbb Q$. For every sufficiently large prime $p$, $v_p(\Delta_p)=-2n_0p$; in particular $\Delta_p\ne0$.
+\end{proposition}
+
+\begin{proof}
+We go through \cite[Sec.~4]{OAI} with $N=p$ and the rows $P_r$, $D_r$ of the design with $N=1$, $0\le r\le n_0$.
+
+\emph{Bases and Frobenius.} The palindromic bases and \cite[Eqs.~(49)--(51)]{OAI} do not involve the design. Writing $r=pr_0+i$ with $0\le r_0<n_0$, $0\le i<p$, and using $C=C_0p$, $h=h_0p$, $g=g_0p$, \cite[Eq.~(52)]{OAI} becomes $tR_rE=(1-t')^{h_0}(t')^{C_0}(w')^{r_0-g_0}E\,w^i$, and \cite[Eqs.~(53)--(55)]{OAI} follow as in the preprint. The successor index $r_0+1\le n_0$ is at most the auxiliary row.
+
+\emph{Degrees.} The auxiliary row has $\min\deg P_{n_0}=C_0-1-(n_0-g_0)=A_0-1$ and $\min\deg D_{n_0}=A_0$, the analogue of \cite[Eq.~(56)]{OAI}, and contact order $C_0+n_0-g_0\ge L_0$. In the last block $r=(n_0-1)p+i$, both the successor contribution and the original rows start in degree $(A_0+1)p-i$, so the consistency check after \cite[Eq.~(56)]{OAI} holds.
+
+\emph{Range of primes.} \cite[Sec.~4.3]{OAI} needs $p>2\sqrt{H_0p}$, so that \cite[Eqs.~(31), (36)]{OAI} apply at $N=p$, and $p>H_0$, so that the base entries, whose denominators have prime factors at most $H_0$, reduce modulo $p$. Both hold for $p>4H_0$; the preprint's $p>260$ is this condition for $H_0=65$.
+
+\emph{Filter and blocks.} In $\mathbb F_p[s]$, $s^{b_0p+k}(1-s)^{q_0p}=s^\ell(s^p)^{b_0+k_0}(1-s^p)^{q_0}$ for $k=\ell+pk_0$, which is \cite[Eq.~(58)]{OAI}; it uses the base raw indices $b_0,\dots,L_0-1$. The reduction of the scaled matrix is $L_p=a^{\mathsf T}\otimes B_0+b^{\mathsf T}\otimes B_1$ with $B_0,B_1$ of Definition~\ref{def:fixed}, and \cite[Eq.~(60)]{OAI} gives
+\[
+\det L_p=(\det a)^{n_0}\det B_0\,\det(B_0+B_1)^{(p-1)/2}\det(B_0-B_1)^{(p-1)/2}.
+\]
+
+\emph{Conclusion.} Let $E$ be the finite set of primes consisting of $2$, the primes dividing the denominator of $G$, the denominators of the entries of $B$, and the numerators and denominators of the three nonzero determinants of (C3). For $p>4H_0$ outside $E$, $\det L_p\ne0$, and the last paragraph of the proof of \cite[Prop.~4.1]{OAI} gives $v_p(\Delta_p)=-2n=-2n_0p$.
+\end{proof}
+
+\subsection{The real place}\label{sec:real}
+
+\begin{proposition}[{\cite[Props.~5.2, 5.3, 6.1]{OAI}}]\label{prop:up}
+Assume (C1). For $\kappa\in\{1,2\}$ let $p^{(\kappa)},v^{(\kappa)}$ be admissible and $\lambda^{(\kappa)}\in\Lambda_\kappa$. Then
+\[
+\limsup_{N\to\infty}\Big(\frac{\log|\Delta_N|}{n^2}-\frac12\log2\Big)\le\max_{\kappa\in\{1,2\}}U_\kappa\big(p^{(\kappa)},v^{(\kappa)},\lambda^{(\kappa)}\big).
+\]
+\end{proposition}
+
+\begin{proof}
+\emph{Section 5 of the preprint.} Put $D_*=n-1-2g$. By (C1), $2g\le n-2$, so $0<D_*<n$, which is what \cite[Eq.~(61)]{OAI} requires. The identity \cite[Eq.~(66)]{OAI}, $\xi_fx^{g-r}+\xi_nx^{r-g}=\xi_fx^{g-(n-1)}(x^{n-1-r}+c\,x^{D_*}x^r)$, holds for every design; the values $c\in\{1,-5\}$ come from the factor $3/2$ in the entries. \cite[Lemma~5.1]{OAI} uses $D_*<n$ in the bound $|F'/F|\le\frac43D_*+\frac83n<4n$, and \cite[Props.~5.2, 5.3]{OAI} use $D_*\ge0$. The identity \cite[Eq.~(65)]{OAI}, the majorants $I_{\kappa,n}$ of \cite[Eq.~(74)]{OAI} and the estimate \cite[Eq.~(75)]{OAI} then hold with the parameters of the design.
+
+\emph{Exponents.} Substituting \cite[Eq.~(79)]{OAI} into \cite[Eq.~(74)]{OAI} and collecting powers gives, with $\langle\cdot\rangle$ the empirical averages of \cite[Sec.~6]{OAI}, the identity \cite[Eq.~(80)]{OAI} in the form
+\begin{align*}
+\frac{\log I_{\kappa,n}}{n^2}-\frac12\log2={}&c_{\kappa,n}\log2+\langle W_\kappa(x)\rangle+\frac{\kappa+2}{2n}\langle\log(1+x^2)\rangle+\langle W_s(s)\rangle\\
+&+\frac\kappa2\langle\log|x-x'|\rangle_{\ne}+\frac12\langle\log(1-xx')\rangle_{\ne}+\langle\log|s-s'|\rangle_{\ne}-\langle\log(1-2xs+x^2)\rangle,
+\end{align*}
+with $c_{\kappa,n}=C/n+(\kappa-2)/2-(\kappa+1)/(2n)$, $W_\kappa(x)=(\alpha+2\gamma_g)\log|x|+2\eta\log(1-x)-(\kappa/2+\alpha+\eta+\gamma_g)\log(1+x^2)$ and $W_s(s)=\beta\log s+\gamma_q\log(1-s)$. Indeed, the exponent of $|x_i|$ is $(C-1)+g-(n-1)=a+2g$ in both majorants; the exponent of $(1+x_i^2)$ is $-(C+h)+2$ for $\kappa=2$ and $-(C+h)+2+(n-1)/2$ for $\kappa=1$, and $C/n=1+\alpha+\gamma_g$; the factor $(1-t_i)^h$ gives $2\eta\log(1-x)$; and the $s$-weights come from $s^b(1-s)^q$. This is the only place where the preprint's single letter $\gamma$ must be split: $\gamma_g$ appears in $W_\kappa$ and in $C/n$, and $\gamma_q$ in $W_s$.
+
+\emph{Constraint.} Condition \cite[Eq.~(67)]{OAI}, $\sum_i(1-x_i^2)/(1+x_i^2)\le D_*$, is equivalent to $\langle2\gamma_g-2x^2/(1+x^2)\rangle\le-1/n$, because $(1-x^2)/(1+x^2)=1-2x^2/(1+x^2)$, $D_*=n-1-2g$ and $2g=2\gamma_gn$. Its failure therefore gives $\langle D\rangle>-1/n$ with $D(x)=2\gamma_g-2x^2/(1+x^2)$, and adding $\lambda\langle D\rangle$ with $\lambda\ge0$ raises the bound by at most $\lambda/n$ in the case $\kappa=1$.
+
+\emph{Section 6 of the preprint.} The damped kernels, the identities \cite[Eqs.~(86), (87)]{OAI} and the completion of squares do not involve the design. Adding the constants of \cite[Eqs.~(86), (87)]{OAI} to $c_{\kappa,n}\log2$ gives $\big(C/n+(\kappa-2)/2-\kappa/2-1\big)\log2+O(1/n)=(-1+\alpha+\gamma_g)\log2+O(1/n)$. In the last step of the proof of \cite[Prop.~6.1]{OAI} the coefficients $19/48$, $1/12$, $7/48$, $1/12$ are $\alpha+2\gamma_g$, $2\eta$, $\beta$, $\gamma_q$; they are positive because the design consists of positive integers, and the weakened coefficients $2\eta-1/(2n)$ and $\gamma_q-1/n$ are at least $\eta$ and $\gamma_q/2$ for all large $n$. This gives the uniform decay to $-\infty$ near $x=0$, $x=1$, $s=0$, $s=1$ and the compactness used there. The conclusion of \cite[Prop.~6.1]{OAI} is the stated bound with $U_\kappa$ of Definition~\ref{def:upper}, and \cite[Eq.~(75)]{OAI} transfers it to $\Delta_N$.
+\end{proof}
+
+\subsection{Conclusion}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose $G\in\mathbb Q$. By Proposition~\ref{prop:rational}, $\Delta_N\in\mathbb Q$ for every $N$. By Proposition~\ref{prop:nonzero}, $\Delta_p\ne0$ for every sufficiently large prime $p$. Along this sequence of primes, Proposition~\ref{prop:low} gives $\liminf(\log|\Delta_p|/n^2-\frac12\log2)\ge F_{\mathrm{low}}$, and Proposition~\ref{prop:up} with the sequences of (C4) gives $\limsup(\log|\Delta_p|/n^2-\frac12\log2)\le\max_\kappa U_\kappa<F_{\mathrm{low}}$. This is a contradiction.
+\end{proof}
+
+\section{The design \texorpdfstring{$(96,15,6,8,5)$}{(96,15,6,8,5)}}\label{sec:design}
+
+In this section $(n_0,b_0,q_0,g_0,h_0)=(96,15,6,8,5)$. The derived integers are $a_0=21$, $L_0=117$, $C_0=125$, $H_0=130$, $A_0=37$, and the ratios are $\alpha=21/96$, $\beta=15/96$, $\gamma_q=6/96$, $\gamma_g=8/96$, $\eta=5/96$, $\delta=19/96$.
+
+\subsection{Conditions (C1) and (C2)}
+(C1) reads $16<95$ and (C2) reads $30<130$.
+
+\subsection{The finite-place constant}
+
+\begin{proposition}\label{prop:flow96}
+For the design $(96,15,6,8,5)$ the loss function $\Dl$ is continuous and is given by Table~\ref{tab:loss}; $\int_0^{130}\Dl=17114$, and
+\[
+F_{\mathrm{low}}=-\frac{8557}{4608}-\frac{44521}{73728}\log2=-2.27554803637\ldots
+\]
+\end{proposition}
+
+\begin{proof}
+On each interval of Table~\ref{tab:loss} every $\min$, $\max$ and positive part in Definition~\ref{def:loss} is attained by a fixed one of its arguments, so $\Dl$ is linear there; the listed formulas and end values follow by direct substitution, and adjacent end values agree. The candidate breakpoints are the crossings of the linear forms appearing in Definition~\ref{def:loss}; the script \texttt{cat\_cert7\_new.py} recomputes the integral exactly over all of them, as does \texttt{cat\_design\_lower.py}, and both reproduce $8609/2$ for the preprint's design. The constant follows from $\delta=19/96$: $\frac12+\frac\delta2+\frac{\delta^2}8=\frac{44521}{73728}$ and $17114/96^2=8557/4608$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{llll}
+\toprule
+$x$ range & $\Dl(x)$ & end values & $\int$ \\
+\midrule
+$[0,\,99/2]$ & $192$ & $192,\ 192$ & $9504$\\
+$[99/2,\,115/2]$ & $291-2x$ & $192,\ 176$ & $1472$\\
+$[115/2,\,65]$ & $176$ & $176,\ 176$ & $1320$\\
+$[65,\,68]$ & $306-2x$ & $176,\ 170$ & $519$\\
+$[68,\,80]$ & $442-4x$ & $170,\ 122$ & $1752$\\
+$[80,\,115]$ & $362-3x$ & $122,\ 17$ & $4865/2$\\
+$[115,\,117]$ & $247-2x$ & $17,\ 13$ & $30$\\
+$[117,\,130]$ & $130-x$ & $13,\ 0$ & $169/2$\\
+\midrule
+total & & & $17114$\\
+\bottomrule
+\end{tabular}
+\caption{The loss function of the design $(96,15,6,8,5)$, the analogue of \cite[Table~(43)]{OAI}. The slopes $0,-2,0,-2,-4,-3,-2,-1$ are those of the preprint's table.}\label{tab:loss}
+\end{table}
+
+\subsection{Condition (C3)}
+
+\begin{proposition}\label{prop:c3}
+For the design $(96,15,6,8,5)$ the three matrices $B_0$, $B_0+B_1$, $B_0-B_1$ of Definition~\ref{def:fixed} are invertible over $\mathbb Q$.
+\end{proposition}
+
+\begin{proof}
+The entries of $B$ are built by the rational recipe of \cite[Sec.~4.4]{OAI} with the arrays extended to $0\le i\le H_0-1=129$, $0\le j\le L_0-1=116$, the Chebyshev recursions run to $m=n_0-g_0=88$, and $q_0=6$ successive differences. Every scalar denominator in the recipe is a product of nonzero integers of absolute value at most $H_0=130$, so every denominator of $B$ is a unit modulo the prime $131$, and the construction can be carried out over $\mathbb F_{131}$. Gaussian elimination by the rule of \cite[Sec.~4.4]{OAI} produces the nonzero pivots listed in Table~\ref{tab:pivots131} (Appendix A). Hence the three matrices are invertible modulo $131$, and their rational determinants are nonzero.
+\end{proof}
+
+The script \texttt{cat\_cert4\_new.py} builds $B$ in exact rational arithmetic, checks the rows against \cite[Eq.~(3)]{OAI} and the vanishing of the $\zeta(2)$ coefficient in all $97\times102$ raw entries, finds the largest denominator prime of $B$ to be $127$, and computes the pivots. Run on the preprint's design modulo $101$, the same code reproduces all $144$ pivots and both row swaps of \cite[Table~1]{OAI}.
+
+\subsection{Condition (C4)}
+
+The trial sequences have the form used in \cite[Sec.~7]{OAI}: for $u\in\{p,v\}$,
+\[
+u_k=l_k\,[k\le16]+\sum_{z\in Z_{\mathbb R}}r_zz^k+\sum_{z\in Z_{\mathbb C}}\big(a_z\operatorname{Re}z^k+b_z\operatorname{Im}z^k\big)\qquad(k\ge1),
+\]
+with the $18$ real bases
+\begin{align*}
+Z_{\mathbb R}=\{&-0.7,-0.85,-0.93,-0.97,-0.99,-0.997,-0.999,\\
+&0.5,0.8,0.9,0.95,0.98,0.99,0.993,0.995,0.998,0.999,0.9995\}
+\end{align*}
+and the $19$ complex bases $Z_{\mathbb C}=\{z_1,\dots,z_{19}\}$ of Table~\ref{tab:bases}. All bases have modulus less than $1$, so the sequences are admissible. The $72$ coefficients of each sequence and the multiplier $\lambda$ for $\kappa=1$ are the exact rational numbers of Tables~\ref{tab:coef2} and~\ref{tab:coef1} (Appendix B).
+
+The bases are placed at the support edges of the equilibrium measures of Section~\ref{sec:equilibrium}. The optimal sequences are moments of those measures (Proposition~\ref{prop:dual}); an edge at $x=\cos\varphi$ contributes to the Chebyshev moments terms of the form $k^{-\sigma}\cos(k\varphi+c)$, and $k^{-\sigma}$ is a superposition of geometric sequences $e^{-kt}$. Each edge angle therefore receives a few radii approaching $1$: the negative real bases for the edge at $x=-1$, the complex bases $z_1,\dots,z_{10}$ for the two edges of the gap around $x=0$, $z_{11},\dots,z_{14}$ for the upper edge of $\mu$ near $0.993$, $z_{15},\dots,z_{19}$ for the lower edge of $\nu$ near $0.0065$, and the positive real bases for the edges near $1$. This choice is a heuristic; the proof uses only the resulting rational numbers.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{llll}
+\toprule
+ & base & modulus & argument\\
+\midrule
+$z_{1}$ & $0.0834+0.8459i$ & $0.850$ & $84.37^\circ$\\
+$z_{2}$ & $0.0912+0.9255i$ & $0.930$ & $84.37^\circ$\\
+$z_{3}$ & $0.0952+0.9653i$ & $0.970$ & $84.37^\circ$\\
+$z_{4}$ & $0.0971+0.9852i$ & $0.990$ & $84.37^\circ$\\
+$z_{5}$ & $0.0978+0.9922i$ & $0.997$ & $84.37^\circ$\\
+$z_{6}$ & $-0.0859+0.8456i$ & $0.850$ & $95.80^\circ$\\
+$z_{7}$ & $-0.0940+0.9252i$ & $0.930$ & $95.80^\circ$\\
+$z_{8}$ & $-0.0981+0.9650i$ & $0.970$ & $95.80^\circ$\\
+$z_{9}$ & $-0.1001+0.9849i$ & $0.990$ & $95.80^\circ$\\
+$z_{10}$ & $-0.1008+0.9919i$ & $0.997$ & $95.80^\circ$\\
+$z_{11}$ & $0.9435+0.1106i$ & $0.950$ & $6.69^\circ$\\
+$z_{12}$ & $0.9733+0.1141i$ & $0.980$ & $6.69^\circ$\\
+$z_{13}$ & $0.9833+0.1153i$ & $0.990$ & $6.69^\circ$\\
+$z_{14}$ & $0.9902+0.1161i$ & $0.997$ & $6.69^\circ$\\
+$z_{15}$ & $0.0055+0.8500i$ & $0.850$ & $89.63^\circ$\\
+$z_{16}$ & $0.0060+0.9300i$ & $0.930$ & $89.63^\circ$\\
+$z_{17}$ & $0.0063+0.9700i$ & $0.970$ & $89.63^\circ$\\
+$z_{18}$ & $0.0064+0.9900i$ & $0.990$ & $89.63^\circ$\\
+$z_{19}$ & $0.0065+0.9970i$ & $0.997$ & $89.63^\circ$\\
+\bottomrule
+\end{tabular}
+\caption{Complex bases of the trial sequences (exact decimals). $z_1,\dots,z_5$ lie at the angle $\arccos0.0981$, $z_6,\dots,z_{10}$ at $\arccos(-0.1011)$, $z_{11},\dots,z_{14}$ at $\arccos0.9932$, $z_{15},\dots,z_{19}$ at $\arccos0.0065$, the support edges found in Section~\ref{sec:equilibrium}.}\label{tab:bases}
+\end{table} In closed form,
+\begin{align*}
+T(u,x)&=\sum_{k\le16}\frac{l_kT_k(x)}{k}-\frac12\sum_z\operatorname{Re}\big(\rho_z\operatorname{Log}(1-2xz+z^2)\big),\\
+S(u,x)&=\sum_{k\le16}\frac{l_kx^k}{k}-\sum_z\operatorname{Re}\big(\rho_z\operatorname{Log}(1-xz)\big),\\
+\|u\|_*^2&=\sum_{k\le16}\frac{l_k^2+2l_kt_k}{k}-\sum_{z,z'}\rho_z\rho_{z'}\operatorname{Log}(1-zz'),\qquad t_k=\sum_z\rho_zz^k,
+\end{align*}
+where the sums over $z$ run over $Z_{\mathbb R}$ with $\rho_z=r_z$ and over $Z_{\mathbb C}$ and its conjugates with $\rho_z=(a_z-ib_z)/2$, $\rho_{\bar z}=\overline{\rho_z}$. Each factor $1-ze^{\pm i\theta}$ with $|z|<1$ has positive real part, so the principal logarithm of $1-2xz+z^2=(1-ze^{i\theta})(1-ze^{-i\theta})$, $x=\cos\theta$, is the sum of the two principal logarithms, and the formulas follow from \cite[Eq.~(82)]{OAI}.
+
+\begin{proposition}\label{prop:c4}
+With the sequences of Tables~\ref{tab:coef2} and~\ref{tab:coef1},
+\[
+U_2\le-2.27813351541685,\qquad U_1\le-2.41461192963326 .
+\]
+Consequently $\max(U_1,U_2)<F_{\mathrm{low}}$, with margin $F_{\mathrm{low}}-\max(U_1,U_2)>0.0025854$.
+\end{proposition}
+
+\begin{proof}
+The proof is the computation performed by \texttt{cat\_cert7\_new.py}, which follows \cite[Secs.~7.2--7.4]{OAI} and replaces the rational logarithm recipe of \cite[Sec.~7.3]{OAI} by interval arithmetic. For each $\kappa$:
+\begin{enumerate}
+\item \emph{Derivative numerators.} $X'=A_X/Q_X$ and $Y'=A_Y/Q_Y$ with polynomials over $\mathbb Q(i)$ computed exactly: $Q_X=x(1-x)(1+x^2)^{3-\kappa}\prod(1-2xz+z^2)\prod(1-xz)$, the products over the bases of $p$ and $v$ respectively with conjugates, and $Q_Y=s(1-s)\prod(1-2sz+z^2)$ over the bases of $v$. All divisions are exact and the imaginary parts cancel. The degrees of $(A_X,Q_X,A_Y,Q_Y)$ are $(131,116,73,58)$ for $\kappa=2$ and $(133,118,73,58)$ for $\kappa=1$. Every factor of $Q_X$ and $Q_Y$ other than $x(1-x)$, $s(1-s)$ is positive on $[-1,1]$, because $|z|<1$, so $X$ and $Y$ are smooth on $(-1,0)$, $(0,1)$.
+\item \emph{Stationary points.} All real roots of $A_X$ in $(-1,0)$ and $(0,1)$ and of $A_Y$ in $(0,1)$ are isolated by Descartes' rule of signs with bisection (the Vincent--Collins--Akritas method) in exact integer arithmetic, and each is refined to a bracket of width at most $2^{-50}$ with a strict sign change of the numerator at its ends. The bisection terminates with counts $0$ or $1$ on every piece, so all roots are simple and every stationary point is bracketed. There are $26$ stationary points of $X$ and $39$ of $Y$ for $\kappa=2$, and $32$ and $37$ for $\kappa=1$.
+\item \emph{Global suprema.} Since $\alpha+2\gamma_g$, $\eta$, $\beta$, $\gamma_q$ are positive and the other terms are bounded, $X\to-\infty$ at $x\to0$ and $x\to1$, and $Y\to-\infty$ at $s\to0$ and $s\to1$. Hence $\sup X$ is the larger of $X(-1)$ and the values at the stationary points, and $\sup Y$ is the largest value at a stationary point.
+\item \emph{Values.} On a bracket $[\ell,\ell+w]$, $X\le X(\ell)+w\sup|X'|$. Here $X(\ell)$ is enclosed in interval arithmetic at $60$ significant digits (\texttt{mpmath.iv}), and $X'$ is enclosed on the whole bracket by interval evaluation of its closed form, which is checked against $A_X/Q_X$ at five points to relative error below $10^{-35}$. The largest allowance $w\sup|X'|$ is $3.7\times10^{-22}$. The norms and $\log2$ are enclosed in the same arithmetic.
+\end{enumerate}
+The upper endpoints give
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+ & $\sup X$ & $\sup Y$ & $\kappa\|p\|_*^2+\frac12\|v\|_*^2$\\
+\midrule
+$\kappa=2$ & $\le-0.97899971671247$ & $\le-1.59600372010315$ & $\le0.78062889116456$\\
+$\kappa=1$ & $\le-1.40122170303065$ & $\le-1.58246983871889$ & $\le1.05283858188207$\\
+\bottomrule
+\end{tabular}
+\end{center} Adding $(-1+\alpha+\gamma_g)\log2=-\frac{67}{96}\log2$ gives the stated bounds. The finite-place constant is enclosed in the same arithmetic as $F_{\mathrm{low}}\ge-2.27554803637302$.
+\end{proof}
+
+As controls, the script compares $A/Q$ with numerical derivatives of $X$ and $Y$ (relative error below $10^{-40}$) and compares each certified supremum with the maximum over a grid of $200{,}000$ points in floating point (agreement within $4\times10^{-10}$). The coefficients were produced by \texttt{cat\_tail\_edges.py}, which minimises the bound over the coefficients for the fixed bases, a convex problem, and rounds the result; that computation is not part of the proof.
+
+\begin{remark}[A certificate with fewer coefficients]\label{rem:fewer}
+With $46$ coefficients per sequence (finite part of length $16$, the $12$ real bases $\pm0.5$, $\pm0.8$, $\pm0.9$, $\pm0.95$, $\pm0.98$, $0.99$, $0.995$ and the $9$ complex bases $0.6i$, $0.8i$, $0.9i$, $0.95i$, $0.98i$, $\pm0.1+0.9i$, $\pm0.1+0.95i$, not tied to the support edges), the same certificate gives $U_2\le-2.27779256156814$, $U_1\le-2.41413175743286$ and margin $0.0022445$. Its coefficients are in \texttt{cat\_tail\_opt\_out.json} (SHA-256 beginning \texttt{5841a0f1}); \texttt{cat\_cert7\_new.py} certifies both files in one run.
+\end{remark}
+
+\begin{theorem}\label{thm:second}
+The design $(96,15,6,8,5)$ satisfies (C1)--(C4). Hence, by Theorem~\ref{thm:main}, Catalan's constant is irrational, with the gap between the two constants exceeding $0.0025854$.
+\end{theorem}
+
+\begin{proof}
+Combine Section~4.1 and Propositions~\ref{prop:flow96}, \ref{prop:c3} and~\ref{prop:c4}.
+\end{proof}
+
+\subsection{Design search}
+
+\begin{observation}[Numerical; not part of the proof]
+For each design we computed $F_{\mathrm{low}}$ exactly and minimised $U_2$ numerically over the first $300$ coefficients of $p$ and $v$, scoring the design by $F_{\mathrm{low}}-U_2$. A local search over designs (\texttt{cat\_design\_search.py}, log of 7 October 2026) starting from $(48,7,4,4,2)$, whose score is $0.00111$, reached $(48,8,3,4,3)$ with score $0.00225$ at size $48$ and $(96,15,6,8,5)$ with score $0.00244$ at size $96$. For $(96,15,6,8,5)$ the script \texttt{cat\_newdesign\_check.py} also computed $\Delta_1$ exactly with the hypothetical value $G=1/3$ and found, for each of the $23$ primes $2\sqrt{130}<p\le130$, $-v_p(\Delta_1)\le \Dl(p)$, with equality at $11$ of them.
+\end{observation}
+
+\begin{observation}[Numerical; not part of the proof]\label{obs:musearch}
+The search above ranks designs by the gap alone. The exponent of Theorem~\ref{xthm:exponent} is $\rho_2\big((1-\gamma_g)/\gamma+n_0/2\big)$, in which $n_0$ enters additively, so a design with a slightly smaller gap and a smaller $n_0$ can give a smaller exponent. This was pointed out in \cite{Bojnal}, whose search over $1\,352$ designs with the objective $\rho_2\big((1-\gamma_g)/\gamma+n_0\big)$ (the exponent with $p\nmid b$, Remark~\ref{xrem:pdivb}) gave $(36,6,2,3,2)$. A local search with the objective $\rho_2\big((1-\gamma_g)/\gamma+n_0/2\big)$, evaluated with the same numerical minimisation (\texttt{cat\_mu\_search.py}, log of 21 October 2026), over $22$ values of $n_0$ from $12$ to $96$, ranks first $(36,6,2,3,2)$, then $(88,14,5,7,5)$ and $(52,8,3,4,3)$. The certificate of Section~\ref{sec:design36}, run for these three designs (\texttt{run\_design\_cert.py}), gives the gaps $0.0025287$, $0.0026150$, $0.0024897$ and the exponents $2\,293.5$, $2\,385.7$, $2\,389.5$; for $(96,15,6,8,5)$ the gap is $0.0025854$ and the exponent $2\,425.6$.
+\end{observation}
+
+\section{The design \texorpdfstring{$(36,6,2,3,2)$}{(36,6,2,3,2)}}\label{sec:design36}
+
+This design was proposed in \cite{Bojnal}, as the best of $1\,352$ designs for the exponent of Section~\ref{sec:exponent} in the form with $p\nmid b$ (Remark~\ref{xrem:pdivb}); Observation~\ref{obs:musearch} finds it also for the exponent of Proposition~\ref{xprop:power}. In this section $(n_0,b_0,q_0,g_0,h_0)=(36,6,2,3,2)$. The derived integers are $a_0=8$, $L_0=44$, $C_0=47$, $H_0=49$, $A_0=14$, and the ratios are $\alpha=2/9$, $\beta=1/6$, $\gamma_q=1/18$, $\gamma_g=1/12$, $\eta=1/18$, $\delta=7/36$. The verification follows Section~\ref{sec:design} step by step.
+
+\subsection{Conditions (C1) and (C2)}
+(C1) reads $6<35$ and (C2) reads $12<49$.
+
+\subsection{The finite-place constant}
+
+\begin{proposition}\label{prop:flow36}
+For the design $(36,6,2,3,2)$ the loss function $\Dl$ is continuous and is given by Table~\ref{tab:loss36}; $\int_0^{49}\Dl=4825/2$, and
+\[
+F_{\mathrm{low}}=-\frac{4825}{2592}-\frac{6241}{10368}\log2=-2.27873568227\ldots
+\]
+\end{proposition}
+
+\begin{proof}
+As for Proposition~\ref{prop:flow96}: on each interval of Table~\ref{tab:loss36} every $\min$, $\max$ and positive part in Definition~\ref{def:loss} is attained by a fixed one of its arguments, the listed formulas and end values follow by substitution, and adjacent end values agree. The scripts \texttt{cat\_cert7\_new.py} and \texttt{cat\_design\_search.py} recompute the integral exactly over all crossings of the linear forms of Definition~\ref{def:loss}. The constant follows from $\delta=7/36$: $\frac12+\frac\delta2+\frac{\delta^2}8=\frac{6241}{10368}$ and $\frac{4825}{2}/36^2=\frac{4825}{2592}$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{llll}
+\toprule
+$x$ range & $\Dl(x)$ & end values & $\int$ \\
+\midrule
+$[0,\,37/2]$ & $72$ & $72,\ 72$ & $1332$\\
+$[37/2,\,43/2]$ & $109-2x$ & $72,\ 66$ & $207$\\
+$[43/2,\,49/2]$ & $66$ & $66,\ 66$ & $198$\\
+$[49/2,\,51/2]$ & $115-2x$ & $66,\ 64$ & $65$\\
+$[51/2,\,30]$ & $166-4x$ & $64,\ 46$ & $495/2$\\
+$[30,\,43]$ & $136-3x$ & $46,\ 7$ & $689/2$\\
+$[43,\,44]$ & $93-2x$ & $7,\ 5$ & $6$\\
+$[44,\,49]$ & $49-x$ & $5,\ 0$ & $25/2$\\
+\midrule
+total & & & $4825/2$\\
+\bottomrule
+\end{tabular}
+\caption{The loss function of the design $(36,6,2,3,2)$. The slopes are those of Table~\ref{tab:loss}.}\label{tab:loss36}
+\end{table}
+
+\subsection{Condition (C3)}
+
+\begin{proposition}\label{prop:c3b}
+For the design $(36,6,2,3,2)$ the three matrices $B_0$, $B_0+B_1$, $B_0-B_1$ of Definition~\ref{def:fixed} are invertible over $\mathbb Q$.
+\end{proposition}
+
+\begin{proof}
+As for Proposition~\ref{prop:c3}, with the arrays extended to $0\le i\le H_0-1=48$, $0\le j\le L_0-1=43$, the Chebyshev recursions run to $m=n_0-g_0=33$, and $q_0=2$ successive differences. Every denominator of $B$ is a product of nonzero integers of absolute value at most $H_0=49$, hence a unit modulo the prime $53$. Gaussian elimination by the rule of \cite[Sec.~4.4]{OAI} modulo $53$ produces the nonzero pivots of Table~\ref{tab:pivots53} (Appendix A). Hence the three matrices are invertible modulo $53$, and their rational determinants are nonzero.
+\end{proof}
+
+The script \texttt{cat\_cert4\_new.py} builds $B$ in exact rational arithmetic, checks the rows against \cite[Eq.~(3)]{OAI} and the vanishing of the $\zeta(2)$ coefficient in all $37\times38$ raw entries, finds the largest denominator prime of $B$ to be $47$, and computes the pivots; in the same run it reproduces \cite[Table~1]{OAI} for the preprint's design.
+
+\subsection{Condition (C4)}
+
+The trial sequences have the form of Section~\ref{sec:design}, with the same finite part of length $16$, the same $18$ real bases and the same $19$ complex bases of Table~\ref{tab:bases}. Their $72$ coefficients per sequence and the multiplier $\lambda$ for $\kappa=1$ are the exact rational numbers of Tables~\ref{tab:coef2b} and~\ref{tab:coef1b} (Appendix B).
+
+\begin{proposition}\label{prop:c4b}
+For the design $(36,6,2,3,2)$, with the sequences of Tables~\ref{tab:coef2b} and~\ref{tab:coef1b},
+\[
+U_2\le-2.28126446232934,\qquad U_1\le-2.41923318115473 .
+\]
+Consequently $\max(U_1,U_2)<F_{\mathrm{low}}$, with margin $F_{\mathrm{low}}-\max(U_1,U_2)>0.0025287$.
+\end{proposition}
+
+\begin{proof}
+The computation of the proof of Proposition~\ref{prop:c4}, carried out by \texttt{cat\_cert7\_new.py} for this design. The degrees of $(A_X,Q_X,A_Y,Q_Y)$ are $(131,116,73,58)$ for $\kappa=2$ and $(133,118,73,58)$ for $\kappa=1$. There are $38$ stationary points of $X$ and $37$ of $Y$ for $\kappa=2$, and $32$ and $37$ for $\kappa=1$, all simple and bracketed to width at most $2^{-50}$. The largest allowance $w\sup|X'|$ is $4.5\times10^{-22}$. The upper endpoints give
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+ & $\sup X$ & $\sup Y$ & $\kappa\|p\|_*^2+\frac12\|v\|_*^2$\\
+\midrule
+$\kappa=2$ & $\le-0.98264438769628$ & $\le-1.59926798681028$ & $\le0.78200012089942$\\
+$\kappa=1$ & $\le-1.40663036776117$ & $\le-1.58606361211157$ & $\le1.05481300744020$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Adding $(-1+\alpha+\gamma_g)\log2=-\frac{25}{36}\log2$ gives the stated bounds. The finite-place constant is enclosed in the same arithmetic as $F_{\mathrm{low}}\ge-2.27873568227958$.
+\end{proof}
+
+The controls of Section~\ref{sec:design} give relative errors below $10^{-40}$ for the derivatives and agreement within $3\times10^{-10}$ between the certified suprema and the grid maxima. The coefficients were produced by \texttt{cat\_tail\_edges.py} for this design; with the $46$ coefficients of Remark~\ref{rem:fewer} the same certificate gives the margin $0.0021847$.
+
+\begin{theorem}\label{thm:third}
+The design $(36,6,2,3,2)$ satisfies (C1)--(C4), with the gap between the two constants exceeding $0.0025287$.
+\end{theorem}
+
+\begin{proof}
+Combine Section~\ref{sec:design36}.1 and Propositions~\ref{prop:flow36}, \ref{prop:c3b} and~\ref{prop:c4b}.
+\end{proof}
+
+
+\section{An irrationality exponent}\label{sec:exponent}
+
+The comparison of Theorem~\ref{thm:main} also bounds rational approximations to $G$. Jha \cite{Jha} obtains $\mu(G)\le10^8$ for the design $(48,7,4,4,2)$ from three ingredients: denominator bounds that hold at every rational argument, nonvanishing at prime scales that avoid the denominator, and bounds for all complementary minors of the determinant. In this section we check these ingredients for a design satisfying (C1)--(C4), bound the minors of every size by an energy estimate for configurations with fewer nodes that uses the certificate of (C4), sharpen the bounds of \cite{Jha} for the row and column determinants (Section~\ref{xsec:alt}), use the bound of \cite{Litsey} for the degree of the determinant as a polynomial in the constant (Lemma~\ref{xlem:degree}), and obtain, for the design $(36,6,2,3,2)$, an exponent below $2\,294$, and for $(96,15,6,8,5)$ one below $2\,426$ (Theorem~\ref{xthm:exponent}). Litsey \cite{Litsey} obtains $\mu(G)\le8\,127$ for the design $(48,7,4,4,2)$ by a different perturbation estimate: he writes $\Phi^{(1)}$, by a quadrature formula, through the values of the rows at fixed nodes, expands the determinant column by column, and bounds the resulting determinants, whose rows keep their full number, by the energy of fewer points; he also certifies a gap of $1.0\times10^{-3}$ for that design. Section~\ref{xsec:structure} records measurements of the determinants near $G$: they indicate that the method gives about $1.85\times10^3$, and they show which bounds account for the difference. Throughout, the design satisfies (C1)--(C4), we fix the sequences of (C4), and we put
+\begin{gather*}
+U=\max_{\kappa\in\{1,2\}}U_\kappa\big(p^{(\kappa)},v^{(\kappa)},\lambda^{(\kappa)}\big),\\
+c_{\mathrm{low}}=F_{\mathrm{low}}+\tfrac12\log2,\qquad c_{\mathrm{up}}=U+\tfrac12\log2,\qquad \gamma=c_{\mathrm{low}}-c_{\mathrm{up}}>0 .
+\end{gather*}
+For the design $(36,6,2,3,2)$, $F_{\mathrm{low}}=-2.27873568227\ldots$ and $\gamma>0.0025287$ (Theorem~\ref{thm:third}); for $(96,15,6,8,5)$, $F_{\mathrm{low}}=-2.27554803637\ldots$ and $\gamma>0.0025854$ (Theorem~\ref{thm:second}).
+
+The argument has four steps. First, arithmetic: at every rational argument $a/b$ and at prime scales $p$ with $p^2\nmid b$, the value $\Delta_p(a/b)$ is nonzero and its size is bounded below through the denominators of its entries (Sections~\ref{xsec:poly} and~\ref{xsec:arith}). Second, size: the entries of $\Phi^{(1)}$ are bounded (Section~\ref{xsec:size}), and every minor of $A=\Phi^{(0)}+G\Phi^{(1)}$ is bounded through an energy of fewer nodes (Section~\ref{xsec:minors}) and bounds for the row and column determinants (Section~\ref{xsec:alt}). Third, perturbation: these bounds give an upper bound for $|\Delta_p(x)|$ at every $x$ within distance $e^{-\rho n}$ of $G$. Fourth, comparison: a rational number that close to $G$ contradicts the lower bound, which gives the exponent $\rho(1-\gamma_g+n_0\gamma/2)/\gamma$ (Section~\ref{xsec:results}). Section~\ref{xsec:structure} compares the proved rate $\rho$ with measurements.
+
+\subsection{The determinant as a polynomial}\label{xsec:poly}
+
+Let $c_l$ be as in Section~\ref{sec:conditions}: $c_l=\binom{2l}{l}4^{-l}$ for integers $l\ge0$, so that $0<c_l\le1$, and $c_l=0$ otherwise.
+
+\begin{definition}[Determinant polynomial]\label{xdef:poly}
+For $0\le r<n$ and $b\le j<L$ let $F_j(r)=M(P_r,s^j)-\frac32Z(D_r,s^j)$ be the raw entry \cite[Sec.~2]{OAI}, with $M$, $Z$ and the rows of Definition~\ref{def:det}. By \cite[Prop.~2.1]{OAI} and Proposition~\ref{prop:rational} it has the form
+\begin{gather*}
+F_j(r)=F^{(0)}_j(r)+G\,F^{(1)}_j(r),\\
+F^{(0)}_j(r)=M^0(P_r,j)-\tfrac32Z^0(D_r,j),\qquad F^{(1)}_j(r)=4\sum_{v}[t^v]P_r\;c_{(v-j)/2},
+\end{gather*}
+with $c_{(v-j)/2}=0$ unless $v-j$ is even and nonnegative \cite[Sec.~4.3]{OAI}. For $e\in\{0,1\}$ and $0\le r,k<n$ let
+\[
+\Phi^{(e)}_{r,k}=\sum_{u=0}^{q}(-1)^u\binom qu F^{(e)}_{b+k+u}(r),
+\]
+and let $\Delta_N(X)=\det\big(\Phi^{(0)}+X\Phi^{(1)}\big)\in\mathbb Q[X]$. Then $\Delta_N(G)=\Delta_N$ is the determinant of \cite[Eq.~(7)]{OAI}.
+\end{definition}
+
+\begin{lemma}[Degree; {\cite[Lemma~3.1]{Litsey}}]\label{xlem:degree}
+$\Delta_N(X)$ has degree at most $n-g$.
+\end{lemma}
+
+\begin{proof}
+By Definition~\ref{def:det}, $P_r=(1-t)^ht^{C-1}T_{|r-g|}(1/t)$ depends on $r$ only through $|r-g|$, and $F^{(1)}_j(r)$ depends on $r$ only through $P_r$; so rows $r$ and $2g-r$ of $\Phi^{(1)}$ are equal for $0\le r<g$, and $2g-r<n$ by (C1). Subtracting row $r$ from row $2g-r$ for $0\le r<g$ does not change $\Delta_N(X)$ and makes the $g$ rows of index $g+1,\dots,2g$ independent of $X$. Expanding the determinant along its rows gives a polynomial of degree at most $n-g$.
+\end{proof}
+
+\subsection{Arithmetic at integer and rational arguments}\label{xsec:arith}
+
+\begin{lemma}[Local bounds at integers]\label{xlem:local}
+There are integers $D_{N,p}\ge0$, defined for every positive integer $N$ and every prime $p$, with $D_{N,p}=0$ for $p>H$, such that
+\begin{enumerate}
+\item $v_p(\Delta_N(x))\ge-D_{N,p}$ for every integer $x$ and every prime $p$;
+\item $\sum_pD_{N,p}\log p\le-c_{\mathrm{low}}n^2+o(n^2)$ as $N\to\infty$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+We go through the proofs of Propositions~\ref{prop:two} and~\ref{prop:low}, which follow \cite[Secs.~2.2 and~3]{OAI}, with $G$ replaced by an integer $x$. In those proofs the constant enters in three ways only.
+(i) At odd primes $2\sqrt H<p\le H$ the term $G\,F^{(1)}_j(r)$ is used only through the integrality of $F^{(1)}_j(r)$ at $p$, which holds because every $c_l$ is $p$-integral at odd $p$; after multiplication by $p$ or $p^2$ this term vanishes modulo $p$ \cite[Sec.~3.2, Lemmas~3.2, 3.3]{OAI}. The same holds with $G$ replaced by $x\in\mathbb Z$.
+(ii) At odd primes $p\le2\sqrt H$ the entry bound of \cite[Sec.~3.4]{OAI} reads $v_p(F_j(r))\ge-C_0(1+\log H/\log p)-v_p(\operatorname{den}G)$; for $x\in\mathbb Z$ the last term is zero. At primes $p>H$ every entry is $p$-integral, because the factorials and degree denominators have prime factors at most $H$ and $x$ has none.
+(iii) At $p=2$ the constant enters only through $e_1=4G-M_s(0,0)$ and $e_2=-M_s(0,1)$ of \cite[Eq.~(24)]{OAI}, through a fixed integer $K_G$ with $v_2(e_1),v_2(e_2)\ge-K_G$. For $x\in\mathbb Z$, $v_2(4x-M_s(0,0))\ge\min\big(2,v_2(M_s(0,0))\big)$, so one integer $K$ serves for all $x$, and the bound of Proposition~\ref{prop:two} holds for $\Delta_N(x)$ with an error term $O(n\log(n+2))$ independent of $x$.
+Let $D_{N,p}$ be the negatives of the resulting lower bounds, rounded up to integers and replaced by $0$ when negative. They do not depend on $x$, which is (1). The sum in (2) is the sum estimated in the proof of Proposition~\ref{prop:low}, whose value is $-c_{\mathrm{low}}n^2+o(n^2)$.
+\end{proof}
+
+\begin{lemma}[Rational arguments]\label{xlem:binomial}
+Let $P\in\mathbb Q[X]$ have degree at most $d$, let $p$ be a prime and $D\ge0$ an integer with $v_p(P(x))\ge-D$ for every integer $x$. Then $v_p\big(b^d\,d!\,P(a/b)\big)\ge-D$ for all integers $a$ and $b\ge1$.
+\end{lemma}
+
+\begin{proof}
+Write $P=\sum_{k=0}^de_k\binom Xk$ with $e_k=\sum_{i=0}^k(-1)^{k-i}\binom kiP(i)$. Then $v_p(e_k)\ge-D$. For $0\le k\le d$,
+\[
+b^d\,d!\binom{a/b}{k}=b^{d-k}\,\frac{d!}{k!}\prod_{i=0}^{k-1}(a-ib)\in\mathbb Z .
+\]
+Hence $b^dd!P(a/b)=\sum_ke_k\cdot(\text{integer})$ has $v_p\ge-D$.
+\end{proof}
+
+\begin{corollary}[Lower bound at rational arguments]\label{xcor:lower}
+For all integers $a$ and $b\ge1$ with $\Delta_N(a/b)\ne0$,
+\[
+\log|\Delta_N(a/b)|\ge c_{\mathrm{low}}n^2-(n-g)\log b-o(n^2),
+\]
+where the term $o(n^2)$ does not depend on $a$ and $b$.
+\end{corollary}
+
+\begin{proof}
+By Lemmas~\ref{xlem:degree}, \ref{xlem:local} and~\ref{xlem:binomial}, with $d=n-g$, $b^{d}\,d!\prod_pp^{D_{N,p}}\,\Delta_N(a/b)$ is a nonzero integer. Its absolute value is at least $1$; take logarithms and use $\log d!=O(n\log n)$.
+\end{proof}
+
+\begin{lemma}[Nonvanishing]\label{xlem:nonzero}
+There is a finite set $E_0$ of primes, depending only on the design, such that for every prime $p>4H_0$ with $p\notin E_0$ and every rational number $x$ with $v_p(x)\ge-1$, $v_p(\Delta_p(x))=-2n_0p$. In particular $\Delta_p(a/b)\ne0$ for all integers $a$ and $b\ge1$ with $p^2\nmid b$.
+\end{lemma}
+
+\begin{proof}
+Let $E_0$ consist of $2$, the primes dividing the denominators of the entries of the fixed matrix $B$ of Definition~\ref{def:fixed}, and the primes dividing the numerators and denominators of the three determinants of (C3). The proof of Proposition~\ref{prop:nonzero}, which follows \cite[Sec.~4]{OAI}, multiplies every raw entry by $p^2$, reduces the scaled entries modulo $p$, and uses the constant only in \cite[Sec.~4.3]{OAI}, through the term $G\,F^{(1)}_j(r)$ of the raw entry $F_j(r)=F^{(0)}_j(r)+G\,F^{(1)}_j(r)$ (Definition~\ref{xdef:poly}). Replace $G$ by $x$. The coefficients of $P_r$ are integers and every $c_l$ is $p$-integral at the odd prime $p$, so $v_p(F^{(1)}_j(r))\ge0$ and
+\[
+v_p\big(p^2x\,F^{(1)}_j(r)\big)\ge2+v_p(x)\ge1 .
+\]
+Hence the scaled raw entry $p^2F_j(r)$ is $p$-integral and congruent modulo $p$ to $p^2F^{(0)}_j(r)$, which does not involve $x$; the reductions of $p^2F^{(0)}_j(r)$ are those of \cite[Eq.~(57)]{OAI} used in the proof of Proposition~\ref{prop:nonzero}. The residue filter \cite[Eq.~(58)]{OAI} uses only that the scaled raw entries are $p$-integral, because the coefficient differences it discards are divisible by $p$. The reduction of the scaled filtered matrix is therefore the matrix $L_p$ of the proof of Proposition~\ref{prop:nonzero}, whose determinant is nonzero for $p>4H_0$ outside $E_0$. So $p^{2n}\Delta_p(x)$ is the determinant of a matrix over $\mathbb Z_{(p)}$ whose reduction has nonzero determinant, hence a unit in $\mathbb Z_{(p)}$, and $v_p(\Delta_p(x))=-2n=-2n_0p$. If $p^2\nmid b$, the reduced denominator of $a/b$ is not divisible by $p^2$, so $v_p(a/b)\ge-1$.
+\end{proof}
+
+\subsection{Entries}\label{xsec:size}
+
+\begin{lemma}[Entries]\label{xlem:entries}
+Put $d_r=|r-g|$. There is a constant $c_1$ depending only on the design such that for all $N$ and $0\le r,k<n$,
+\[
+\big|\Phi^{(0)}_{r,k}+G\,\Phi^{(1)}_{r,k}\big|\le c_1\,2^h(1+\sqrt2)^{d_r},\qquad \big|\Phi^{(1)}_{r,k}\big|\le c_1\,2^{h+q}(1+\sqrt2)^{d_r}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\tilde T_d(x)=i^{-d}T_d(ix)$ and $\tilde U_d(x)=i^{-d}U_d(ix)$. They satisfy $\tilde T_{d+1}=2x\tilde T_d+\tilde T_{d-1}$ and the same recurrence for $\tilde U$, with $\tilde T_0=1$, $\tilde T_1=x$, $\tilde U_0=1$, $\tilde U_1=2x$, so their coefficients are nonnegative and equal to the absolute values of those of $T_d$ and $U_d$. Hence the sums of the absolute values of the coefficients are $\tilde T_d(1)$ and $\tilde U_{d-1}(1)$, which satisfy $u_{d+1}=2u_d+u_{d-1}$; since $(1+\sqrt2)^2=2(1+\sqrt2)+1$, induction from the initial values gives $\tilde T_d(1)\le(1+\sqrt2)^d$ and $\tilde U_{d-1}(1)\le(1+\sqrt2)^d$. By Lemma~\ref{lem:supports}, $P_r=(1-t)^ht^{C-1}T_{d_r}(1/t)$ and $D_r=\pm(1-t)^ht^{C-1}U_{d_r-1}(1/t)$, so the sums $\|P_r\|_1$, $\|D_r\|_1$ of the absolute values of their coefficients are at most $2^h(1+\sqrt2)^{d_r}$, and $|P_r(t)|\le\|P_r\|_1$, $|D_r(t)|\le\|D_r\|_1$ for $|t|\le1$.
+
+By \cite[Sec.~5.1]{OAI}, $\Phi^{(0)}_{r,k}+G\,\Phi^{(1)}_{r,k}=\int_{-1}^1\int_0^1A_r(t)\,s^{b+k}(1-s)^q(1-ts)^{-1}\,ds\,d\mu(t)$ with $A_r(t)=P_r(t)-\mathbf 1_{t>0}\frac32f(t)D_r(t)/t$, $f(t)=\sqrt{1-t^2}$ and $d\mu(t)=|t|\,dt/f(t)$. The part with $P_r$ is at most $\|P_r\|_1K_\mu$, where $K_\mu=\iint(1-|t|s)^{-1}ds\,d\mu(t)<\infty$ \cite[Sec.~5.1]{OAI}. The part with $D_r$ is at most $\frac32\|D_r\|_1\int_0^1\int_0^1(1-ts)^{-1}ds\,dt=\frac32\zeta(2)\|D_r\|_1$. This gives the first bound with $c_1=K_\mu+\frac32\zeta(2)+4$. For the second, $|F^{(1)}_j(r)|\le4\|P_r\|_1$ because $0\le c_l\le1$, and the filter has $\sum_u\binom qu=2^q$.
+\end{proof}
+
+\subsection{Energy of minors}\label{xsec:minors}
+
+Jha \cite[Sections~5--6]{Jha} bounds every complementary minor of the matrix $A=\Phi^{(0)}+G\Phi^{(1)}$, whose determinant is $\Delta_N$, through an energy of $m$ row nodes and $m$ column nodes. Its starting point is the integral representation of Section~\ref{sec:conditions}.
+
+\begin{lemma}[Selected minors; {\cite[Lemma~6.1]{Jha}}]\label{xlem:selected}
+For injective lists $I=(r_1,\dots,r_m)$ and $J=(c_1,\dots,c_m)$ of indices in $\{0,\dots,n-1\}$,
+\[
+\det A[I,J]=\frac1{(m!)^2}\int_{(-1,1)^m}\int_{(0,1)^m}\det[A_{r_a}(t_i)]_{a,i}\,\frac{V(t)V(s)}{\prod_{i,j}(1-t_is_j)}\,\det[\psi_{c_b}(s_j)]_{j,b}\,ds\,d\mu^m(t),
+\]
+with $V(t)=\prod_{i<j}(t_j-t_i)$, and the integrand is absolutely integrable.
+\end{lemma}
+
+\begin{proof}
+The entries of $A[I,J]$ are $\iint A_{r_a}(t)\psi_{c_b}(s)(1-ts)^{-1}ds\,d\mu(t)$ (Section~\ref{sec:conditions}). The twofold Andr\'eief identity in dimension $m$ gives the factor $(m!)^{-2}$ and the determinant $\det[(1-t_is_j)^{-1}]$, which equals $V(t)V(s)/\prod_{i,j}(1-t_is_j)$ by Cauchy's double alternant \cite[Eq.~(63)]{OAI}. Absolute integrability follows from the finiteness of $\iint(1-|t|s)^{-1}ds\,d\mu(t)$, as in \cite[Sec.~5.1]{OAI}.
+\end{proof}
+
+In the coordinate $t=t(x)=2x/(1+x^2)$, $x\in(-1,1)$, one has $d\mu(t(x))=4|x|(1+x^2)^{-2}dx$ and $A_r(t(x))=(1-t)^ht^{C-1}\big(\xi_f(x)x^{g-r}+\xi_n(x)x^{r-g}\big)$ with $(\xi_f,\xi_n)=(\frac12,\frac12)$ for $x<0$ and $(-\frac14,\frac54)$ for $x>0$ \cite[Sec.~5.1]{OAI}. For nodes $x_1,\dots,x_m\in(-1,1)\setminus\{0\}$ and $s_1,\dots,s_m\in(0,1)$ put, with $V(y)=\prod_{i<j}|y_j-y_i|$ for a real list $y$,
+\[
+J_m(x,s)=\frac{V(t(x))\,V(s)^2}{\prod_{i,j}(1-t(x_i)s_j)}\prod_i|t(x_i)|^{C-1}(1-t(x_i))^h\prod_js_j^b(1-s_j)^{q},
+\]
+and define the energies \cite[Eqs.~(5.1)--(5.3)]{Jha}
+\[
+\begin{aligned}E_{2,m}(x,s)&=J_m(x,s)\,V(x)\prod_i|x_i|^{g-(n-1)},\\ E_{1,m}(x,s)&=J_m(x,s)\,2^{-\binom m2}\prod_i(1+x_i^2)^{(n-1)/2}|x_i|^{g-(n-1)},\end{aligned}
+\]
+with the ambient $n$, not $m$, in the one-node exponents; both equal $1$ for $m=0$. After the bounds for the row and column determinants of Section~\ref{xsec:alt}, the absolute integrand of Lemma~\ref{xlem:selected} is at most a factor depending on $m$ and $n$ times $E_{2,m}$ when $\sum_i(1-x_i^2)/(1+x_i^2)\le D_*=n-1-2g$, and times $E_{1,m}$ otherwise (Corollary~\ref{xcor:massminors}). Jha writes $E_{\kappa,m}$ as a product of one-node factors $u_\kappa(x_i)$, $w(s_j)$ and pair factors \cite[Eq.~(5.8)]{Jha}, and for $m<n$ \cite[Proposition~5.4]{Jha} adjoins nodes until the size is $n$ and applies the bound for $m=n$. We bound $E_{\kappa,m}$ directly, with the certificate of (C4).
+
+\begin{proposition}[Energy of fewer nodes]\label{xprop:mass}
+Let $p^{(\kappa)},v^{(\kappa)},\lambda^{(\kappa)}$ be the sequences of (C4), and put, for $\kappa\in\{1,2\}$,
+\begin{gather*}
+\Sigma_\kappa=\sup_{x}X_{p^{(\kappa)},v^{(\kappa)},\lambda^{(\kappa)}}(x)+\sup_sY_{v^{(\kappa)}}(s),\\
+\overline U_\kappa(\theta)=\theta\big((1+\alpha+\gamma_g)\log2+\Sigma_\kappa\big)-\tfrac32\theta^2\log2+\kappa\|p^{(\kappa)}\|_*^2+\tfrac12\|v^{(\kappa)}\|_*^2 ,
+\end{gather*}
+with $X$, $Y$ and $\|\cdot\|_*$ as in Definition~\ref{def:upper}. For every $\eta>0$ there is $N_\eta$ such that for $N\ge N_\eta$, every $m\le n$ with $\theta=m/n$ and every configuration of $m$ row nodes and $m$ column nodes,
+\[
+\frac{\log E_{2,m}(x,s)}{n^2}\le\overline U_2(\theta)+\eta,\qquad
+\frac{\log E_{1,m}(x,s)}{n^2}\le\overline U_1(\theta)-\lambda^{(1)}(1-2\gamma_g)(1-\theta)+\eta,
+\]
+the second whenever $\sum_i(1-x_i^2)/(1+x_i^2)>D_*$. At $\theta=1$, $\overline U_\kappa(1)=U_\kappa\big(p^{(\kappa)},v^{(\kappa)},\lambda^{(\kappa)}\big)+\frac12\log2$.
+\end{proposition}
+
+\begin{proof}
+Write $\log E_{\kappa,m}$ as a sum of one-node terms over the $m$ nodes of each list and of pair terms over the pairs. Per node, $\log u_2(x)=(C-1)\log2+A\log|x|+2h\log(1-x)-(C-1+h)\log(1+x^2)$ and $\log w(s)=b\log s+q\log(1-s)$. The exponents of $|x_i|$ and $1+x_i^2$ are those of the ambient size $n$ \cite[Eq.~(5.8)]{Jha}, so the exponent of $|x_i|$ is $A=a+2g$, as in \cite[Eq.~(80)]{OAI}. With $C/n=1+\alpha+\gamma_g$ the one-node factors contribute $n\big((1+\alpha+\gamma_g)\log2+W_2(x)\big)+O(1)$ and $nW_s(s)$, where the term $-\log(1+x^2)$ of each pair factor $R_2$ is cancelled by the term $+\log(1+x^2)$ of each $K$, as in \cite[Eq.~(5.8)]{Jha} for $m=n$; there are $m-1$ of each per node. Hence the one-node part, divided by $n^2$, is $\theta\big((1+\alpha+\gamma_g)\log2+\langle W_2\rangle_\mu+\langle W_s\rangle_\nu\big)+O(1/n)$, with $\mu,\nu$ the empirical probability measures of the two lists. The pair part, divided by $n^2$, is $\theta^2$ times $\frac12\log2$, from the factor $2$ in $t(x)-t(y)=2(x-y)(1-xy)/((1+x^2)(1+y^2))$ for $\kappa=2$ (for $\kappa=1$ the factor $\frac12$ in $R_1$ removes it and $\frac\kappa2$ changes accordingly), plus the off-diagonal averages of $\frac\kappa2\log|x-x'|+\frac12\log(1-xx')$, $\log|s-s'|$ and $-\log(1-2xs+x^2)$.
+
+The proof of \cite[Prop.~6.1]{OAI}, which is Proposition~\ref{prop:up} for a general design, expands these kernels in Chebyshev and power series with damping, bounds the omitted diagonals and the endpoint terms by $O(n\log n)$ uniformly in the configuration, and completes squares: with moments $a_k=\theta A_k$ of the measures of mass $\theta$, it uses $-a^2\le p^2-2pa$, so that $-\kappa\theta^2\sum_kA_k^2/k\le\kappa\|p\|_*^2-2\kappa\theta\sum_kp_kA_k/k$, and similarly for $v$. Each step holds for $m<n$. The averages of \cite[Eq.~(80)]{OAI} are sums over the nodes divided by $n$ (by $n^2$ for pairs), so with $m$ nodes they are averages against measures of mass $\theta$. The damped kernels of \cite[Eqs.~(83)--(85)]{OAI} are compared pair by pair with constants independent of the configuration. The identities \cite[Eqs.~(86), (87)]{OAI} are exact for any number of nodes. The $m$ omitted diagonals cost $O_\varepsilon(1/n)$, and so do the terms $-\frac1{2n}\langle\log(1-x)\rangle$ and $-\frac1n\langle\log(1-s)\rangle$, as for $m=n$. A one-node average over $m$ nodes is at most $\theta$ times the supremum of the function.
+
+The constant terms of the expansions, $-\frac\kappa2\log2$ from $\log|x-x'|$ and $-\log2$ from $\log|s-s'|$, are multiplied by $\theta^2$; with the pair constant they give $-\frac32\theta^2\log2$ for both $\kappa$. The remaining terms are $\theta$ times one-node averages bounded by $\Sigma_\kappa$. For $\kappa=1$ the failure of the condition reads $\theta\langle1-2x^2/(1+x^2)\rangle>1-2\gamma_g-1/n$, that is $\theta\langle D\rangle>(1-2\gamma_g)(1-\theta)-1/n$ with $D$ as in Section~\ref{sec:equilibrium}; adding $\lambda^{(1)}$ times the difference absorbs $\lambda^{(1)}\theta\langle D\rangle$ into $X$ and leaves $-\lambda^{(1)}(1-2\gamma_g)(1-\theta)+O(1/n)$. At $\theta=1$ the bound is $(-\frac12+\alpha+\gamma_g)\log2+\kappa\|p\|_*^2+\frac12\|v\|_*^2+\Sigma_\kappa=U_\kappa+\frac12\log2$.
+\end{proof}
+
+\subsection{Alternants}\label{xsec:alt}
+
+The proof of \cite[Theorem~6.3]{Jha} bounds the row and column determinants with the losses $L_{n,m}=2^{mk}(k+1)^n$ of \cite[Lemma~4.1, Corollary~4.2]{Jha} and $14^{nk}$ of \cite[Lemma~4.5]{Jha}, where $k=n-m$. The lemmas of this subsection replace them by a factor $\max_{|z|=1}\prod_i|1+x_iz|$ per removed index, which is at most $2^m$ for nodes in $(-1,1)$. For real numbers $x_1,\dots,x_m$ put
+\[
+V(x)=\prod_{i<j}|x_j-x_i|,\qquad \Theta(x)=\max_{|z|=1}\prod_{i=1}^m|1+x_iz| .
+\]
+Since $\prod_i|1-x_iz|=\prod_i|1+x_i(-z)|$, $\Theta(x)$ is also the maximum of $\prod_i|1-x_iz|$ on the unit circle. For $x_i\in(-1,1)$, $\Theta(x)\le2^m$; for $x_i\in(0,1)$, $\Theta(x)=\prod_i(1+x_i)$, the maximum being attained at $z=1$.
+
+\begin{lemma}[Monomial alternants]\label{xlem:schur}
+Let $0\le m\le n$, $k=n-m$, let $r_1,\dots,r_m$ be distinct elements of $\{0,\dots,n-1\}$ and let $x_1,\dots,x_m$ be real. Then
+\[
+\big|\det[x_i^{r_j}]_{i,j=1}^m\big|\le V(x)\,\Theta(x)^k .
+\]
+\end{lemma}
+
+\begin{proof}
+If two nodes coincide both sides vanish, and for $k=0$ the determinant is $\pm V(x)$. Otherwise order the exponents as $r_{(1)}>\dots>r_{(m)}$ and put $\lambda_j=r_{(j)}-(m-j)$. Then $\lambda$ is a partition with at most $m$ parts and $\lambda_1\le n-1-(m-1)=k$, and by the bialternant formula $\det[x_i^{r_j}]=\pm V(x)\,s_\lambda(x)$, with $s_\lambda$ the Schur polynomial \cite[Chapter~I, Section~3]{Macdonald}. The conjugate partition $\lambda'$ has at most $k$ parts. By the dual Cauchy identity \cite[Chapter~I, Section~4]{Macdonald}, for $y\in\mathbb C^k$,
+\[
+\prod_{i=1}^m\prod_{j=1}^k(1+x_iy_j)=\sum_\nu s_\nu(x_1,\dots,x_m)\,s_{\nu'}(y_1,\dots,y_k),
+\]
+the sum over the partitions $\nu$ with at most $m$ parts and $\nu_1\le k$. Let $P$ be the probability measure $\frac1{k!}\prod_{i<j}|y_i-y_j|^2\,\frac{d\phi_1}{2\pi}\cdots\frac{d\phi_k}{2\pi}$ on the torus $y_j=e^{\mathrm i\phi_j}$. The Schur polynomials in $k$ variables indexed by partitions with at most $k$ parts are orthonormal for $P$: with $\delta=(k-1,\dots,0)$ and $a_\alpha(y)=\det[y_i^{\alpha_j}]=\sum_{w}\operatorname{sgn}(w)\,y^{w\alpha}$, one has $s_\mu=a_{\mu+\delta}/a_\delta$ and $|a_\delta|^2=\prod_{i<j}|y_i-y_j|^2$, so $\int s_\mu\overline{s_\nu}\,dP=\frac1{k!}\int a_{\mu+\delta}\overline{a_{\nu+\delta}}\,\frac{d\phi}{(2\pi)^k}$; the monomials are orthonormal on the torus, and since the entries of $\mu+\delta$ and of $\nu+\delta$ are strictly decreasing, $y^{w(\mu+\delta)}=y^{w'(\nu+\delta)}$ only if $\mu=\nu$ and $w=w'$, which gives $\delta_{\mu\nu}$. Since $\nu\mapsto\nu'$ is injective,
+\[
+s_\lambda(x)=\int\prod_{i,j}(1+x_iy_j)\,\overline{s_{\lambda'}(y)}\,dP(y),
+\]
+and by the Cauchy--Schwarz inequality
+\[
+|s_\lambda(x)|\le\sup_{y}\prod_{j=1}^k\prod_{i=1}^m|1+x_iy_j|\;\Big(\int|s_{\lambda'}|^2dP\Big)^{1/2}=\Theta(x)^k. \qedhere
+\]
+\end{proof}
+
+\begin{lemma}[Hardy estimate]\label{xlem:hardy}
+Let $0\le m\le n$, $k=n-m$, let $x_1,\dots,x_m\in(-1,1)$, let $r_1,\dots,r_m$ be distinct elements of $\{0,\dots,n-1\}$, and let $h_*$ be holomorphic on a neighbourhood of the closed unit disk with $|h_*|\le K$ there. Then
+\[
+\Big|\det\big[x_i^{n-1-r_j}+h_*(x_i)x_i^{r_j}\big]_{i,j=1}^m\Big|\le V(x)\,(1+K)^m\,\Theta(x)^k\,2^k .
+\]
+\end{lemma}
+
+\begin{proof}
+We follow the proof of \cite[Lemma~4.1]{Jha} and change two estimates. Put $Q(z)=\prod_i(1-x_iz)$, $P(z)=\prod_i(z-x_i)$, $B=P/Q$, and let $H_d=\{v/Q:\deg v<d\}$ with the norm of $H^2$ of the disk. As there, the orthogonal projection $\Pi_m$ onto $H_m$ preserves the values at the nodes, since the kernels $(1-x_iz)^{-1}$ lie in $H_m$; the reversal $R_n(v/Q)=z^{n-1}v(1/z)/Q$ is an isometry of $H_n$; and $L=R_n+h_*$ maps $H_n$ to $H^2$ with norm at most $C_*=1+K$. Let $u_j=z^j/Q$ for $0\le j<n$, let $j_1<\dots<j_k$ be the indices not among the $r$'s, and let $\ell_1(u),\dots,\ell_k(u)$ be the coordinates of $u\in H_n$ at $u_{j_1},\dots,u_{j_k}$. They are coefficients of the polynomial $Qu$, so by Parseval
+\begin{equation}\label{xeq:ell}
+\Big(\sum_{a=1}^k|\ell_a(u)|^2\Big)^{1/2}\le\|Qu\|_{H^2}\le \Theta\,\|u\|_{H^2},\qquad \Theta=\max_{|z|=1}|Q(z)|=\Theta(x).
+\end{equation}
+This is the first change: \cite[(4.2)]{Jha} bounds each $|\ell_a(u)|$ separately by $2^m\|u\|$. Define
+\[
+Tu=T_1u+T_2u,\qquad T_1u=C_*^{-1}\Pi_mLu,\qquad T_2u=\Theta^{-1}\sum_{a=1}^k\ell_a(u)\,z^{a-1}B .
+\]
+The functions $z^{a-1}B$, $1\le a\le k$, are orthonormal because $|B|=1$ on the circle, so \eqref{xeq:ell} gives $\|T_2\|\le1$; also $\|T_1\|\le1$ and $T_2$ has rank at most $k$. This is the second change: by Weyl's inequality for singular values, $s_{i+j-1}(T_1+T_2)\le s_i(T_1)+s_j(T_2)$, applied with $j=k+1$, we have $s_{i+k}(T)\le s_i(T_1)\le1$ for $i\ge1$, and $s_i(T)\le\|T\|\le2$ for $i\le k$. Hence
+\[
+|\det T|=\prod_{i=1}^ns_i(T)\le2^k,
+\]
+in place of $|\det T|\le(k+1)^n$. The matrix of $T$ from the input basis ($u_{r_1},\dots,u_{r_m}$, then $u_{j_1},\dots,u_{j_k}$) to the output basis $1/Q,\dots,z^{m-1}/Q,B,\dots,z^{k-1}B$ is block upper triangular: $T_2u_{r_j}=0$ and $T_1$ maps into $H_m$, and $Tu_{j_a}=T_1u_{j_a}+\Theta^{-1}z^{a-1}B$. Its diagonal blocks are $C_*^{-1}F$, with $F$ the matrix of coordinates of $\Pi_mLu_{r_j}$ in $1/Q,\dots,z^{m-1}/Q$, and $\Theta^{-1}I_k$. The two bases have numerator coefficient matrices of determinant $\pm1$ with respect to the monomials, because $P$ is monic of degree $m$. Hence $|\det F|=C_*^m \Theta^k|\det T|\le C_*^m\Theta^k2^k$. Finally $Lu_r=(z^{n-1-r}+h_*z^r)/Q$, its values at the nodes are preserved by $\Pi_m$, and $Q(x_i)>0$; multiplying the values at $x_i$ by $Q(x_i)$ shows that the matrix of the lemma is $[x_i^{a}]_{i\le m,\,a<m}\,F$, whose determinant is at most $V(x)C_*^m\Theta^k2^k$.
+\end{proof}
+
+For nodes in $(-1,1)$ the two lemmas give the bounds of \cite[Lemma~4.1, Corollary~4.2]{Jha} with $L_{n,m}=2^{mk}(k+1)^n$ replaced by $\Theta(x)^k2^k\le2^{mk+k}$ and $\Theta(x)^k\le2^{mk}$.
+
+\begin{lemma}[Far sheet]\label{xlem:far}
+Let $0\le m\le n$, $k=n-m$, let $r_1,\dots,r_m$ be distinct elements of $\{0,\dots,n-1\}$ and let $z_1,\dots,z_m$ be real. Then
+\[
+\big|\det[z_j^{r_i}]_{i,j=1}^m\big|\le m^{m/2}\,2^{-\binom m2}\,2^{mk/2}\prod_{j=1}^m(1+z_j^2)^{(n-1)/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $z_j=\tan\phi_j$. Then $|z_j-z_i|=|\sin(\phi_j-\phi_i)|(1+z_i^2)^{1/2}(1+z_j^2)^{1/2}$, so $V(z)=\prod_j(1+z_j^2)^{(m-1)/2}\prod_{i<j}|\sin(\phi_j-\phi_i)|$, and $\prod_{i<j}|\sin(\phi_j-\phi_i)|=2^{-\binom m2}\prod_{i<j}|e^{2\mathrm i\phi_j}-e^{2\mathrm i\phi_i}|\le2^{-\binom m2}m^{m/2}$ by Hadamard's inequality. By Lemma~\ref{xlem:schur} and $1+|z|\le\sqrt2\,(1+z^2)^{1/2}$, $|\det[z_j^{r_i}]|\le V(z)\prod_j(1+|z_j|)^k\le V(z)\,2^{mk/2}\prod_j(1+z_j^2)^{k/2}$. Since $(m-1)+k=n-1$, the bound follows.
+\end{proof}
+
+Lemma~\ref{xlem:far} replaces $C_n14^{nk}$, $C_n=n^{n/2}2^{-\binom n2}$, in \cite[Lemma~4.5]{Jha}; after the weakening of $2^{-\binom n2}$ to $2^{-\binom m2}$ in the proof of \cite[Lemma~6.2]{Jha}, and with $m^{m/2}\le n^{n/2}$, the factor $14^{nk}$ in \cite[(6.6)]{Jha} becomes $2^{mk/2}$.
+
+\begin{corollary}[Minors]\label{xcor:massminors}
+Let the design be $(36,6,2,3,2)$ or $(96,15,6,8,5)$, with the sequences of Proposition~\ref{prop:c4b} or~\ref{prop:c4}, and put $\rho_1=(2-\alpha-\gamma_g)\log2-\Sigma_2+2\log2$. Then $\rho_1<5.14271$ for the first design and $\rho_1<5.13821$ for the second, and for every $\varepsilon>0$ there is $N_\varepsilon$ such that for all $N\ge N_\varepsilon$, all $0\le m\le n$ and all injective lists $I,J$ of $m$ row and column indices, with $k=n-m$,
+\[
+\big|\det A[I,J]\big|\le\exp\!\big((c_{\mathrm{up}}+\varepsilon)n^2+\rho_1\,nk\big),
+\]
+where $A[I,J]$ is the submatrix with rows $I$ and columns $J$, and the empty minor equals $1$.
+\end{corollary}
+
+\begin{proof}
+We follow the proof of \cite[Theorem~6.3]{Jha}, with Proposition~\ref{xprop:mass} in place of \cite[Proposition~5.4]{Jha} and Lemmas~\ref{xlem:schur}--\ref{xlem:far} in place of \cite[Lemmas~4.1, 4.5, Corollary~4.2]{Jha}. The other ingredients hold for the design.
+
+(1) Lemma~\ref{xlem:selected} holds for every design: its proof uses only the integral representation of Section~\ref{sec:conditions}, which holds for every design \cite[Sec.~5.1]{OAI}.
+
+(2) Under the interpolation condition of \cite[Lemma~6.2]{Jha}, $\sum_i(1-x_i^2)/(1+x_i^2)\le D_*$, as in Proposition~\ref{prop:up}, the row determinant is bounded through the entries $x^{n-1-r}+h_*(x)x^r$ with the function $h_*$ of \cite[Lemma~4.3]{Jha}: if $n\ge48$, $0<D\le n$ and the nonzero nodes $x_i\in(-1,1)$ satisfy $\sum_i(1-x_i^2)/(1+x_i^2)\le D$, there is a function $h_*$, holomorphic on a neighbourhood of the closed unit disk, with $h_*(x_i)=x_i^D$ for $x_i<0$, $h_*(x_i)=-5x_i^D$ for $x_i>0$, and $|h_*|\le K_0n$ there, $K_0=10e^{12}$. \cite[Lemma~4.3]{Jha} needs $n\ge48$, $0<D_*\le n$ with $D_*=n-1-2g$, and the sheet coefficients $c_\pm\in\{1,-5\}$, which come from the factor $\frac32$ in the entries; here $n=n_0N$ and $D_*=(n_0-2g_0)N-1$, by (C1), that is $D_*=30N-1$ and $n=36N\ge48$ for $N\ge2$, or $D_*=80N-1$ and $n=96N$. Lemma~\ref{xlem:hardy} then gives \cite[(6.5)]{Jha} with $L_{n,m}$ replaced by $\Theta(x)^k2^k\le2^{mk+k}$. In the other case, the expansion over the sheets in the proof of \cite[Lemma~6.2]{Jha} bounds monomial determinants at real nodes; with Lemma~\ref{xlem:far} in place of \cite[Lemma~4.5]{Jha}, \cite[(6.6)]{Jha} holds with $14^{nk}$ replaced by $2^{mk/2}$. The column determinant is $\det[\psi_{c_b}(s_j)]=\prod_js_j^b(1-s_j)^{q_0}\det[s_j^{c_b}]$, since $\psi_c(s)=s^{b+c}(1-s)^{q_0}$ \cite[(2.11)]{Jha}, and Lemma~\ref{xlem:schur} gives \cite[(6.7)]{Jha} with $L_{n,m}$ replaced by $\Theta(s)^k=\prod_j(1+s_j)^k\le2^{mk}$. The constant $A_0=1+K_0+\frac32$ does not involve the design.
+
+(3) The factors of \cite[(6.8)--(6.9)]{Jha} become $(1+K_0n)^m2^k\,2^{2mk}$ in the case of the interpolation condition and $(3/2)^mn^{n/2}2^{3mk/2}$ in the other case, and $(1+K_0n)^m$, $(3/2)^mn^{n/2}$ and $2^k$ are $e^{o(n^2)}$. Put $\theta=1-t$ with $t=k/n$, so that $mk/n^2=(1-t)t\le t$. By Proposition~\ref{xprop:mass} and the definition of $c_{\mathrm{up}}$, $\overline U_2(1)=U_2+\frac12\log2\le c_{\mathrm{up}}$, and
+\[
+\overline U_2(1-t)-\overline U_2(1)=t\big(3\log2-(1+\alpha+\gamma_g)\log2-\Sigma_2\big)-\tfrac32(\log2)\,t^2,
+\]
+so the first case gives the exponent at most $c_{\mathrm{up}}+\rho_1t$. The second case gives at most
+\[
+c_{\mathrm{up}}+(U_1-U_2)+\big((2-\alpha-\gamma_g)\log2-\Sigma_1-\lambda^{(1)}(1-2\gamma_g)+\tfrac32\log2\big)t .
+\]
+The computations of Propositions~\ref{prop:c4b} and~\ref{prop:c4} also bound $\sup X$ and $\sup Y$ from below, since they enclose the values at the left ends of the brackets of the stationary points, and the allowances $w\sup|X'|$ are below $4.5\times10^{-22}$; their tables round upward at the fourteenth decimal. For $(36,6,2,3,2)$ this gives $\Sigma_2\ge-2.5819123745066$ and $\Sigma_1\ge-2.9926939798728$ (\texttt{cat\_cert7\_new.py}, gate E1); with $\alpha+\gamma_g=\frac{11}{36}$, $\gamma_g=\frac1{12}$, $\lambda^{(1)}=2.72440173\ldots$ (Table~\ref{tab:coef1b}) and $U_1-U_2<-0.1379$, the coefficients of $t$ are below $5.14271$ and $2.93658$. For $(96,15,6,8,5)$, $\Sigma_2\ge-2.5750034368157$ and $\Sigma_1\ge-2.9836915417496$; with $\alpha+\gamma_g=\frac{29}{96}$, $\gamma_g=\frac1{12}$, $\lambda^{(1)}=2.71408765\ldots$ (Table~\ref{tab:coef1}) and $U_1-U_2<-0.1364$, the coefficients of $t$ are below $5.13821$ and $2.93858$. Hence for both designs the first case dominates for all $t\in[0,1]$.
+\end{proof}
+
+\subsection{The exponent}\label{xsec:results}
+
+\begin{lemma}[Perturbation; {\cite[Lemma~7.1]{Jha}}]\label{xlem:pert}
+Let $A,B$ be real $n\times n$ matrices and $R,S,K\ge0$. If every $m\times m$ minor of $A$, including the empty one, has absolute value at most $RS^{n-m}$, and $|B_{ij}|\le K$, then $|\det(A+B)|\le R(1+nKS)^n$.
+\end{lemma}
+
+\begin{proof}
+Expand $\det(A+B)$ by choosing in each row the row of $A$ or of $B$. A choice with $k$ rows from $B$ expands along those rows into at most $n^k$ terms, each a product of $k$ entries of $B$ and a complementary minor of $A$ of size $n-k$, so it is at most $n^kK^kRS^k$. Summing over the choices gives $R\sum_k\binom nk(nKS)^k=R(1+nKS)^n$.
+\end{proof}
+
+\begin{definition}[Radius hypothesis]\label{xdef:radius}
+For $\rho\ge0$, hypothesis $(\mathrm R_\rho)$ is: as $p\to\infty$ through primes,
+\[
+\sup_{|x-G|\le e^{-\rho n}}\log|\Delta_p(x)|\le(c_{\mathrm{up}}+o(1))\,n^2,\qquad n=n_0p .
+\]
+\end{definition}
+
+\begin{proposition}\label{xprop:power}
+Assume $(\mathrm R_\rho)$ and put $\mu^*=\rho(1-\gamma_g+n_0\gamma/2)/\gamma$. For every $\varepsilon>0$ there is $b_0$ such that $|G-a/b|>b^{-(\mu^*+\varepsilon)}$ for all integers $a$ and $b\ge b_0$. In particular the irrationality exponent of $G$ is at most $\mu^*$.
+\end{proposition}
+
+\begin{proof}
+Put $\nu=1-\gamma_g$, so that $n-g=\nu n$. Fix $\theta\in(0,1)$ and $\tau>0$, and put $\sigma=\theta\gamma n_0/(2\nu)+\tau$. Let $b$ be large and $x=\nu\log b/(\theta\gamma n_0)$. By the prime number theorem the interval $[x,(1+\sigma)x]$ contains $(\sigma+o(1))x/\log x$ primes. If $k$ of them have squares dividing $b$, then $x^{2k}\le b$, so $k\le\log b/(2\log x)=\theta\gamma n_0x/(2\nu\log x)$; at most $|E_0|$ of them lie in $E_0$. Since $\sigma>\theta\gamma n_0/(2\nu)$, for large $b$ there is a prime $p$ in this interval with $p>4H_0$, $p\notin E_0$ and $p^2\nmid b$. Put $N=p$ and $n=n_0p$, so that $\nu\log b/(\theta\gamma)\le n\le(1+\sigma)\nu\log b/(\theta\gamma)$. By Lemma~\ref{xlem:nonzero}, $\Delta_p(a/b)\ne0$, and by Corollary~\ref{xcor:lower} and $(n-g)\log b=\nu n\log b\le\theta\gamma n^2$,
+\[
+\log|\Delta_p(a/b)|\ge(c_{\mathrm{low}}-\theta\gamma)n^2-o(n^2)=\big(c_{\mathrm{up}}+(1-\theta)\gamma\big)n^2-o(n^2).
+\]
+If $|a/b-G|\le e^{-\rho n}$, then $(\mathrm R_\rho)$ gives $\log|\Delta_p(a/b)|\le(c_{\mathrm{up}}+o(1))n^2$, which is impossible for large $b$. Hence $|G-a/b|>e^{-\rho n}\ge b^{-\rho\nu(1+\sigma)/(\theta\gamma)}$, and $\rho\nu(1+\sigma)/(\theta\gamma)\to\rho(\nu+n_0\gamma/2)/\gamma=\mu^*$ as $\theta\to1$ and $\tau\to0$.
+\end{proof}
+
+\begin{remark}\label{xrem:pdivb}
+The proofs of \cite{Jha} and \cite{Litsey} choose the prime scale with $p\nmid b$. With that condition the argument above needs $\sigma>\theta\gamma n_0/\nu$ and gives $\rho(1-\gamma_g+n_0\gamma)/\gamma$; with the rates of Theorem~\ref{xthm:exponent} this is below $2\,402$ for the design $(36,6,2,3,2)$ and below $2\,715$ for $(96,15,6,8,5)$. Lemma~\ref{xlem:nonzero} allows one factor $p$ in $b$ because the proof of \cite[Prop.~4.1]{OAI} scales every entry by $p^2$ while the term carrying the constant is already $p$-integral; this relaxation appears original. In the exponent the design size $n_0$ enters only through the term $n_0\gamma/2$, which comes from avoiding the primes whose squares divide $b$.
+\end{remark}
+
+\begin{theorem}\label{xthm:exponent}
+For the design $(36,6,2,3,2)$ put
+\[
+\rho_2=\rho_1+(\eta+\gamma_q)\log2+(1-\gamma_g)\log(1+\sqrt2),\qquad \mu_2=\rho_2(1-\gamma_g+n_0\gamma/2)/\gamma ,
+\]
+with $\rho_1$ as in Corollary~\ref{xcor:massminors}. For every $\varepsilon>0$ there is $b_0$ such that $|G-a/b|>b^{-(\mu_2+\varepsilon)}$ for all integers $a$ and $b\ge b_0$. Hence the irrationality exponent of $G$ is at most $\mu_2<2\,294$. For the design $(96,15,6,8,5)$ the same statement holds with $\mu_2<2\,426$.
+\end{theorem}
+
+\begin{proof}
+Let $\delta_1>0$ and $\rho=\rho_2+\delta_1$. We prove $(\mathrm R_\rho)$; Proposition~\ref{xprop:power} then gives the bound with $\rho(1-\gamma_g+n_0\gamma/2)/\gamma$ in place of $\mu_2$, and $\delta_1$ is arbitrary.
+
+Let $\varepsilon>0$, let $p$ be a large prime, $n=n_0p$, and $|x-G|\le e^{-\rho n}$. Then $\Delta_p(x)=\det\big(A+(x-G)\Phi^{(1)}\big)$ with $A=\Phi^{(0)}+G\Phi^{(1)}$. By Corollary~\ref{xcor:massminors}, every $m\times m$ minor of $A$ is at most $RS^{n-m}$ with $R=e^{(c_{\mathrm{up}}+\varepsilon)n^2}$ and $S=e^{\rho_1n}$. By Lemma~\ref{xlem:entries} and $d_r\le n-1-g$, every entry of $(x-G)\Phi^{(1)}$ is at most $K=c_1e^{-\rho n}e^{(\rho_2-\rho_1)n+O(1)}$. Hence $nKS\le c_1'ne^{-\delta_1n}$, and Lemma~\ref{xlem:pert} gives
+\[
+|\Delta_p(x)|\le e^{(c_{\mathrm{up}}+\varepsilon)n^2}\big(1+c_1'ne^{-\delta_1n}\big)^n=e^{(c_{\mathrm{up}}+\varepsilon+o(1))n^2}.
+\]
+Since $\varepsilon$ is arbitrary, $(\mathrm R_\rho)$ holds. For $(36,6,2,3,2)$, $(\eta+\gamma_q)\log2+(1-\gamma_g)\log(1+\sqrt2)=\frac19\log2+\frac{11}{12}\log(1+\sqrt2)=0.884942\ldots$, so $\rho_2<6.02766$; since $\rho_2((1-\gamma_g)/\gamma+n_0/2)$ decreases in $\gamma$, $\gamma>0.0025287$ and $1-\gamma_g=\frac{11}{12}$, $\mu_2<6.02766\,(\tfrac{11}{12}/0.0025287+18)<2\,294$. For $(96,15,6,8,5)$, $(\eta+\gamma_q)\log2+(1-\gamma_g)\log(1+\sqrt2)=\frac{11}{96}\log2+\frac{11}{12}\log(1+\sqrt2)=0.887349\ldots$, so $\rho_2<6.02556$, and with $\gamma>0.0025854$, $\mu_2<6.02556\,(\tfrac{11}{12}/0.0025854+48)<2\,426$.
+\end{proof}
+
+\begin{remark}
+With the losses $L_{n,m}=2^{mk}(k+1)^n\le4^{nk}$ of \cite[Lemma~4.1, Corollary~4.2]{Jha} and $14^{nk}$ of \cite[Lemma~4.5]{Jha} in place of Lemmas~\ref{xlem:schur}--\ref{xlem:far}, the coefficients of $t$ in the proof of Corollary~\ref{xcor:massminors} for the design $(96,15,6,8,5)$ are $6.52450$ and $5.92421$, the rate is $7.41185$, and the same argument gives $\mu(G)<2\,984$. With, in addition, the padding of \cite[Proposition~5.4]{Jha} in place of Proposition~\ref{xprop:mass}, the energy loses $2^{32n}$ per adjoined pair of nodes; for the design $(96,15,6,8,5)$ this holds because the design enters the padding only through $A+C+h\le2n$ and $2b+q\le n$, which read $167N\le192N$ and $36N\le96N$. The total loss is then $2^{40nk}$, the rate is $40\log2+0.887=28.61$, and the same argument gives $\mu(G)<11\,519$. For the design $(48,7,4,4,2)$, whose gap $1.303\times10^{-4}$ is twenty times smaller, the padded rate $28.62$ gives about $2.0\times10^5$. The bound $10^8$ of \cite{Jha} uses, in addition, the weakening of the loss to $e^{1000nk}$, the entry bound $e^{3n}$ and the window $24000\log q<n\le72000\log q$. The bound $8\,127$ of \cite{Litsey}, for the design $(48,7,4,4,2)$ with the gap $1.0\times10^{-3}$ of its new certificate, uses a perturbation rate of $404.25$ per unit of $N$, that is $8.42$ per unit of $n$, against $\rho_2=6.03$ here; in it the energy lost per missing point is $5.37$ per unit of $n$ \cite[Proposition~5.10]{Litsey}, against the certified slope $\rho_1-2\log2=3.75$ of Corollary~\ref{xcor:massminors}.
+\end{remark}
+
+\begin{observation}[Measured; exact polynomials]\label{xobs:radius}
+For the polynomials of Definition~\ref{xdef:poly} we computed $\Delta_N(X)$ exactly (\texttt{measure\_scout.py}, Appendix~C), expanded it at $G$ as $\sum_kc_k(X-G)^k$, and determined the largest $d^*$ with $\sum_k|c_k|(d^*)^k\le2|c_0|$; then $|\Delta_N(x)|\le2|\Delta_N(G)|$ for $|x-G|\le d^*$. The values of $\rho_n=-\log d^*/n$ for designs with the ratios $96:15:6:8:5$ and $48:7:4:4:2$, with the parameters rounded to integers where the ratio does not give integers (exact at $n=96,192$ for the first ratio and at $n=48,96$ for the second), are
+\begin{center}
+\begin{tabular}{lcccccc}
+\toprule
+$n$ & $48$ & $72$ & $96$ & $120$ & $144$ & $192$\\
+\midrule
+$96:15:6:8:5$ & $4.442$ & $4.474$ & $4.520$ & $4.541$ & $4.551$ & $4.551$\\
+$48:7:4:4:2$ & $4.454$ & $4.539$ & $4.566$ & $4.534$ & -- & --\\
+\bottomrule
+\end{tabular}
+\end{center}
+(for the second ratio also $\rho_{24}=4.326$).
+\end{observation}
+
+The values $\rho_n$ level off at $4.551$; the rate proved in Theorem~\ref{xthm:exponent} is $\rho_2=6.03$. If $(\mathrm R_\rho)$ holds with $\rho=4.6$, Proposition~\ref{xprop:power} gives an exponent at most $1.86\times10^3$ for the design $(96,15,6,8,5)$. For comparison, \cite[Theorem~5.1]{CDT} gives the exponent $24781$ for $L(2,\chi_{-3})$, and \cite[Corollary~1.2]{Fauzan} the exponent $260$ for $\zeta(5)$.
+
+\subsection{Structure near the constant}\label{xsec:structure}
+
+This subsection records measurements that account for the difference between the rate $\rho_2=6.03$ of Theorem~\ref{xthm:exponent} and the measured rate $\rho_n\approx4.55$ of Observation~\ref{xobs:radius}. Throughout, $A=\Phi^{(0)}+G\Phi^{(1)}$ and $B=\Phi^{(1)}$.
+
+\begin{definition}[Singular values and pencil eigenvalues]\label{xdef:pencil}
+Let $\sigma_1\ge\dots\ge\sigma_n>0$ be the singular values of $A$, and let $u,v$ be unit vectors with $Av=\sigma_nu$. Let $\lambda_1,\dots,\lambda_n$ be the eigenvalues of $A^{-1}B$, counted with multiplicity.
+\end{definition}
+
+\begin{lemma}\label{xlem:zeros}
+$\Delta_N(G+d)=\Delta_N(G)\prod_{i=1}^n(1+d\lambda_i)$ for every real $d$. Hence the zeros of $\Delta_N(X)$ are the numbers $G-1/\lambda_i$ with $\lambda_i\ne0$, and the distance from $G$ to the nearest zero is $1/\max_i|\lambda_i|$.
+\end{lemma}
+
+\begin{proof}
+$\Delta_N(G+d)=\det(A+dB)=\det A\,\det(I+dA^{-1}B)$, and $\det(I+dM)=\prod_i(1+d\lambda_i)$ for the eigenvalues $\lambda_i$ of $\Theta$.
+\end{proof}
+
+\begin{observation}[Measured; preprint ratio $48:7:4:4:2$]\label{xobs:smin}
+The values of $\log\|A^{-1}\|_F/n$, computed in ball arithmetic, which bound $-\log\sigma_n/n$ from above within $\log n/n$, are
+\begin{center}
+\begin{tabular}{lcccccc}
+\toprule
+$n$ & $24$ & $48$ & $72$ & $96$ & $120$ & $144$\\
+\midrule
+$\log\|A^{-1}\|_F/n$ & $4.103$ & $4.257$ & $4.341$ & $4.373$ & $4.353$ & $4.352$\\
+\bottomrule
+\end{tabular}
+\end{center}
+(parameters rounded to integers for $n=72,120,144$). At $n=24$ and $n=48$, $\log|u^{\mathsf T}Bv|/n$ equals $0.221$ and $0.197$, and $-\log\sigma_n/n+\log|u^{\mathsf T}Bv|/n$ equals $4.323$ and $4.454$; the measured $\rho_n$ of Observation~\ref{xobs:radius} are $4.326$ and $4.454$. The singular values of $A$ decrease geometrically, with ratios between $e^{-3.3}$ and $e^{-6.6}$ at $n=48$, and the zeros of $\Delta_N(X)$ lie at distances from $G$ whose logarithms are in arithmetic progression with step $4.53$ ($n=24$) and $4.58$ ($n=48$).
+\end{observation}
+
+These measurements indicate that the radius rate is the decay rate of the smallest singular value of $A$ plus the size of $B$ on the corresponding singular vectors, about $0.2$; Theorem~\ref{xthm:exponent} uses the entry bound $0.887$ for $B$.
+
+\begin{definition}[Energy at a given mass]\label{xdef:Fmass}
+For $0<\theta\le1$ let
+\[
+F(\theta)=\max_{\mu,\nu}\Big(\theta\,L(\mu,\nu)+\theta^2Q(\mu,\nu)\Big),
+\]
+over probability measures $\mu$ on $[-1,1]$ and $\nu$ on $[0,1]$, where $L(\mu,\nu)=(1+\alpha+\gamma_g)\log2+\int W_2\,d\mu+\int W_s\,d\nu$ and
+\[
+\begin{aligned}Q(\mu,\nu)={}&\tfrac12\log2+\iint\log|x-x'|\,d\mu\,d\mu+\tfrac12\iint\log(1-xx')\,d\mu\,d\mu\\&+\iint\log|s-s'|\,d\nu\,d\nu-\iint\log(1-2xs+x^2)\,d\mu\,d\nu,\end{aligned}
+\]
+with $W_2$, $W_s$ as in Section~\ref{sec:equilibrium}. The terms of $L$ come from one node each and those of $Q$ from pairs of nodes, as in the proof of Proposition~\ref{xprop:mass}, and $F(1)-\frac12\log2=U_2^*$ (Proposition~\ref{prop:dual}). For a maximising pair $(\mu^*,\nu^*)$ at $\theta=1$ put
+\[
+r_{\mathrm{row}}=\max_{|z|=1}\int\log|1+xz|\,d\mu^*(x),\qquad r_{\mathrm{col}}=\max_{|z|=1}\int\log|1+sz|\,d\nu^*(s).
+\]
+\end{definition}
+
+By the expansions in the proof of Proposition~\ref{xprop:mass}, $Q(\mu,\nu)$ is $-\frac32\log2$ minus a sum of squares of moments, as in Definition~\ref{def:energy}, so $Q$ is a concave quadratic form in the pair of measures. With $\tilde\mu=\theta\mu$ and $\tilde\nu=\theta\nu$, $F(\theta)$ is the maximum of a concave function of $(\theta,\tilde\mu,\tilde\nu)$ over a convex set, so $F$ is concave and $F(1-t)\le F(1)-tF'(1)$ for $0\le t<1$. The bound $\overline U_2(\theta)$ of Proposition~\ref{xprop:mass} has the form $\theta L+\theta^2Q$, with the certificate of (C4) in place of a pair of measures. Heuristically, the largest energies of configurations of $m=\theta n$ nodes are $F(\theta)n^2(1+o(1))$, so $-F'(1)$ is the smallest slope at $\theta=1$ that a bound of this kind can have. Removing one row and one column of a monomial alternant on nodes $x_1,\dots,x_m$ multiplies it by an elementary symmetric function of the nodes, whose maximum over the removed exponent is of order $e^{m\max_{|z|=1}\int\log|1+xz|\,d\mu}$; this is the origin of $r_{\mathrm{row}}$ and $r_{\mathrm{col}}$.
+
+\begin{observation}[Numerical; discretised equilibrium problem]\label{xobs:slope}
+With the solver of Section~\ref{sec:equilibrium} on a grid of $300\times200$ cells, $F(1)$ reproduces the values of that section, and
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+design & $-F'(1)$ & $r_{\mathrm{row}}$ & $r_{\mathrm{col}}$ & sum\\
+\midrule
+$(48,7,4,4,2)$ & $3.766$ & $0.178$ & $0.434$ & $4.378$\\
+$(96,15,6,8,5)$ & $3.752$ & $0.177$ & $0.438$ & $4.367$\\
+$(48,7,4,8,2)$ & $3.844$ & $0.187$ & $0.435$ & $4.467$\\
+$(48,14,4,4,2)$ & $3.953$ & $0.188$ & $0.457$ & $4.598$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The derivative was computed by the envelope formula $F'(1)=L(\mu^*,\nu^*)+2Q(\mu^*,\nu^*)$ and agrees with finite differences ($3.748$ at $\theta=0.99$ for the first design). For the design $(96,15,6,8,5)$, $-F'(1)=3.752$ agrees with the certified coefficient $\rho_1-2\log2=3.7519$ of Corollary~\ref{xcor:massminors}.
+\end{observation}
+
+\begin{conjecture}\label{xconj:smin}
+For a design satisfying (C1)--(C4), $\lim_{N\to\infty}-\log\sigma_n/n=-F'(1)+r_{\mathrm{row}}+r_{\mathrm{col}}$.
+\end{conjecture}
+
+For the design of the preprint the right side is $4.378$, and Observation~\ref{xobs:smin} gives $4.35$ at $n=96,120,144$. The rates therefore split into three parts. In Theorem~\ref{xthm:exponent}, $\rho_2=6.03$ is the energy slope $3.75$, the bound $2\log2=1.39$ of Lemmas~\ref{xlem:schur} and~\ref{xlem:hardy} for the row and column determinants, and the entry bound $0.89$ for $B$. In the measurements, $\rho_n\approx4.55$ is the same slope $3.75$, the alternant terms $r_{\mathrm{row}}+r_{\mathrm{col}}=0.61$, and the size $0.2$ of $B$ on the bottom singular vectors. With the measured parts in place of the proved ones, the argument of Theorem~\ref{xthm:exponent} would give an exponent near $(4.37+0.2)(1-\gamma_g+n_0\gamma/2)/\gamma\approx1.84\times10^3$ for the design $(96,15,6,8,5)$. Lemmas~\ref{xlem:schur} and~\ref{xlem:hardy} give the alternant terms for each configuration, as $\frac1n\log \Theta(x)$ and $\frac1n\log \Theta(s)$; the bound $2\log2$ comes from bounding these by $\log2$ before the energy is maximised. Keeping them inside the energy, with a certificate for the resulting problem, would give the slope $-F'(1)+r_{\mathrm{row}}+r_{\mathrm{col}}=4.367$ in place of $5.138$ and an exponent near $2.2\times10^3$; the rest of the difference would need a bound for $B$ on the bottom singular vectors of $A$.
+
+
+\section{The best constant of the real-place method}\label{sec:equilibrium}
+
+The constant $U_\kappa$ of Definition~\ref{def:upper} depends on the trial sequences. Here we identify its infimum. Let
+\[
+W_\kappa(x)=(\alpha+2\gamma_g)\log|x|+2\eta\log(1-x)-\Big(\frac{\kappa}{2}+\alpha+\eta+\gamma_g\Big)\log(1+x^2),\quad
+W_s(s)=\beta\log s+\gamma_q\log(1-s),
+\]
+and $D(x)=2\gamma_g-2x^2/(1+x^2)$, with the values $-\infty$ at $x=0$, $x=1$, $s=0$, $s=1$; these functions are upper semicontinuous and bounded above. Then $X_{p,v,\lambda}=W_\kappa+\lambda D-2\kappa T(p,\cdot)-S(v,\cdot)$, and in Definition~\ref{def:upper} the suprema may be taken over the closed intervals $[-1,1]$ and $[0,1]$ without changing their values. Let
+\[
+U^*_\kappa=\inf\big\{U_\kappa(p,v,\lambda)\big\},
+\]
+the infimum over admissible $p,v$ and $\lambda\in\Lambda_\kappa$. By Proposition~\ref{prop:up}, $\max(U^*_1,U^*_2)$ is the best upper constant the method of \cite[Sec.~6]{OAI} can give for the design.
+
+\begin{definition}[Moments and energy]\label{def:energy}
+For a Borel probability measure $\mu$ on $[-1,1]$ and $\nu$ on $[0,1]$ put
+\[
+A_k=\int T_k\,d\mu,\qquad B_k=\int x^k\,d\mu(x),\qquad C_k=\int T_k\,d\nu\qquad(k\ge1),
+\]
+and
+\[
+\Phi_\kappa(\mu,\nu)=(-1+\alpha+\gamma_g)\log2+\int W_\kappa\,d\mu+\int W_s\,d\nu-\kappa\sum_{k\ge1}\frac{A_k^2}{k}-\frac12\sum_{k\ge1}\frac{(B_k-2C_k)^2}{k}.
+\]
+The integrals lie in $[-\infty,\infty)$ and the two sums in $[0,\infty]$, so $\Phi_\kappa(\mu,\nu)\in[-\infty,\infty)$ is well defined. Let $\mathcal M_2$ be the set of all pairs $(\mu,\nu)$, and $\mathcal M_1$ the set of pairs with $\int D\,d\mu\ge0$.
+\end{definition}
+
+
+
+\begin{proposition}\label{prop:dual}
+For $\kappa\in\{1,2\}$,
+\[
+U^*_\kappa=\max_{(\mu,\nu)\in\mathcal M_\kappa}\Phi_\kappa(\mu,\nu),
+\]
+and the maximum is attained. Moreover, let $(\mu^*,\nu^*)$ be any maximising pair, with moments $A^*_k$, $B^*_k$, $C^*_k$. Then for all admissible $p,v$ and $\lambda\in\Lambda_\kappa$,
+\begin{equation}\label{eq:excess}
+U_\kappa(p,v,\lambda)-U^*_\kappa\;\ge\;\kappa\sum_{k\ge1}\frac{(p_k-A^*_k)^2}{k}+\frac12\sum_{k\ge1}\frac{(v_k-B^*_k+2C^*_k)^2}{k}.
+\end{equation}
+In particular all maximising pairs have the same sequences $(A^*_k)$ and $(B^*_k-2C^*_k)$.
+\end{proposition}
+
+\begin{proof}
+\emph{Step 1 (a lower bound for every certificate).} Fix admissible $p,v$, $\lambda\in\Lambda_\kappa$ and $(\mu,\nu)\in\mathcal M_\kappa$. Since a supremum dominates an average,
+\[
+\sup X_{p,v,\lambda}\ge\int X_{p,v,\lambda}\,d\mu,\qquad \sup Y_v\ge\int Y_v\,d\nu .
+\]
+By uniform convergence, $\int T(p,x)\,d\mu=\sum_kp_kA_k/k$, $\int S(v,x)\,d\mu=\sum_kv_kB_k/k$ and $\int T(v,s)\,d\nu=\sum_kv_kC_k/k$. When $\kappa=1$, $\lambda\int D\,d\mu\ge0$. Hence
+\[
+U_\kappa(p,v,\lambda)\ge(-1+\alpha+\gamma_g)\log2+\int W_\kappa\,d\mu+\int W_s\,d\nu+\sum_{k\ge1}\frac{\kappa p_k^2-2\kappa p_kA_k}{k}+\sum_{k\ge1}\frac{\tfrac12v_k^2-v_k(B_k-2C_k)}{k}.
+\]
+The sums converge absolutely because $p,v$ are admissible and $|A_k|,|B_k|,|C_k|\le1$. Completing the squares,
+\begin{equation}\label{eq:step1}
+U_\kappa(p,v,\lambda)\ge\Phi_\kappa(\mu,\nu)+\kappa\sum_k\frac{(p_k-A_k)^2}{k}+\frac12\sum_k\frac{(v_k-B_k+2C_k)^2}{k},
+\end{equation}
+where, if $\Phi_\kappa(\mu,\nu)=-\infty$, the inequality holds trivially, and otherwise the two sums $\sum A_k^2/k$, $\sum(B_k-2C_k)^2/k$ are finite and the rearrangement is legitimate. In particular $U^*_\kappa\ge\sup_{\mathcal M_\kappa}\Phi_\kappa$.
+
+\emph{Step 2 (truncated sequences and a minimax theorem).} Fix $K\ge1$ and $M>0$. Let $W_\kappa^M=\max(W_\kappa,-M)$ and $W_s^M=\max(W_s,-M)$; these are continuous real functions. Write $U^{K,M}_\kappa(p,v,\lambda)$ for $U_\kappa$ with $W_\kappa,W_s$ replaced by $W^M_\kappa,W^M_s$, restricted to sequences with $p_k=v_k=0$ for $k>K$, which we identify with $(p,v)\in\mathbb R^{2K}$. For $(\mu,\nu)$ let
+\[
+L(p,v,\lambda;\mu,\nu)=(-1+\alpha+\gamma_g)\log2+\kappa\|p\|_*^2+\tfrac12\|v\|_*^2+\int X^M_{p,v,\lambda}\,d\mu+\int Y^M_v\,d\nu,
+\]
+with $X^M,Y^M$ built from the truncated weights. Since $X^M$ and $Y^M$ are continuous on compact intervals, $\sup_{\mu,\nu}L=U^{K,M}_\kappa(p,v,\lambda)$, the supremum being attained at point masses. The function $L$ is real valued, convex and continuous in $(p,v,\lambda)\in\mathbb R^{2K}\times\Lambda_\kappa$, and affine and weakly continuous in $(\mu,\nu)$, which ranges over a convex set that is compact in the weak topology. Sion's minimax theorem \cite{Sion} gives
+\[
+\inf_{p,v,\lambda}U^{K,M}_\kappa=\sup_{\mu,\nu}\ \inf_{p,v,\lambda}L .
+\]
+The inner infimum over $(p,v)$ is a finite-dimensional quadratic minimisation with minimiser $p_k=A_k$, $v_k=B_k-2C_k$ $(k\le K)$; the infimum over $\lambda\in\Lambda_1$ of $\lambda\int D\,d\mu$ is $0$ if $\int D\,d\mu\ge0$ and $-\infty$ otherwise. Therefore
+\[
+\inf_{p,v,\lambda}U^{K,M}_\kappa=\sup_{\mathcal M_\kappa}\Phi^{K,M}_\kappa,
+\]
+where $\Phi^{K,M}_\kappa$ is $\Phi_\kappa$ with $W^M_\kappa,W^M_s$ in place of $W_\kappa,W_s$ and both sums truncated at $k\le K$.
+
+\emph{Step 3 (limits).} Since $W^M\ge W$, $U^{K,M}_\kappa\ge U_\kappa$ on truncated sequences, which are admissible. Hence
+\[
+U^*_\kappa\le\inf_{p,v,\lambda}U^{K,M}_\kappa=\sup_{\mathcal M_\kappa}\Phi^{K,M}_\kappa\qquad\text{for all }K,M.
+\]
+Take $M=K$ and write $\Phi^{(K)}=\Phi^{K,K}_\kappa$. Each $\Phi^{(K)}$ is weakly continuous on the compact set $\mathcal M_\kappa$ (closed because $D$ is continuous), so it attains its supremum at some $(\mu_K,\nu_K)$. Pass to a subsequence converging weakly to $(\mu^*,\nu^*)\in\mathcal M_\kappa$. The functionals decrease in $K$: for $J\le K$, $\Phi^{(K)}\le\Phi^{(J)}$, because the truncated weights decrease and the subtracted sums increase. Thus, for fixed $J$,
+\[
+\limsup_{K\to\infty}\Phi^{(K)}(\mu_K,\nu_K)\le\limsup_{K\to\infty}\Phi^{(J)}(\mu_K,\nu_K)=\Phi^{(J)}(\mu^*,\nu^*).
+\]
+As $J\to\infty$, $\int W^J_\kappa\,d\mu^*\downarrow\int W_\kappa\,d\mu^*$ and $\int W^J_s\,d\nu^*\downarrow\int W_s\,d\nu^*$ by monotone convergence (the weights are bounded above), and the truncated sums increase to the full sums. Hence $\Phi^{(J)}(\mu^*,\nu^*)\downarrow\Phi_\kappa(\mu^*,\nu^*)$, and
+\[
+U^*_\kappa\le\Phi_\kappa(\mu^*,\nu^*)\le\sup_{\mathcal M_\kappa}\Phi_\kappa\le U^*_\kappa,
+\]
+the last inequality by Step 1. All are equalities and the maximum is attained at $(\mu^*,\nu^*)$.
+
+\emph{Step 4 (excess inequality and uniqueness of the moments).} Apply \eqref{eq:step1} with $(\mu,\nu)=(\mu^*,\nu^*)$ and use $\Phi_\kappa(\mu^*,\nu^*)=U^*_\kappa$; this is \eqref{eq:excess}. Let $(p^{(j)},v^{(j)},\lambda^{(j)})$ be admissible with $U_\kappa\to U^*_\kappa$. By \eqref{eq:excess} applied to two maximising pairs, $p^{(j)}$ converges in the weighted norm $\|\cdot\|_*$ to the $A$-sequence of each of them, so these sequences coincide; likewise for $B-2C$.
+\end{proof}
+
+\begin{remark}[Logarithmic form]\label{rem:log}
+If $\iint\log|x-x'|\,d\mu\,d\mu$, $\iint\log|s-s'|\,d\nu\,d\nu$ and $\iint\log(1-2xs+x^2)\,d\mu\,d\nu$ are finite, then
+\begin{align*}
+\Phi_\kappa(\mu,\nu)={}&\Big(\alpha+\gamma_g+\frac{\kappa}{2}\Big)\log2+\int W_\kappa\,d\mu+\int W_s\,d\nu+\frac{\kappa}{2}\iint\log|x-x'|\,d\mu\,d\mu\\
+&+\frac12\iint\log(1-xx')\,d\mu\,d\mu+\iint\log|s-s'|\,d\nu\,d\nu-\iint\log(1-2xs+x^2)\,d\mu\,d\nu .
+\end{align*}
+This follows from the expansions \cite[Eqs.~(81), (82)]{OAI}: integrate them with a damping factor $r<1$, where the series converge uniformly, and let $r\uparrow1$. The damped sums $\sum r^kA_k^2/k$ increase to $\sum A_k^2/k$, and the damped kernels converge by dominated convergence, using $|1-r\zeta|^2\ge r|1-\zeta|^2$ for $|\zeta|=1$ as in \cite[Sec.~6]{OAI}. Formally, $\Phi_\kappa$ evaluated at the empirical measures of a configuration is the $n\to\infty$ form of the exact identity \cite[Eq.~(80)]{OAI}. We do not prove here that $\sup n^{-2}\log I_{\kappa,n}$ converges to $\max\Phi_\kappa$; if it does, the method of the preprint loses nothing after the passage from $|\Delta_N|$ to the integrands $I_{\kappa,n}$.
+\end{remark}
+
+\begin{remark}[The constraint for $\kappa=2$]
+On the configurations treated with $\kappa=2$, condition \cite[Eq.~(67)]{OAI} gives $\langle D\rangle\le-1/n$, so $\lambda\le0$ is also admissible there; in the dual this adds the constraint $\int D\,d\mu\le0$. At the maximisers computed below $\int D\,d\mu^*\approx-0.34$, so the constraint is inactive and the preprint loses nothing by taking $\lambda=0$.
+\end{remark}
+
+\subsection{Numerical solution}
+
+The script \texttt{cat\_equilibrium.py} maximises $\Phi_\kappa$ over pairs of measures with piecewise-constant densities on Chebyshev-spaced cells ($500$ cells for $\mu$, $330$ for $\nu$), using the logarithmic form of Remark~\ref{rem:log} with exact cell integrals of $\log|x-y|$ and of the logarithmic weights. By Step~1, every value obtained this way is a lower bound for $U^*_\kappa$; every certificate gives an upper bound.
+
+\begin{observation}[Numerical]
+The run of \texttt{cat\_equilibrium.py} of 7 October 2026 gives the following.
+\begin{enumerate}
+\item For the preprint's design $(48,7,4,4,2)$: $-2.292188\le U^*_2\le-2.291920$, where the upper value comes from a certificate with $300$ free coefficients. The dual value for $\kappa=1$ is $-2.43701\le U^*_1$, with no matching certificate computed; the preprint's own $\kappa=1$ certificate gives $-2.29679$. The finite-place constant of \cite[Prop.~3.4]{OAI} is $-2.290810$. The largest margin the method can certify for this design lies in $[0.00111,0.00138]$; the preprint certifies $0.00013$.
+\item For the design $(96,15,6,8,5)$: $-2.278235\le U^*_2\le-2.278134$ and $-2.41499\le U^*_1\le-2.41461$, the upper values coming from the certificate of Proposition~\ref{prop:c4}; finite-place constant $-2.275548$, largest certifiable margin in $[0.00259,0.00269]$.
+\item The supports of the maximising measures are close to $[-1,-0.100]\cup[0.100,0.993\text{--}0.995]$ for $\mu$ and $(0.006,1)$ for $\nu$, for both designs.
+\item The moments $A^*_k$ and $B^*_k-2C^*_k$ for the preprint's design agree with the trial sequences printed in \cite[Sec.~7]{OAI} to within $3.2\times10^{-3}$ for $k\le10$.
+\end{enumerate}
+\end{observation}
+
+Item 4 is what \eqref{eq:excess} predicts: the preprint's $\kappa=2$ certificate exceeds $U^*_2$ by $0.0010$--$0.0013$, so its sequences lie within that weighted squared distance of the moments of the equilibrium measures. The trial coefficients of the preprint are approximations of these moments, and the geometric tails it uses, with bases near $1$ and near $\pm0.1+0.95i$, reflect the endpoints of the supports, in particular the gap around $x=0$. The certificate of \cite[Proposition~5.11]{Litsey}, checked in Lean, gives $U_2<-2.29180925$ for the design $(48,7,4,4,2)$, that is a gap of $1.0\times10^{-3}$. The numerical certificate with $300$ free coefficients of item~1 gives $U_2\le-2.291920$, lower by $1.1\times10^{-4}$, so larger trial sequences still change $U_2$ in the fourth decimal (compare \cite[Remark~6.1]{Litsey}).
+
+\begin{observation}[Numerical; design $(96,15,6,8,5)$, $\kappa=2$]\label{obs:edges}
+On a mesh refined toward the support edges ($688$ cells for $\mu$, $279$ for $\nu$) the dual value is $-2.2782349$, within $10^{-6}$ of the value on the regular grid. The supports are $[-1,-0.1011]\cup[0.0981,0.9932]$ for $\mu$ and $[0.0065,0.99992]$ for $\nu$. Near $x=-1$ the density of $\mu$ behaves like $(1+x)^\theta$ with fitted $\theta=-0.340$; at the two edges of the gap it vanishes like a power with fitted exponents $0.475$ and $0.462$; at the lower edge of $\nu$ it rises like a square root.
+\end{observation}
+
+\begin{remark}[The edge at $x=-1$; heuristic]
+Near $x=-1$, with $u=1+x$, the kernel $\frac\kappa2\log|x-x'|+\frac12\log(1-xx')$ is $\frac\kappa2\big(\log|u-u'|+\frac1\kappa\log(u+u')\big)+O(uu')$, and the external field is smooth. For a local density $u^\theta$ on $(0,\infty)$ with $-1<\theta<0$ one has $\mathrm{PV}\!\int_0^\infty\frac{t^\theta}{u-t}\,dt=\pi u^\theta\cot(\pi\theta)$ and $\int_0^\infty\frac{t^\theta}{u+t}\,dt=-\frac{\pi u^\theta}{\sin(\pi\theta)}$, so the leading singular part of the derivative of the potential vanishes exactly when $\cos(\pi\theta)=1/\kappa$. For $\kappa=2$ this gives $\theta=-1/3$, in agreement with Observation~\ref{obs:edges}; for $\kappa=1$ it gives a bounded density. We have no proof of this local analysis.
+\end{remark}
+
+
+\section*{Code and data}
+The scripts, their logs, the coefficient files and the source of this note are at \repo. The repository also contains the verification report \cite{MCSC}, the scripts that check the design of \cite{OAI}, and the scripts of the companion note \cite{MCSC3} on $\beta(4)$.
+
+\section*{Acknowledgement}
+This note was prepared with the assistance of Claude (Anthropic). All computations were run by the author on his own computer; the logs are listed in the appendix.
+
+\begin{thebibliography}{9}
+\bibitem{OAI} OpenAI, \emph{Catalan's constant is irrational}, preprint, 24 September 2026, \url{https://github.com/openai/math/blob/main/preprints/Catalans-constant-is-irrational-September-24-2026/paper.pdf}.
+\bibitem{OAILean} OpenAI, \emph{Irrationality of Catalan's constant}, Lean~4 formalisation, repository \texttt{openai/math}, scope note \url{https://github.com/openai/math/blob/main/lean/docs/005.md}; formal statement in \texttt{lean/ComparatorChallenges/Catalan.lean}.
+\bibitem{MCSC} M.~Costa Santos Carreira, \emph{Verification of the preprint ``Catalan's constant is irrational'' (OpenAI, 24 September 2026)}, report, 7 October 2026, sent to the organizers of the Ramanujan Challenge; included in the repository \repo.
+\bibitem{Sion} M.~Sion, On general minimax theorems, \emph{Pacific J. Math.} \textbf{8} (1958), 171--176.
+\bibitem{Fauzan} A.~Fauzan, \emph{$\zeta(5)$ is irrational}, preprint, Zenodo 22826419, 17 September 2026.
+\bibitem{Sun} Z.-W.~Sun, \emph{Catalan's constant is irrational}, preprint, arXiv:2609.04176, 3 September 2026.
+\bibitem{Wachs} D.~Wachs, \emph{A note on a recent claimed proof of the irrationality of Catalan's constant}, preprint, arXiv:2609.22339, 16 September 2026.
+\bibitem{CDT} F.~Calegari, V.~Dimitrov and Y.~Tang, \emph{Arithmetic holonomy bounds and effective Diophantine approximation}, preprint, arXiv:2510.04156, 2025.
+\bibitem{Jha} R.~K.~Jha, \emph{A finite irrationality measure for Catalan's constant}, preprint, Zenodo, 8 October 2026, doi:10.5281/zenodo.23237269; Lean sources at \url{https://github.com/rohitkrjha/catalan-measure}.
+\bibitem{Litsey} S.~Litsey, \emph{An irrationality measure for Catalan's constant}, preprint, 10 October 2026, with a Lean formalization, \url{https://github.com/slitsey/catalan-irrationality-measure}.
+\bibitem{Macdonald} I.~G.~Macdonald, \emph{Symmetric functions and Hall polynomials}, 2nd ed., Oxford University Press, 1995.
+\bibitem{MCSC3} M.~Costa Santos Carreira, \emph{Determinant constructions for the Dirichlet beta value at four}, preprint, Zenodo, 12 October 2026, doi:10.5281/zenodo.23326646; scripts and logs at \url{https://github.com/MarcosCarreira/catalan-designs}.
+\bibitem{Bojnal} H.~S.~Bojnal, \emph{Theorem 35 with the design $(36,6,2,3,2)$: $\mu(G)<2402$}, issue~\#1 of the repository \url{https://github.com/MarcosCarreira/catalan-designs}, 15 October 2026, with the package \url{https://github.com/fringewidth/catalan-exponent}; prepared with Claude (Anthropic).
+\end{thebibliography}
+
+\clearpage
+\section*{Appendices}
+
+\subsection*{Appendix A. Pivots modulo 131 and 53}
+
+Table~\ref{tab:pivots131} lists the pivots of the Gaussian elimination of Proposition~\ref{prop:c3}, in the layout of \cite[Table~1]{OAI}: rows $R_i=B(i,\cdot)+\sigma B(i+1,\cdot)$ in increasing order, a swap with the first later row having a nonzero entry in column $i$ when the diagonal entry vanishes, and elimination below the pivot. All $3\times96$ pivots are nonzero.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rl}
+\hline
+$\sigma$ & Successive pivots in $\mathbb{F}_{131}$ \\
+\hline
+$0$ & 89, 55, 124, 94, 75, 121, 36, 40, 20, 2, 34, 28, 11, 118, 31, 8 \\
+ & 73, 28, 32, 1, 121, 86, 91, 100, 14, 119, 20, 51, 78, 23, 5, 118 \\
+ & 40, 128, 109, 56, 19, 9, 93, 59, 90, 2, 115, 104, 36, 89, 106, 85 \\
+ & 89, 106, 20, 121, 89, 20, 11, 126, 42, 18, 127, 43, 59, 35, 6, 19 \\
+ & 80, 111, 126, 23, 1, 6, 110, 29, 101, 94, 38, 104, 62, 100, 10, 77 \\
+ & 111, 60, 91, 83, 61, 39, 6, 124, 20, 73, 14, 25, 62, 57, 81, 42 \\
+\hline
+$1$ & 43, 52, 97, 6, 12, 101, 74, 50, 67, 120, 18, 28, 41, 68, 17, 92 \\
+ & 53, 130, 104, 9, 120, 27, 112, 43, 63, 89, 17, 8, 114, 73, 22, 127 \\
+ & 20, 81, 87, 6, 31, 32, 29, 112, 129, 78, 59, 70, 119, 125, 128, 108 \\
+ & 95, 47, 31, 72, 43, 71, 32, 105, 130, 2, 104, 129, 65, 114, 104, 39 \\
+ & 99, 122, 41, 56, 124, 71, 17, 29, 59, 61, 41, 112, 9, 68, 12, 22 \\
+ & 56, 109, 67, 103, 70, 123, 1, 70, 9, 35, 79, 67, 29, 84, 62, 39 \\
+\hline
+$-1$ & 4, 70, 20, 114, 56, 52, 14, 19, 50, 7, 22, 8, 82, 125, 8, 21 \\
+ & 8, 14, 124, 103, 28, 59, 78, 114, 39, 66, 14, 62, 45, 28, 74, 123 \\
+ & 24, 78, 19, 38, 112, 101, 68, 41, 2, 41, 111, 11, 124, 35, 33, 13 \\
+ & 58, 9, 15, 122, 109, 113, 103, 82, 93, 73, 99, 86, 102, 117, 40, 111 \\
+ & 102, 44, 99, 21, 95, 20, 76, 102, 42, 95, 62, 4, 78, 16, 108, 130 \\
+ & 24, 62, 11, 87, 108, 9, 22, 20, 44, 74, 83, 83, 53, 26, 27, 42 \\
+\hline
+\end{tabular}
+\caption{Gaussian pivots of $B_0+\sigma B_1$ modulo $131$ for the design $(96,15,6,8,5)$, computed by the elimination rule of Section~4.4 of the preprint (rows in increasing order, indices from zero). Row swaps: $\sigma=0$: $(71,72)$; $\sigma=1$: none; $\sigma=-1$: $(3,4)$.}
+\label{tab:pivots131}
+\end{table}
+
+Table~\ref{tab:pivots53} lists, in the same layout, the pivots of Proposition~\ref{prop:c3b} for the design $(36,6,2,3,2)$. All $3\times36$ pivots are nonzero.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rl}
+\hline
+$\sigma$ & Successive pivots in $\mathbb{F}_{53}$ \\
+\hline
+$0$ & 1, 49, 23, 52, 23, 10, 22, 5, 33, 39, 13, 21, 13, 44, 34, 39 \\
+ & 27, 31, 34, 31, 43, 18, 35, 1, 13, 34, 37, 7, 30, 8, 2, 48 \\
+ & 41, 14, 4, 8 \\
+\hline
+$1$ & 3, 9, 23, 20, 1, 5, 49, 5, 35, 51, 47, 24, 44, 31, 35, 39 \\
+ & 24, 21, 11, 31, 41, 36, 22, 38, 11, 40, 7, 49, 14, 34, 32, 3 \\
+ & 27, 3, 48, 9 \\
+\hline
+$-1$ & 52, 6, 47, 6, 5, 26, 26, 27, 20, 21, 16, 14, 52, 9, 15, 41 \\
+ & 10, 23, 12, 22, 44, 37, 21, 36, 22, 7, 11, 3, 33, 18, 48, 25 \\
+ & 28, 26, 19, 33 \\
+\hline
+\end{tabular}
+\caption{Gaussian pivots of $B_0+\sigma B_1$ modulo $53$ for the design $(36,6,2,3,2)$, computed by the elimination rule of Section~4.4 of the preprint (rows in increasing order, indices from zero). Row swaps: $\sigma=0$: $(19,20)$; $\sigma=1$: $(14,15)$; $\sigma=-1$: $(12,13)$.}
+\label{tab:pivots53}
+\end{table}
+
+\clearpage
+\subsection*{Appendix B. Trial coefficients}
+
+Tables~\ref{tab:coef2} and~\ref{tab:coef1} give the coefficients of Proposition~\ref{prop:c4}: $l_1,\dots,l_{16}$, then $r_z$ for the real bases, then $a_j,b_j$ for the complex bases $z_j$ of Table~\ref{tab:bases}, as in Section~4.4. They are the contents of the file \texttt{cat\_tail\_edges\_out.json} read by \texttt{cat\_cert7\_new.py}, whose SHA-256 is
+\begin{center}\texttt{f9466e8b08e882ef93f7d6738e091e190890a4644109f4f7bff3cb2f047f08fb}.\end{center}
+
+{\small
+\begin{longtable}{lrr}
+\caption{Exact trial coefficients for $\kappa=2$ (design $(96,15,6,8,5)$, bases of Section~4.4; $a_j,b_j$ belong to the complex base $z_j$ of Table~\ref{tab:bases}). Every entry is a terminating decimal, equal to the rational number with denominator dividing $10^{20}$ used by the certificate.}\label{tab:coef2}\\
+\toprule coefficient & $p$ & $v$\\\midrule\endfirsthead
+\toprule coefficient & $p$ & $v$\\\midrule\endhead
+$l_{1}$ & $0.206800750042179584$ & $-0.79574677215463866368$\\
+$l_{2}$ & $-0.28212239555494916096$ & $-1.4989422266403733504$\\
+$l_{3}$ & $-0.0211316345414506624$ & $2.5009964709022875648$\\
+$l_{4}$ & $0.05789817505804435456$ & $-0.81823277725023289344$\\
+$l_{5}$ & $0.00026235849900718592$ & $-0.34335767523865288704$\\
+$l_{6}$ & $-0.0072217607220025536$ & $-0.320596670735328256$\\
+$l_{7}$ & $-0.00077986273687198576$ & $0.60074342766141300736$\\
+$l_{8}$ & $0.00583190639606234112$ & $-0.22903838638739832832$\\
+$l_{9}$ & $-0.00019523630604845356$ & $-0.09995757566704955392$\\
+$l_{10}$ & $-0.00007169915474324479$ & $-0.04811003309347750912$\\
+$l_{11}$ & $-0.00000108655493200221$ & $0.12107402459375419392$\\
+$l_{12}$ & $0.00105108057059437104$ & $-0.05769231465011724288$\\
+$l_{13}$ & $-0.00000693175149893269$ & $-0.01617537493579744512$\\
+$l_{14}$ & $0.00001725288066305452$ & $-0.00372167680747767168$\\
+$l_{15}$ & $0.00000973599251857202$ & $0.01588745016032467456$\\
+$l_{16}$ & $0.00014102882971544792$ & $-0.01034612270527625216$\\
+$r_{-0.7}$ & $-0.04786916011755584512$ & $3.37330581687454662656$\\
+$r_{-0.85}$ & $-0.00338598655255290304$ & $-0.12404277748026001408$\\
+$r_{-0.93}$ & $-0.00152976622486150048$ & $0.04885985700061149184$\\
+$r_{-0.97}$ & $-0.00120675674217382288$ & $0.00138138687187643376$\\
+$r_{-0.99}$ & $0.00019165391468863168$ & $0.0116479242208122624$\\
+$r_{-0.997}$ & $-0.00007907329481067227$ & $-0.00229561757343049248$\\
+$r_{-0.999}$ & $0.00002553545189618694$ & $0.00473646688713458944$\\
+$r_{0.5}$ & $0.03373230427090172928$ & $-0.50180710810041892864$\\
+$r_{0.8}$ & $0.0001322468201558293$ & $0.3892351485966987264$\\
+$r_{0.9}$ & $-0.11220349712156209152$ & $-0.21185139014654906368$\\
+$r_{0.95}$ & $0.04111662498598798848$ & $0.11820319904626905088$\\
+$r_{0.98}$ & $-0.01903291227711012096$ & $-0.12476878794932975616$\\
+$r_{0.99}$ & $0.03093667908251600896$ & $-0.02728980612827940864$\\
+$r_{0.993}$ & $-0.035100751928087296$ & $0.56321313544565563392$\\
+$r_{0.995}$ & $0.01548609449841733632$ & $-0.46525289648086761472$\\
+$r_{0.998}$ & $-0.0019804992093130368$ & $0.10953924526435145728$\\
+$r_{0.999}$ & $0.0007193290513504212$ & $-0.0462103925574280192$\\
+$r_{0.9995}$ & $-0.00013994365914259064$ & $0.0096217083959488832$\\
+$a_{1}$ & $0.01378419297512573184$ & $-0.2191808226560495616$\\
+$b_{1}$ & $0.02126164990680664064$ & $-1.33809826164443365376$\\
+$a_{2}$ & $-0.01733763451901569024$ & $-0.01711531054182729984$\\
+$b_{2}$ & $0.030295406979009152$ & $-0.0829659722405443584$\\
+$a_{3}$ & $-0.00756011835073578368$ & $-0.00391227782152036096$\\
+$b_{3}$ & $0.01300939441405070848$ & $0.0018905765643601952$\\
+$a_{4}$ & $-0.00219809547749323392$ & $0.00036553614472488984$\\
+$b_{4}$ & $0.00249083641604512736$ & $-0.00003193928829836727$\\
+$a_{5}$ & $-0.00044873624221440224$ & $-0.00005037894257189669$\\
+$b_{5}$ & $0.00051400070367522448$ & $0.00000422848526217981$\\
+$a_{6}$ & $0.00936452833706647936$ & $2.9289960087510827008$\\
+$b_{6}$ & $-0.022923074027861504$ & $-0.73530769082054770688$\\
+$a_{7}$ & $-0.01502148906736541696$ & $0.22470588141675986944$\\
+$b_{7}$ & $-0.02822053354113689088$ & $0.29274714266140844032$\\
+$a_{8}$ & $-0.006989155217107808$ & $-0.03656654427860699648$\\
+$b_{8}$ & $-0.01188334074522625792$ & $-0.00359226479320145344$\\
+$a_{9}$ & $-0.00195337678047552032$ & $0.00419981144780161216$\\
+$b_{9}$ & $-0.0023332790194249088$ & $-0.00074394748896074352$\\
+$a_{10}$ & $-0.00041999875329269872$ & $-0.00056237857865506688$\\
+$b_{10}$ & $-0.00044299970962961904$ & $0.00013910295345217162$\\
+$a_{11}$ & $-0.00953726799165147648$ & $0.0058534892524637568$\\
+$b_{11}$ & $-0.00387961374708077888$ & $0.01028087019173078272$\\
+$a_{12}$ & $-0.00451224426526211712$ & $-0.00360996570026598528$\\
+$b_{12}$ & $-0.00353323792150087488$ & $-0.00118326603503776768$\\
+$a_{13}$ & $0.00047094327107267696$ & $0.00133522705344967552$\\
+$b_{13}$ & $-0.0011425957455464416$ & $0.00018999201827405984$\\
+$a_{14}$ & $-0.00041676194620853352$ & $-0.00015223529328898256$\\
+$b_{14}$ & $-0.00006039368059124532$ & $-0.00000531389553378558$\\
+$a_{15}$ & $-0.19220744509406081024$ & $-4.01084804343454957568$\\
+$b_{15}$ & $-0.00272333998601606176$ & $5.31738629875962150912$\\
+$a_{16}$ & $0.001987679413668504$ & $0.59928011244510461952$\\
+$b_{16}$ & $0.00410149040039396928$ & $-0.40058800679667646464$\\
+$a_{17}$ & $0.00051127003275533208$ & $-0.1211182566658550784$\\
+$b_{17}$ & $-0.00079362265017980416$ & $-0.102845665185202176$\\
+$a_{18}$ & $-0.00006388101301636784$ & $-0.00546676290909553408$\\
+$b_{18}$ & $0.00009511557522294264$ & $-0.04900929350130125824$\\
+$a_{19}$ & $0.00000822630389456352$ & $0.00808297083356815232$\\
+$b_{19}$ & $-0.00001268886170253782$ & $-0.0232056942074883328$\\
+\bottomrule
+\end{longtable}}
+
+{\small
+\begin{longtable}{lrr}
+\caption{Exact trial coefficients for $\kappa=1$ (design $(96,15,6,8,5)$, bases of Section~4.4; $a_j,b_j$ belong to the complex base $z_j$ of Table~\ref{tab:bases}). Every entry is a terminating decimal, equal to the rational number with denominator dividing $10^{20}$ used by the certificate. The multiplier is $\lambda=2.71408765245248012288$.}\label{tab:coef1}\\
+\toprule coefficient & $p$ & $v$\\\midrule\endfirsthead
+\toprule coefficient & $p$ & $v$\\\midrule\endhead
+$l_{1}$ & $-1.3643182188079734784$ & $-0.6603368434820706304$\\
+$l_{2}$ & $-12.04308160000746586112$ & $2.06804473396782661632$\\
+$l_{3}$ & $37.0067935806623842304$ & $-1.28631130175928287232$\\
+$l_{4}$ & $-26.33392502479958048768$ & $-0.03737544383960646656$\\
+$l_{5}$ & $-3.68814182634888626176$ & $0.0834900120242207232$\\
+$l_{6}$ & $-0.66780096205599670272$ & $0.454161895431460864$\\
+$l_{7}$ & $9.2811692064010469376$ & $-0.35664120531819282432$\\
+$l_{8}$ & $-7.56626109471670665216$ & $0.01011457937040356736$\\
+$l_{9}$ & $-1.55438710760320237568$ & $0.0461614347376700416$\\
+$l_{10}$ & $0.43140408258981363712$ & $0.0799507030844381184$\\
+$l_{11}$ & $1.98619553818667122688$ & $-0.08064489931389446144$\\
+$l_{12}$ & $-1.94221592705101824$ & $0.01284833796006078464$\\
+$l_{13}$ & $-0.28539702152857997312$ & $0.00955929775567621504$\\
+$l_{14}$ & $0.18794623949996654592$ & $0.00830588207825044992$\\
+$l_{15}$ & $0.22014073045237035008$ & $-0.01193608321753916416$\\
+$l_{16}$ & $-0.38797524471677739008$ & $0.00459182415073425728$\\
+$r_{-0.7}$ & $58.36565850394278756352$ & $-2.06299007198147739648$\\
+$r_{-0.85}$ & $-2.01707726563734454272$ & $0.08828065155060977664$\\
+$r_{-0.93}$ & $0.245413203317723136$ & $-0.01207819266465484032$\\
+$r_{-0.97}$ & $-0.0483495181067449344$ & $0.00252936410576541376$\\
+$r_{-0.99}$ & $0.01085505091630661248$ & $-0.00058664697175542656$\\
+$r_{-0.997}$ & $-0.00332400849004544128$ & $0.00018190473157963944$\\
+$r_{-0.999}$ & $0.00080162790195314304$ & $-0.00004404312661758802$\\
+$r_{0.5}$ & $-0.59570526432450953216$ & $0.02359068355075681792$\\
+$r_{0.8}$ & $6.317724918336749568$ & $-0.11130490331799363584$\\
+$r_{0.9}$ & $-0.91064002464106315776$ & $0.1851875415862827008$\\
+$r_{0.95}$ & $0.1246914619938220032$ & $-0.31603770077908758528$\\
+$r_{0.98}$ & $-0.02733674892402686464$ & $0.7781373339307139072$\\
+$r_{0.99}$ & $0.03200191266073124352$ & $-1.86959847645702324224$\\
+$r_{0.993}$ & $-0.03240733988392482304$ & $2.33024249274203045888$\\
+$r_{0.995}$ & $0.01317838979793997568$ & $-1.08782871757080346624$\\
+$r_{0.998}$ & $-0.00147362112523202912$ & $0.1500871954634144768$\\
+$r_{0.999}$ & $0.00050936617831053272$ & $-0.05579478867087664128$\\
+$r_{0.9995}$ & $-0.0000965237331437649$ & $0.01097937219909572864$\\
+$a_{1}$ & $-16.95372470104816877568$ & $-0.66422961761016676352$\\
+$b_{1}$ & $-5.78785780818708267008$ & $0.6160960689903837184$\\
+$a_{2}$ & $-0.36303650278996934656$ & $-0.04795329185400025088$\\
+$b_{2}$ & $-0.30552601608781172736$ & $0.03427398190138144256$\\
+$a_{3}$ & $0.03125802982031076864$ & $0.00231314002746371744$\\
+$b_{3}$ & $-0.02225618146994111488$ & $0.0022591337995024752$\\
+$a_{4}$ & $-0.00456145412186675328$ & $-0.00012050500396872546$\\
+$b_{4}$ & $-0.00463456822134962112$ & $-0.00028595963389202888$\\
+$a_{5}$ & $0.00028030381010680324$ & $0.0000159193147699368$\\
+$b_{5}$ & $0.00083430654891606448$ & $0.00004344320670827117$\\
+$a_{6}$ & $24.07539017048291016704$ & $-2.4027348760391745536$\\
+$b_{6}$ & $-25.17610778234234863616$ & $-1.36886956837019631616$\\
+$a_{7}$ & $2.88263935918543437824$ & $0.06824381050889828352$\\
+$b_{7}$ & $-0.23781397841299161088$ & $-0.41023344111649021952$\\
+$a_{8}$ & $0.0151301186170249984$ & $0.02973385974502390272$\\
+$b_{8}$ & $0.2155803876474701824$ & $0.0376964509286304512$\\
+$a_{9}$ & $-0.0141172945035984896$ & $-0.00498885710405000768$\\
+$b_{9}$ & $-0.00984812725335878016$ & $-0.0034074867926906816$\\
+$a_{10}$ & $0.00199142789061523296$ & $0.00073497323634501984$\\
+$b_{10}$ & $0.00070336128813542544$ & $0.00041698896616485336$\\
+$a_{11}$ & $-0.082069076088726016$ & $-0.00362543455216708608$\\
+$b_{11}$ & $-0.01734864938405026048$ & $0.00597856049714365056$\\
+$a_{12}$ & $0.02151086124065270272$ & $-0.00156085462037139808$\\
+$b_{12}$ & $0.00066041720651131496$ & $-0.00205827276669462528$\\
+$a_{13}$ & $-0.0068158669788948096$ & $0.00078386949448646256$\\
+$b_{13}$ & $-0.00037467928798129664$ & $0.00052915082993023344$\\
+$a_{14}$ & $0.00067348282772420144$ & $-0.00010203025958963884$\\
+$b_{14}$ & $0.00006539361844636485$ & $-0.00004323615597633036$\\
+$a_{15}$ & $20.0764581757059334144$ & $5.1743060570980745216$\\
+$b_{15}$ & $89.1656915938120302592$ & $-0.35398012652368232448$\\
+$a_{16}$ & $1.41684070718424629248$ & $-0.5639169227195891712$\\
+$b_{16}$ & $-10.21895062224809754624$ & $-0.55800346649178988544$\\
+$a_{17}$ & $-0.14255980830595647488$ & $-0.07026661114511917056$\\
+$b_{17}$ & $0.82484463962066272256$ & $-0.02947723163128034304$\\
+$a_{18}$ & $0.00612731805054674432$ & $0.0004217314895111316$\\
+$b_{18}$ & $-0.07766393732289358848$ & $-0.06904815394072582144$\\
+$a_{19}$ & $-0.00009338166677637412$ & $-0.0025051638027132752$\\
+$b_{19}$ & $0.00961429993847092608$ & $-0.02473498658638498816$\\
+\bottomrule
+\end{longtable}}
+
+\clearpage
+Tables~\ref{tab:coef2b} and~\ref{tab:coef1b} give the coefficients of Proposition~\ref{prop:c4b}, in the same order. They are the contents of the file \texttt{runs/36\_6\_2\_3\_2/cat\_tail\_edges\_out.json} read by \texttt{cat\_cert7\_new.py}, whose SHA-256 is
+\begin{center}\texttt{53a3c1d4f0b5726d172946c23eaa9e906b01258435d94b495d6f7c7a3a8902e8}.\end{center}
+
+{\small
+\begin{longtable}{lrr}
+\caption{Exact trial coefficients for $\kappa=2$ (design $(36,6,2,3,2)$, bases of Section~4.4; $a_j,b_j$ belong to the complex base $z_j$ of Table~\ref{tab:bases}). Every entry is a terminating decimal, equal to the rational number with denominator dividing $10^{20}$ used by the certificate.}\label{tab:coef2b}\\
+\toprule coefficient & $p$ & $v$\\\midrule\endfirsthead
+\toprule coefficient & $p$ & $v$\\\midrule\endhead
+$l_{1}$ & $0.18929023726100209664$ & $0.88372476763768651776$\\
+$l_{2}$ & $-0.31720948072781602816$ & $-0.81501627368069152768$\\
+$l_{3}$ & $-0.00248319589784304448$ & $-0.57508674397427539968$\\
+$l_{4}$ & $0.10454015485675845632$ & $0.39927554001825824768$\\
+$l_{5}$ & $-0.00415274322441998464$ & $0.34115800490843234304$\\
+$l_{6}$ & $-0.0169937093352627584$ & $-0.24479720895203004416$\\
+$l_{7}$ & $0.003884310367100144$ & $-0.13997415395058118656$\\
+$l_{8}$ & $0.01717449291532847104$ & $0.11672170979205648384$\\
+$l_{9}$ & $-0.00088741333010085744$ & $0.0718490900948547072$\\
+$l_{10}$ & $-0.0020294952785883984$ & $-0.05610939057237764096$\\
+$l_{11}$ & $0.00090292785628654016$ & $-0.02346883998564412928$\\
+$l_{12}$ & $0.00324960422109232896$ & $0.02497093429924804096$\\
+$l_{13}$ & $-0.00005967191599339618$ & $0.00895873192639343872$\\
+$l_{14}$ & $-0.00021224282169083688$ & $-0.0080951455258685376$\\
+$l_{15}$ & $0.0001073025560902341$ & $-0.00176995000728578336$\\
+$l_{16}$ & $0.00041177012783164808$ & $0.00308689432740771648$\\
+$r_{-0.7}$ & $-0.07017866197726543872$ & $0.2840651061496696832$\\
+$r_{-0.85}$ & $-0.00297518903749442816$ & $-0.0026041385521022656$\\
+$r_{-0.93}$ & $-0.00157687473011521632$ & $0.03290652585247647744$\\
+$r_{-0.97}$ & $-0.00116239221937423472$ & $0.00468975002497576256$\\
+$r_{-0.99}$ & $0.00017178449861797154$ & $0.01088682371420200704$\\
+$r_{-0.997}$ & $-0.00008014170054951441$ & $-0.00204741525901074592$\\
+$r_{-0.999}$ & $0.00002985223998233297$ & $0.00466932858721733248$\\
+$r_{0.5}$ & $0.02209676284842271232$ & $0.1823524767120899072$\\
+$r_{0.8}$ & $-0.04022178294263337984$ & $-0.02736423484216669184$\\
+$r_{0.9}$ & $-0.08428146048334212096$ & $-0.00172911829448148448$\\
+$r_{0.95}$ & $0.0288411058808424448$ & $-0.00220369476051800992$\\
+$r_{0.98}$ & $-0.01266414935611126272$ & $0.05857792263468601344$\\
+$r_{0.99}$ & $0.020330342803531648$ & $-0.65493894092662718464$\\
+$r_{0.993}$ & $-0.02299707707352921856$ & $1.41447508699078524928$\\
+$r_{0.995}$ & $0.0101274998648636992$ & $-0.86818068826481983488$\\
+$r_{0.998}$ & $-0.00129198755585527264$ & $0.15973560138483519488$\\
+$r_{0.999}$ & $0.00046889916714340824$ & $-0.06338029053649671168$\\
+$r_{0.9995}$ & $-0.00009118887501470306$ & $0.01281904707727004928$\\
+$a_{1}$ & $0.10545056496946198528$ & $1.1257891896991858688$\\
+$b_{1}$ & $-0.05001436803357642752$ & $0.8638295721638060032$\\
+$a_{2}$ & $-0.00502734742458522624$ & $0.10599399540295204864$\\
+$b_{2}$ & $0.01775247062677905152$ & $0.06197154904378499072$\\
+$a_{3}$ & $-0.00962345310013857792$ & $0.0023260831076081168$\\
+$b_{3}$ & $0.0112539955411115648$ & $-0.00768366762998709632$\\
+$a_{4}$ & $-0.00219755400389071424$ & $-0.0005125637259700764$\\
+$b_{4}$ & $0.00301675153481368832$ & $0.00057223324679890912$\\
+$a_{5}$ & $-0.00056325676272025688$ & $0.00007837106590107838$\\
+$b_{5}$ & $0.00023786341356847144$ & $-0.00007505880607375198$\\
+$a_{6}$ & $0.0954681251620262912$ & $-0.49118194002543419392$\\
+$b_{6}$ & $-0.0208565664940984192$ & $2.0871249540026023936$\\
+$a_{7}$ & $-0.00287890798782031936$ & $-0.25346768755539890176$\\
+$b_{7}$ & $-0.02338424136975299072$ & $0.10406859357023193088$\\
+$a_{8}$ & $-0.00828499040248815232$ & $0.00691500594268359808$\\
+$b_{8}$ & $-0.01007147531823145472$ & $-0.02639732825443232256$\\
+$a_{9}$ & $-0.00208389617025711968$ & $0.00022049734397268016$\\
+$b_{9}$ & $-0.00281430094948494464$ & $0.00314741658797140032$\\
+$a_{10}$ & $-0.00049554124821356032$ & $-0.00006680396267539326$\\
+$b_{10}$ & $-0.00018200608614062396$ & $-0.00042245490185670608$\\
+$a_{11}$ & $-0.01340262598729329408$ & $0.00164987508267201536$\\
+$b_{11}$ & $-0.00639763950830020992$ & $0.0004985665611373192$\\
+$a_{12}$ & $-0.00202166041059211648$ & $-0.00069029028858373624$\\
+$b_{12}$ & $-0.0041337000946235072$ & $0.00024554398810174188$\\
+$a_{13}$ & $-0.00141271196254592912$ & $0.00025117475511259132$\\
+$b_{13}$ & $-0.0003973782869594836$ & $-0.00015627416513653934$\\
+$a_{14}$ & $-0.00021810280351410548$ & $-0.00003101097545008412$\\
+$b_{14}$ & $0.0001111361537676809$ & $0.00002682188459170272$\\
+$a_{15}$ & $-0.5577353807877451776$ & $-2.20178105065143762944$\\
+$b_{15}$ & $0.14492855869747601408$ & $-5.84769544823480123392$\\
+$a_{16}$ & $0.057055519515455744$ & $-0.01086923923255593728$\\
+$b_{16}$ & $-0.03294995725523913728$ & $0.69578152224595369984$\\
+$a_{17}$ & $-0.00333789987805104832$ & $-0.03348809908398438912$\\
+$b_{17}$ & $0.0027425021594678$ & $-0.16249574987734433792$\\
+$a_{18}$ & $0.00026251571571302188$ & $-0.02268773922956179968$\\
+$b_{18}$ & $-0.00024155080655459008$ & $-0.05140225588613389312$\\
+$a_{19}$ & $-0.00003043552212721998$ & $0.01832429993568129536$\\
+$b_{19}$ & $0.00002960068341587982$ & $-0.01724637276648471808$\\
+\bottomrule
+\end{longtable}}
+
+{\small
+\begin{longtable}{lrr}
+\caption{Exact trial coefficients for $\kappa=1$ (design $(36,6,2,3,2)$, bases of Section~4.4; $a_j,b_j$ belong to the complex base $z_j$ of Table~\ref{tab:bases}). Every entry is a terminating decimal, equal to the rational number with denominator dividing $10^{20}$ used by the certificate. The multiplier is $\lambda=2.72440173578998022144$.}\label{tab:coef1b}\\
+\toprule coefficient & $p$ & $v$\\\midrule\endfirsthead
+\toprule coefficient & $p$ & $v$\\\midrule\endhead
+$l_{1}$ & $-0.3288635988578146304$ & $-1.27977459908299112448$\\
+$l_{2}$ & $-14.17762069562110246912$ & $0.14663880833109454848$\\
+$l_{3}$ & $39.43810099733769224192$ & $1.00442652067920084992$\\
+$l_{4}$ & $-29.54933922528070467584$ & $0.07284122063514797056$\\
+$l_{5}$ & $-3.7520242380417171456$ & $-0.28512382263616565248$\\
+$l_{6}$ & $-1.05643354373284610048$ & $0.02432793918189693952$\\
+$l_{7}$ & $9.81520688991648350208$ & $0.22761901676718944256$\\
+$l_{8}$ & $-8.42958022766231683072$ & $0.00439298415227523584$\\
+$l_{9}$ & $-1.62997953004516212736$ & $-0.0599212884876729344$\\
+$l_{10}$ & $0.3680011783734593536$ & $0.01007742849752242688$\\
+$l_{11}$ & $2.08415670875278639104$ & $0.04202244165442518016$\\
+$l_{12}$ & $-2.14531459687350042624$ & $-0.00220946335734117792$\\
+$l_{13}$ & $-0.30587372556756054016$ & $-0.00763765531469495552$\\
+$l_{14}$ & $0.17879066893575356416$ & $0.0023760215248130128$\\
+$l_{15}$ & $0.23091934479137226752$ & $0.00450595361654905216$\\
+$l_{16}$ & $-0.42288802819802136576$ & $-0.00070902324186589768$\\
+$r_{-0.7}$ & $64.92312742399959891968$ & $0.20082070273232961536$\\
+$r_{-0.85}$ & $-2.27560778490149470208$ & $-0.00503316784880275392$\\
+$r_{-0.93}$ & $0.27935704443203264512$ & $0.00043498219785814104$\\
+$r_{-0.97}$ & $-0.0553105050272667136$ & $-0.00006438120377302847$\\
+$r_{-0.99}$ & $0.01245172787804715264$ & $0.0000116945510116499$\\
+$r_{-0.997}$ & $-0.00381699178431373056$ & $-0.0000032435044895896$\\
+$r_{-0.999}$ & $0.00092082879258527312$ & $0.00000075605896482006$\\
+$r_{0.5}$ & $-0.51375054068503437312$ & $-0.46376067786306215936$\\
+$r_{0.8}$ & $8.59930949803726340096$ & $-0.46347882403357523968$\\
+$r_{0.9}$ & $-1.53826275330968584192$ & $0.47169741205887950848$\\
+$r_{0.95}$ & $0.27035297663743635456$ & $-0.46301275318122856448$\\
+$r_{0.98}$ & $-0.08016215809147138048$ & $0.75196365176124407808$\\
+$r_{0.99}$ & $0.11101344302979964928$ & $-1.5573116534112141312$\\
+$r_{0.993}$ & $-0.11981446970459232256$ & $1.83751023335964049408$\\
+$r_{0.995}$ & $0.05108986639028240384$ & $-0.8240643497307111424$\\
+$r_{0.998}$ & $-0.00619711437984104192$ & $0.1063369286672539648$\\
+$r_{0.999}$ & $0.0022095423404090032$ & $-0.03856456266252286464$\\
+$r_{0.9995}$ & $-0.00042574858995869248$ & $0.00748989225307703936$\\
+$a_{1}$ & $-18.84942915106836840448$ & $0.0889273124601149952$\\
+$b_{1}$ & $-5.32962056447118737408$ & $-1.06813631400237826048$\\
+$a_{2}$ & $-0.50297881747282509824$ & $-0.0020258458953827888$\\
+$b_{2}$ & $-0.20234084220214386688$ & $-0.08905320276395245568$\\
+$a_{3}$ & $0.04152388177468779008$ & $-0.00525959898594393664$\\
+$b_{3}$ & $-0.00842488587299429504$ & $0.00153086358245062144$\\
+$a_{4}$ & $-0.00381841016502062144$ & $0.0005119024458442752$\\
+$b_{4}$ & $-0.00644854103004569344$ & $0.00006321634622769004$\\
+$a_{5}$ & $0.00007875062451851136$ & $-0.00007218581179599122$\\
+$b_{5}$ & $0.001013792853835692$ & $-0.00001678413962610083$\\
+$a_{6}$ & $24.92854540604715565056$ & $1.56654097992787296256$\\
+$b_{6}$ & $-26.94389431246568030208$ & $-0.89365941283873767424$\\
+$a_{7}$ & $3.00207762890576166912$ & $0.24393665495764574208$\\
+$b_{7}$ & $-0.24656913274570264576$ & $0.11627317039005800448$\\
+$a_{8}$ & $0.01015271672910518016$ & $-0.02601731728906671104$\\
+$b_{8}$ & $0.22104732356559343616$ & $0.01429580718713410304$\\
+$a_{9}$ & $-0.0133205122177839744$ & $0.00237420545138108032$\\
+$b_{9}$ & $-0.01072549587354437376$ & $-0.00271653885956237984$\\
+$a_{10}$ & $0.00185891865441475296$ & $-0.00028940672475332264$\\
+$b_{10}$ & $0.00089211700298713104$ & $0.00040503732617140864$\\
+$a_{11}$ & $-0.1207381914996745216$ & $-0.02155282307358525696$\\
+$b_{11}$ & $0.02229573817871452928$ & $-0.00319949701496077888$\\
+$a_{12}$ & $0.027524941358865536$ & $0.0052929875244029056$\\
+$b_{12}$ & $-0.01434543408431305216$ & $-0.00489269801557952384$\\
+$a_{13}$ & $-0.00849685136469602432$ & $-0.00151735767295619168$\\
+$b_{13}$ & $0.00467215705164192128$ & $0.00217200837435890368$\\
+$a_{14}$ & $0.00083303951704674464$ & $0.00015501559789956922$\\
+$b_{14}$ & $-0.00045039146054735352$ & $-0.00029078102418944736$\\
+$a_{15}$ & $24.72391382255490564096$ & $-2.87695892319182585856$\\
+$b_{15}$ & $93.0768841466328907776$ & $3.7548320671195103232$\\
+$a_{16}$ & $1.11837575563559993344$ & $0.50269061155764649984$\\
+$b_{16}$ & $-10.33219458272352796672$ & $-0.4783566646327259136$\\
+$a_{17}$ & $-0.14572251593363345408$ & $-0.13177165895253950464$\\
+$b_{17}$ & $0.813294722900660224$ & $-0.09593661798375806976$\\
+$a_{18}$ & $0.008592299125809184$ & $-0.00286275430250053792$\\
+$b_{18}$ & $-0.07552561205800131584$ & $-0.05302344250496699392$\\
+$a_{19}$ & $-0.00052602113881912048$ & $0.00771770878314078592$\\
+$b_{19}$ & $0.00930071458748313088$ & $-0.02550274843249096704$\\
+\bottomrule
+\end{longtable}}
+
+\clearpage
+\subsection*{Appendix C. Scripts and runs}
+
+All scripts are written in Python and take no arguments; their settings are constants at the top of each file. The certification scripts of Sections~\ref{sec:design} and~\ref{sec:design36} read the design from \texttt{design\_config.py}, or from the environment variable \texttt{CAT\_DESIGN} set by \texttt{run\_design\_cert.py}, and write the outputs of any design other than $(96,15,6,8,5)$ to \texttt{runs/}$\langle$design$\rangle$\texttt{/}. Except \texttt{measure\_scout.py} and \texttt{inv\_probe.py} (Section~\ref{sec:exponent}), which measure without pass criteria, each script states its pass criteria before running and ends by printing the number of failed criteria, and each of their runs listed here ended with zero failures. All runs were made by the author on his own computer on 7 and 8 October 2026.
+
+\begin{center}
+\small
+\begin{tabular}{p{4.2cm}p{7.2cm}p{3.6cm}}
+\toprule
+script & content & log\\
+\midrule
+\texttt{cat\_cert4\_new.py} & condition (C3): matrix $B$, $\zeta(2)$ contact, pivots modulo 131; positive control \cite[Table~1]{OAI} modulo 101 & \texttt{\_20261007\_175948}\\
+\texttt{cat\_tail\_edges.py} & trial coefficients of Proposition~\ref{prop:c4} (bases at the support edges; convex optimisation, rounding) & \texttt{\_20261007\_190940}\\
+\texttt{cat\_tail\_opt.py} & coefficients of the 46-coefficient certificate (Remark~\ref{rem:fewer}) & \texttt{\_20261007\_172735}\\
+\texttt{cat\_cert7\_new.py} & condition (C4): certificates for both coefficient files & \texttt{\_20261007\_191007}\\
+\texttt{cat\_newdesign\_check.py} & structural conditions, $\zeta(2)$ contact, ranks modulo 131, valuations of $\Delta_1$ & \texttt{\_20261007\_165402}\\
+\texttt{cat\_design\_search.py} & design search (Observation in Section~4.5) & \texttt{\_20261007\_162555}\\
+\texttt{cat\_equilibrium.py} & equilibrium problem (Section~\ref{sec:equilibrium}) & \texttt{\_20261007\_183129}\\
+\texttt{sun\_catalan\_check.py} & Appendix~D: \cite[Proposition~3.1]{Sun} at $B=20$ and Observation~\ref{obs:sun} & \texttt{\_20261008\_165354}\\
+\texttt{measure\_scout.py} & Observation~\ref{xobs:radius}, ratio $48:7:4:4:2$ & \texttt{\_20261008\_183830}\\
+\texttt{measure\_scout.py} & Observation~\ref{xobs:radius}, ratio $96:15:6:8:5$, $n\le144$ and $n=192$ & \texttt{\_20261008\_192255}, \texttt{\_220701}\\
+\texttt{inv\_probe.py} & Observation~\ref{xobs:smin}, $n=96,120,144$ & \texttt{\_20261009\_105215}\\
+\texttt{cat\_mu\_search.py} & design search with the exponent as objective (Observation~\ref{obs:musearch}) & \texttt{\_20261021\_012617}\\
+\texttt{run\_design\_cert.py} & runs the first five scripts for $(36,6,2,3,2)$, $(88,14,5,7,5)$, $(52,8,3,4,3)$ (Section~\ref{sec:design36}, Observation~\ref{obs:musearch}); exponent of Theorem~\ref{xthm:exponent} (gate E1) & \texttt{\_20261021\_015209}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The scripts \texttt{cat\_cert4.py}, \texttt{cat\_cert7.py}, \texttt{cat\_padic.py} and \texttt{cat\_extend.py} of \cite{MCSC} check the preprint's own design. The remaining values of Observations~\ref{xobs:smin} and~\ref{xobs:slope} come from the scripts in \texttt{exponent/structure\_scouts/}, run at sizes that finish in under a minute: \texttt{inv\_probe.py} with $n=24,48,72$ and, with the design as an argument, \texttt{sv\_probe.py}, \texttt{gcol\_probe.py} and \texttt{lam\_probe.py} for the singular values, $u^{\mathsf T}Bv$ and the zeros at $n=24,48$, and \texttt{theta\_probe2.py} and \texttt{alt\_probe.py} for $-F'(1)$, $r_{\mathrm{row}}$ and $r_{\mathrm{col}}$.
+
+\clearpage
+\subsection*{Appendix D. The preprint of Sun}
+
+This appendix gives the check of \cite{Sun} mentioned in the introduction. The script and its run are listed in Appendix~C.
+
+The preprint \cite{Sun} states that $G$ is irrational. Wachs \cite{Wachs} shows that the estimate of \cite[Theorem~9.1]{Sun} does not follow from its derivation: with the worst-case denominator, the quantity controlled there lies between $+1.49$ and $+1.79$ per $B^2$ at eighteen indices $20\le B\le119$, and the prime $2$ contributes $(2\log2+o(1))B^2$, which the derivation in \cite[Secs.~6--9]{Sun} does not carry. We recall the construction in the notation of \cite{Sun} and give an independent exact computation of the same quantity, with the least common denominator of a polynomial in place of the worst-case denominator (Lemma~\ref{lem:sunfix}).
+
+\begin{definition}\label{def:sun}
+For integers $B>S\ge1$ put $N=2B+S+3$, $\Pi_i=\prod_{h=1}^{B}(2(h+i)+1)^2$ and $F_B=\prod_{r=0}^{2B-1}r!$. For an indeterminate $X$ and $m\ge0$ let
+\[
+T_m(X)=(-1)^m\Bigl(X-\sum_{k<m}\frac{(-1)^k}{(2k+1)^2}\Bigr),\qquad u_m(X)=\frac{T_m(X)}{2m+1}.
+\]
+For $0\le a\le S+2$ and $1\le j\le S$ let
+\[
+R_{a,j}(X)=\sum_{i=0}^{a+2B}(-1)^i\binom{a+2B}{i}\,\Pi_i\,u_{i+j}(X),
+\]
+and for $A\subset\{0,\dots,S+2\}$ with $|A|=S$ let
+\[
+\hat q_{B,A}(X)=\frac{F_B\,\det\bigl(R_{a,j}(X)\bigr)_{a\in A,\,1\le j\le S}}{\prod_{i=0}^{N-1}\Pi_i}\in\mathbb Q[X],
+\]
+a polynomial of degree at most $S$. Let $D_{B,A}$ be the least common denominator of its coefficients.
+\end{definition}
+
+At $X=G$, $T_m(G)=(-1)^m\sum_{k\ge m}(-1)^k(2k+1)^{-2}$ is the tail of \cite[(1.1)]{Sun}, and $\hat q_{B,A}(G)$ is the scalar $\hat q_B$ of \cite[(3.5)]{Sun}; we checked the identity \cite[Proposition~3.1]{Sun}, which defines $\hat q_B$ through an $N\times N$ determinant, exactly at $B=20$. Under the hypothesis $G=a/q$ with coprime integers $a$ and $q\ge1$, \cite[Definition~3.1]{Sun} lets $H_B^{\min}$ be the denominator of $q^S\hat q_B(a/q)$, and \cite[Theorem~9.1]{Sun} states that, for $S=\lfloor B/20\rfloor$,
+\[
+\log H_B^{\min}+\log|\hat q_B(G)|\le-\delta_0B^2+o(B^2),\qquad\delta_0>0.00966 .
+\]
+The valuation bounds in its proof \cite[Lemma~5.3]{Sun} use of $a/q$ only that $qT_m(a/q)$ has the denominator of the partial sum; they hold for all integers $a$ and $q\ge1$. A bound for $H_B^{\min}$ that holds for all such $a$ and $q$ is at least $D_{B,A}/S!$, by the following lemma with $q=1$.
+
+\begin{lemma}\label{lem:sunfix}
+Let $P\in\mathbb Q[X]$ be nonzero of degree at most $S$, and let $D$ be the least common denominator of its coefficients. There is an integer $a$ such that the denominator of $P(a)$ is at least $D/S!$.
+\end{lemma}
+
+\begin{proof}
+Write $DP=gP_0$ with $g$ a positive integer and $P_0\in\mathbb Z[X]$ primitive. Since $D$ is the least common denominator, no prime divides both $g$ and $D$. Write $P_0=\sum_{k\le S}d_k\binom Xk$; the $d_k=\Delta^kP_0(0)$ are integers, and the greatest common divisor $d$ of the values $P_0(a)$, $a\in\mathbb Z$, equals that of the $d_k$. Since $S!\binom Xk\in\mathbb Z[X]$ for $k\le S$, the coefficients of $S!\,P_0$ are integer combinations of the $d_k$, so $d$ divides $S!$ times the content of $P_0$, which is $S!$. For each prime $p\mid D$ choose $a_p\in\mathbb Z$ with $v_p(P_0(a_p))=v_p(d)\le v_p(S!)$; since $v_p(P_0(a))$ depends only on $a$ modulo $p^{v_p(d)+1}$ when it is at most $v_p(d)$, the Chinese remainder theorem gives one integer $a$ with $v_p(P_0(a))\le v_p(S!)$ for every $p\mid D$. Then $v_p(P(a))=v_p(P_0(a))-v_p(D)\le v_p(S!)-v_p(D)$ for every $p\mid D$, and the denominator of $P(a)$ is at least $\prod_{p\mid D}p^{v_p(D)-v_p(S!)}\ge D/S!$.
+\end{proof}
+
+Since $\log S!=O(B\log B)$, the estimate of \cite[Theorem~9.1]{Sun}, obtained from bounds of this kind, would give $\log D_{B,A}+\log|\hat q_{B,A}(G)|\le-\delta_0B^2+o(B^2)$ for the set $A$ used there.
+
+\begin{observation}[Measured; exact arithmetic]\label{obs:sun}
+With $S=\lfloor B/20\rfloor$, the minimum over the sets $A$ with $\hat q_{B,A}\ne0$ of $(\log D_{B,A}+\log|\hat q_{B,A}(G)|)/B^2$ is
+\begin{center}
+\small
+\begin{tabular}{lccccc}
+\toprule
+$B$ & $20$ & $40$ & $60$ & $80$ & $100$\\
+\midrule
+minimum over $A$ & $+1.612$ & $+1.712$ & $+1.752$ & $+1.776$ & $+1.789$\\
+\bottomrule
+\end{tabular}
+\end{center}
+and the maximum over $A$ exceeds the minimum by less than $0.03$ in each case.
+\end{observation}
+
+The measured values are positive and increase with $B$, while the estimate of \cite[Theorem~9.1]{Sun} requires them to tend to a limit at most $-0.00966$; they agree with the values of \cite{Wachs}. We do not rely on \cite{Sun}. The acknowledgments of \cite{Sun} state that the proof was developed in conversations with AI.
+
+
+
+\end{document}
